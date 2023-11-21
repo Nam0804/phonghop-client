@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { Providers } from "@/redux/provider"
-import ClientLayout from './clientLayout';
+import ClientLayout from './client/layout';
 
 export const metadata: Metadata = {
-    title: "It's Ready",
-    description: "It's Ready is restaurant platform",
+    title: "Phonghop",
+    description: "",
     viewport: "width=device-width, initial-scale=1, maximum-scale=1",
 };
 
