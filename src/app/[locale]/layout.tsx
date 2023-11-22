@@ -1,27 +1,15 @@
-import type { Metadata } from 'next'
-import { Providers } from "@/redux/provider"
-import ClientLayout from './client/layout';
-
-export const metadata: Metadata = {
-    title: "Phonghop",
-    description: "",
-    viewport: "width=device-width, initial-scale=1, maximum-scale=1",
-};
-
-export default function RootLayout({
-    children,
-    params
-}: {
-    children: React.ReactNode
-    params: { locale: string }
-}) {
-    return (
-        <html lang={params.locale}>
-            <body>
-                <ClientLayout params={params}>
-                    <Providers>{children}</Providers>
-                </ClientLayout>                
-            </body>
-        </html>
-    );
+import {notFound} from 'next/navigation';
+ 
+// Can be imported from a shared config
+const locales = ['en', 'vn'];
+ 
+export default function LocaleLayout({children, params: {locale}}) {
+  // Validate that the incoming `locale` parameter is valid
+  if (!locales.includes(locale as any)) notFound();
+ 
+  return (
+    <html lang={locale}>
+      <body>{children}</body>
+    </html>
+  );
 }
