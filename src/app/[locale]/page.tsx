@@ -1,6 +1,16 @@
-import {useTranslations} from 'next-intl';
- 
+'use client'
+import ButtonComponent from '@/components/Button/Button';
+import { useState } from 'react';
+
 export default function Index() {
-  const t = useTranslations('Index');
-  return <h1>{t('title')}</h1>;
+  const [getDemo, setDemo] = useState(false);
+
+  const handleClick = () => {
+    setDemo(!getDemo);
+  }
+  return (
+    <div>
+      
+    </div>
+  );
 }
