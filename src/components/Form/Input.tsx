@@ -1,7 +1,7 @@
 import React from "react";
-const Input = ({ value,onChange }:any) => {
+const Input = ({ value,onChange,type,placeholder,className,style }:any) => {
     return (
-        <input type="text" value={value} onChange={onChange}></input>
+        <input type={type} value={value} onChange={onChange} placeholder={placeholder} className={className} style={style}></input>
     );
 }
 export default Input;

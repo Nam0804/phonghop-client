@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
-import { Button } from 'antd';
-import type { SizeType } from 'antd/es/config-provider/SizeContext';
-const ButtonComponent: React.FC = () => {
-  const [size, setSize] = useState<SizeType>('large'); // default is 'middle'
+import React from 'react';
+
+const Button = ({ onClick, label }:any) => {
   return (
-    <>
-        <Button type="primary" size={size} >
-          Button
-        </Button>
-    </>
+    <button onClick={onClick}>
+      {label}
+    </button>
   );
 };
 
-export default ButtonComponent;
+export default Button;
