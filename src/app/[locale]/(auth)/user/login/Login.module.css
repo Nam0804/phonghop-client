@@ -1,12 +1,4 @@
-.container{
-    width: 100%;
-    height: 100%;
-    padding: 72px 120px;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 32px;
-    background:  #EAEEF6;
-}
+
 .imageStyle {
     width: 100%;
     height: 100%;
@@ -26,14 +18,8 @@
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-}
-
-.phsvg{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 52px;
-     margin-bottom: 148.39px; 
+    margin-bottom: 16px;
+    border: none;
 }
 .cus{
     border-radius: 16px;
@@ -52,4 +38,39 @@
     border: none;
     border-bottom: 2px solid #225560;
     opacity: 0.6;
+    justify-content: center;
+}
+.inputsection::placeholder{
+    padding-left: 32px;
+}
+.input{
+    position: relative;
+}
+.icon{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+}
+.forgot{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    align-items: center;
+}
+.customlink{
+    text-decoration: none;
+    color: #225560;
+    font-size: 14px;
+    font-family: Be Vietnam Pro;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.account{
+    display: flex;
+    gap: 25px;
+}
+.inputform{
+    margin-top:148px;
 }

@@ -1,13 +1,15 @@
 import React from 'react';
+import styles from './Table.module.css'
 
-const Table: React.FC<{ data: any[]; columns: any[] }> = ({ data, columns }) => {
+const Table: React.FC<{ data: any[]; columns: any[];actions:any[] }> = ({ data, columns,actions=[] }) => {
   return (
-    <table>
+    <table className={styles.mytable}>
       <thead>
         <tr>
           {columns.map(column => (
-            <th key={column}>{column}</th>
+            <th key={column}>{column.replace(/_/g,' ')}</th>
           ))}
+          {actions.length > 0 && <th>Action</th>}
         </tr>
       </thead>
       <tbody>
@@ -16,6 +18,13 @@ const Table: React.FC<{ data: any[]; columns: any[] }> = ({ data, columns }) => 
             {columns.map(column => (
               <td key={column}>{row[column]}</td>
             ))}
+            {actions.length > 0 && (
+              <td className={styles.actiongroup}>
+                {actions.map((action, actionIndex) => (
+                  <div key={actionIndex}>{action}</div>
+                ))}
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
