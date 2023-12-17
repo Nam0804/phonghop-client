@@ -13,7 +13,6 @@ export default function Index() {
   const handleClick = () => {
     setDemo(!getDemo);
   }
-  const dispatch = useDispatch();
 
   return (
     <DefaultLayout>
