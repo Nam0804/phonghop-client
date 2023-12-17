@@ -8,12 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function Index() {
-  const [getDemo, setDemo] = useState(false);
-
-  const handleClick = () => {
-    setDemo(!getDemo);
-  }
-  const dispatch = useDispatch();
 
   return (
     <DefaultLayout>
