@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 const Navigation = () => {
   const router = useRouter();
 
-  const navigateTo = (path) => {
+  const navigateTo = (path: any) => {
     router.push(path);
   };
 
