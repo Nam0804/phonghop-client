@@ -1,10 +1,9 @@
 'use client'
-import ButtonComponent from '@/components/Button/Button';
-import Header from '@/components/Header/Header';
-import Sidebar from '@/components/Sidebar/Sidebar';
-import DefaultLayout from '@/layouts/DefaultLayout';
+import ButtonComponent from '@/constants/Button/Button';
+import Header from '@/constants/Header/Header';
+import Sidebar from '@/constants/Sidebar/Sidebar';
+import DefaultLayout from '@/layouts/User/DefaultLayout';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function Index() {

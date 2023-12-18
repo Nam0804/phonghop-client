@@ -1,14 +1,14 @@
 'use client'
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Input from '@/components/Form/Input';
-import styles from './Login.module.css';
-import DefaultLoginLayout from '@/layouts/DefaultLoginLayout';
+import Input from '@/constants/Form/Input';
+import styles from '@/css/Login.module.css';
+import DefaultLoginLayout from '@/layouts/User/DefaultLoginLayout';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Button from '@/components/Form/Button';
+import Button from '@/constants/Form/Button';
 import axios from 'axios';
 
 

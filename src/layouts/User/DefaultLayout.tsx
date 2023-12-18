@@ -1,5 +1,5 @@
-import Header from "@/components/Header/Header";
-import Sidebar from "@/components/Sidebar/Sidebar";
+import Header from "@/constants/Header/Header";
+import Sidebar from "@/constants/Sidebar/Sidebar";
 import React from "react";
 const DefaultLayout = ({children}:any) => {
     return (

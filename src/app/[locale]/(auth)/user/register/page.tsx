@@ -1,8 +1,8 @@
 'use client'
 import * as React from 'react';
-import Button from '@/components/Form/Button';
-import DefaultLoginLayout from '@/layouts/DefaultLoginLayout';
-import Input from '@/components/Form/Input';
+import Button from '@/constants/Form/Button';
+import DefaultLoginLayout from '@/layouts/User/DefaultLoginLayout';
+import Input from '@/constants/Form/Input';
 import styles from './Register.module.css';
 
 
