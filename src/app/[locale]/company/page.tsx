@@ -1,9 +1,9 @@
 import React from "react";
-import DefaultLayout from "@/layouts/DefaultLayout";
+import DefaultLayout from "@/layouts/User/DefaultLayout";
 import styles from './CompanyList.module.css'
-import Table from "@/components/Table/Table";
+import Table from "@/constants/Table/Table";
 import datas from "./datatable";
-import Button from "@/components/Form/Button";
+import Button from "@/constants/Form/Button";
 
 const CompanyList = () => {
     const columns =[

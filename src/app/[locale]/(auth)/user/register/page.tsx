@@ -1,6 +1,6 @@
 'use client'
 import * as React from 'react';
-import Button from '@/components/Form/Button';
+import Button from '@/constants/Form/Button';
 
 
 export default function LoginPage() {
