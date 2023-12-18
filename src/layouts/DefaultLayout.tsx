@@ -7,7 +7,7 @@ const DefaultLayout = ({children}:any) => {
       <header>
         <Header></Header>
       </header>
-      <div style={{width:'80px',float:'left'}}>
+      <div style={{width:'80px',float:'left',height:'100%'}}>
         <Sidebar></Sidebar>
       </div>
       <section style={{width:'calc(100% - 80px)',float:'right'}}>
