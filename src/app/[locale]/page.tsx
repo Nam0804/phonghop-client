@@ -2,12 +2,14 @@
 
 import DefaultLayout from '@/layouts/DefaultLayout';
 import React, {FormEvent, useState} from 'react';
-import AddUser from "@/components/user/add_user";
+import AddUser from "@/components/addUser/addUser";
+import DeleteUser from '@/components/deleteUser/deleteUser';
 
 export default function Index() {
   return (
     <DefaultLayout>
-      <AddUser></AddUser>
+        <AddUser />
+        <DeleteUser />
     </DefaultLayout>
   );
 }
