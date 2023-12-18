@@ -7,7 +7,6 @@ import DefaultLoginLayout from '@/layouts/DefaultLoginLayout';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
 import Link from 'next/link';
 import { useState } from 'react';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/Form/Button';
 import axios from 'axios';
@@ -16,6 +15,7 @@ import axios from 'axios';
 
 const LoginPage: React.FC<{}> = () => {
     const router = useRouter()
+    const [passwordVisible, setpasswordVisible] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const handleLogin = () => {
@@ -34,7 +34,7 @@ const LoginPage: React.FC<{}> = () => {
             if(response)
             {
               console.log(response.data.data.token);
-              Cookies.set('token', response.data.data.token);
+              // Cookies.set('token', response.data.data.token);
               router.push('/');
             }else{
               console.error('Token not found')
@@ -58,15 +58,13 @@ const LoginPage: React.FC<{}> = () => {
         <>
             <div className={styles.inputform}>
                 <div className={styles.input}>
-                    {
-                      !email && <img src="/mail.svg" alt="" className={styles.icon}/>
-                    }
-                    
+                    <img src="/mail.svg" alt="" className={styles.icon}/>
                     <Input type="text" name="username" placeholder="Email" className={styles.inputsection} style={{marginBottom:'24px'}} onChange={(e:any) => setEmail(e.target.value)}></Input>
                 </div>
                 <div className={styles.input}>
                     <img src="/pass.svg" alt="" className={styles.icon}/>
-                    <Input type="text" name="password" placeholder="Password" className={styles.inputsection} style={{marginBottom:'48px'}} onChange={(e:any) => setPassword(e.target.value)}></Input>
+                    <Input  type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" className={styles.inputsection} style={{marginBottom:'48px'}} onChange={(e:any) => setPassword(e.target.value)}></Input>
+                    <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={()=>setpasswordVisible(!passwordVisible)}/>
                 </div>
                 <div className={styles.forgot}>
                     <Checkbox onChange={onChange}>Remember me</Checkbox>
