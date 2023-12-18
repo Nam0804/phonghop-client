@@ -2,15 +2,16 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Input from '@/constants/Form/Input';
-import styles from './Login.module.css';
+import styles from '@/css/Login.module.css';
 import DefaultLoginLayout from '@/layouts/User/DefaultLoginLayout';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Button from '@/constants/Form/Button';
 import axios from 'axios';
+import Modal from '@/constants/Modal/FirstLogModal'
 
 
 
@@ -50,6 +51,43 @@ const LoginPage: React.FC<{}> = () => {
             }
           });
     };
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFirstTimeLogin, setIsFirstTimeLogin] = useState(true);
+
+    const someAsyncFunction = async () => {
+      return { isFirstTimeLogin: true }; 
+    };
+    
+
+    useEffect(() => {
+      const checkFirstTimeLogin = async () => {
+        try {
+          const response = await someAsyncFunction(); 
+  
+          if (response.isFirstTimeLogin) {
+            setIsModalOpen(true);
+          }
+        } catch (error) {
+          console.error('Error checking first-time login:', error);
+        }
+      };
+  
+      checkFirstTimeLogin();
+    }, []);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+    const handleButtonClick = () => {
+      handleLogin();
+      openModal();
+    };
+    const [passwordVisible, setpasswordVisible] = useState(false);
     const onChange = (e: CheckboxChangeEvent) => {
         console.log(`checked = ${e.target.checked}`);
     };
@@ -74,13 +112,40 @@ const LoginPage: React.FC<{}> = () => {
                         Forgot password?
                     </Link>
                 </div>
-                <Button type="button" className={styles.loginbtn} onClick={handleLogin}>LOG IN</Button>
+                <Button type="button" className={styles.loginbtn} onClick={handleButtonClick}>LOG IN</Button>
                 <div className={styles.account}>
                     <p>Don't have an account?</p>
                     <Link href="/other-page2"  className={styles.customlink}>
                         Register
                     </Link>
                 </div>
+                <div>
+                  {isModalOpen && (
+                      <Modal title="Kindly change your password for first time log in." onClose={closeModal} >
+                      {
+                          <>
+                          <div className={styles.inputgroup}>
+                              <div className={styles.inputform1}>
+                                  <img src="/pass.svg" alt="" className={styles.icon1}/>
+                                  <input  type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password"/>
+                                  <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={()=>setpasswordVisible(!passwordVisible)}/>
+                              </div>
+                              <div className={styles.inputform1}>
+                                  <img src="/pass.svg" alt="" className={styles.icon1}/>
+                                  <input  type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password"/>
+                                  <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={()=>setpasswordVisible(!passwordVisible)}/>
+                              </div>
+                          </div>
+                          <div className={styles.btngroup}>
+                              <Button className={styles.passbtn}>SAVE</Button>
+                              <Button color="#FFF" className={styles.closebtn} onClick={closeModal}>CLOSE</Button>
+                          </div>
+
+                      </>
+                      }
+                      </Modal>
+                  )}
+                  </div>
             </div>
         </>
       </DefaultLoginLayout>
