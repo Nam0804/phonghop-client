@@ -1,42 +1,89 @@
 'use client'
 import * as React from 'react';
-import Button from '@/components/Form/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Input from '@/components/Form/Input';
+import Input from '@/constants/Form/Input';
 import styles from './Login.module.css';
-import myImage from 'public/assets/images/Rectangle 1.png';
-import Image from 'next/image';
+import DefaultLoginLayout from '@/layouts/User/DefaultLoginLayout';
+import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
+import Link from 'next/link';
+import { useState } from 'react';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import Button from '@/constants/Form/Button';
+import axios from 'axios';
 
 
-export default function LoginPage() {
-    const handleButtonClick = () => {
-        alert("Tao là AN");
+
+const LoginPage: React.FC<{}> = () => {
+    const router = useRouter()
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const handleLogin = () => {
+      const postData = {
+          email: email,
+          password: password
+        };
+        
+        const headers = {
+          'Accept': 'application/vnd.api+json',
+        };
+        
+        axios.post('http://localhost:8000/api/auth/login', postData, { headers: headers })
+          .then(response => {
+          
+            if(response)
+            {
+              console.log(response.data.data.token);
+              Cookies.set('token', response.data.data.token);
+              router.push('/');
+            }else{
+              console.error('Token not found')
+            }
+          })
+          .catch(error => {
+            if (error.response) {
+              console.error('HTTP Error:', error.response.data);
+            } else if (error.request) {
+              console.error('No response received for the request.');
+            } else {
+              console.error('Error setting up the request or handling the response:', error.message);
+            }
+          });
     };
-    const cus: React.CSSProperties = {
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: '16px',
-        background: '#FFF',
-        boxShadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.05)',
-        alignItems: 'center'
+    const onChange = (e: CheckboxChangeEvent) => {
+        console.log(`checked = ${e.target.checked}`);
     };
-
     return (
+      <DefaultLoginLayout>
         <>
-            <div className={styles.container}>
-                <div className='row'>
-                    <div className='col-lg-6 col-md-6 col-sm-6'>
-                        <Image src={myImage} alt="My Image" className={styles.imageStyle} />
-                    </div>
-                    <div className='col-lg-6 col-md-6 col-sm-6' style={cus}>
-                        <div>
-                            <Input type="text" placeholder="Email" className={styles.inputsection} style={{ marginBottom: '24px' }}></Input>
-                            <Input type="text" placeholder="Password" className={styles.inputsection} style={{ marginBottom: '48px' }}></Input>
-                            <Button label="Login" onClick={handleButtonClick} className={styles.loginbtn}></Button>
-                        </div>
-                    </div>
+            <div className={styles.inputform}>
+                <div className={styles.input}>
+                    {
+                      !email && <img src="/mail.svg" alt="" className={styles.icon}/>
+                    }
+                    
+                    <Input type="text" name="username" placeholder="Email" className={styles.inputsection} style={{marginBottom:'24px'}} onChange={(e:any) => setEmail(e.target.value)}></Input>
+                </div>
+                <div className={styles.input}>
+                    <img src="/pass.svg" alt="" className={styles.icon}/>
+                    <Input type="text" name="password" placeholder="Password" className={styles.inputsection} style={{marginBottom:'48px'}} onChange={(e:any) => setPassword(e.target.value)}></Input>
+                </div>
+                <div className={styles.forgot}>
+                    <Checkbox onChange={onChange}>Remember me</Checkbox>
+                    <Link href="/other-page" className={styles.customlink}>
+                        Forgot password?
+                    </Link>
+                </div>
+                <Button type="button" className={styles.loginbtn} onClick={handleLogin}>LOG IN</Button>
+                <div className={styles.account}>
+                    <p>Don't have an account?</p>
+                    <Link href="/other-page2"  className={styles.customlink}>
+                        Register
+                    </Link>
                 </div>
             </div>
         </>
+      </DefaultLoginLayout>
     );
-}
+  };
+export default LoginPage

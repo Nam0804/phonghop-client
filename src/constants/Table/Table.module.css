@@ -1,0 +1,37 @@
+.mytable{
+    border: none;
+    border-radius: 16px;
+    border-collapse: collapse;
+    width: 100%;
+    overflow: hidden;
+}
+.mytable th{
+    background-color: 255762;
+    color: #FFF;
+    font-family: Be Vietnam Pro;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border-right: 1px solid white;
+}
+
+.mytable thead tr{
+    background-color: #255762;
+}
+.mytable th,.mytable td{
+    padding: 5px;
+    text-align: center;
+}
+.actiongroup{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+}
+.mytable tbody tr:nth-child(even){
+    background-color: #EAEEF6;
+}
+.mytable tbody tr:nth-child(even) td{
+    border-right: 1px solid white;
+}
