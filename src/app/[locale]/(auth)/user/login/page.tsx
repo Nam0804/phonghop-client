@@ -24,7 +24,7 @@ const LoginPage: React.FC<{}> = () => {
           password: password
         };
                 
-        axios.post(process.env.NEXT_PUBLIC_API_URL + 'auth/login', postData, { 
+        axios.post(process.env.API_URL + 'auth/login', postData, { 
           withCredentials: false,
         })
           .then(response => {
