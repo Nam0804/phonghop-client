@@ -18,17 +18,15 @@ const LoginPage: React.FC<{}> = () => {
     const router = useRouter()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const handleLogin = () => {
+    const handleLogin = () => {     
       const postData = {
           email: email,
           password: password
         };
-        
-        const headers = {
-          'Accept': 'application/vnd.api+json',
-        };
-        
-        axios.post('http://localhost:8000/api/auth/login', postData, { headers: headers })
+                
+        axios.post(process.env.NEXT_PUBLIC_API_URL + 'auth/login', postData, { 
+          withCredentials: false,
+        })
           .then(response => {
           
             if(response)
