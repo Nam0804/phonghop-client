@@ -76,7 +76,7 @@ const LoginPage: React.FC<{}> = () => {
                 </div>
                 <Button type="button" className={styles.loginbtn} onClick={handleLogin}>LOG IN</Button>
                 <div className={styles.account}>
-                    <p>Don't have an account?</p>
+                    <p> Don&apos;t have an account? </p>
                     <Link href="/other-page2"  className={styles.customlink}>
                         Register
                     </Link>
