@@ -19,8 +19,15 @@ const AddUser = () => {
     };
 
     function handleSubmit() {
-        form.resetFields();
-        setVisible(false);
+        form
+            .validateFields()
+            .then(() => {
+                form.resetFields();
+                setVisible(false);
+            })
+            .catch((errorInfo) => {
+                console.log(errorInfo);
+            });
     }
 
     return (
@@ -45,7 +52,16 @@ const AddUser = () => {
                         <Form.Item
                             label={<span className={styles.label}>Name*</span> }
                             name="name"
-                            rules={[{required: true, message: <span className={styles.errorMessage}>This field is required!</span>}]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            This field is required!
+                                        </span>
+                                    ),
+                                },
+                            ]}
                             style={{ width: '100%' }}
                         >
                             <Input className={styles.Input}/>
@@ -66,8 +82,15 @@ const AddUser = () => {
                         <Form.Item
                             label={<span className={styles.label}>Email*</span> }
                             name="email"
-                            rules={[
-                                {required: true, message: <span className={styles.errorMessage}>This field is required!</span>},
+                                rules={[
+                                        {
+                                            required: true,
+                                            message: (
+                                                <span className={styles.errorMessage}>
+                                            This field is required!
+                                        </span>
+                                            ),
+                                        },
                             ]}
                             style={{ width: '100%' }}
                         >
