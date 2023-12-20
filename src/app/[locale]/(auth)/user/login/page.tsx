@@ -2,7 +2,7 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Input from '@/constants/Form/Input';
-import styles from './Login.module.css';
+import styles from 'src/css/Login.module.css';
 import DefaultLoginLayout from '@/layouts/User/DefaultLoginLayout';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
 import Link from 'next/link';
