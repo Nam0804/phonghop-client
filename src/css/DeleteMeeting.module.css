@@ -1,0 +1,53 @@
+.warningTitle {
+    font-family: 'Be Vietnam Pro';
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+    text-align: center;
+    color: #225560;
+}
+.errorMessage{
+    color: red;
+    text-align: center;
+}
+.buttonContainer{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+.buttonDelete{
+    width: 240px;
+    height: 52px;
+    padding: 10px;
+    border-radius: 8px;
+    gap: 10px;
+    background-color: #8B8B8B;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid;
+    cursor: pointer;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 25px;
+}
+.buttonCancel{
+    width: 240px;
+    height: 52px;
+    padding: 10px;
+    border-radius: 8px;
+    gap: 10px;
+    background-color: white;
+    color: #225560;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #225560;
+    cursor: pointer;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 25px;
+}

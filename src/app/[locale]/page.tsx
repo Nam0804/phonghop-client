@@ -1,10 +1,7 @@
 'use client'
-import ButtonComponent from '@/constants/Button/Button';
-import Header from '@/constants/Header/Header';
-import Sidebar from '@/constants/Sidebar/Sidebar';
 import DefaultLayout from '@/layouts/User/DefaultLayout';
 import { useState } from 'react';
->>>>>>> 80d8ad50d4ef0b35053b9eb47680f00b73761391
+import DeleteMeeting from "@/components/DeleteMeeting/DeleteMeeting";
 
 
 export default function Index() {
@@ -16,8 +13,7 @@ export default function Index() {
 
   return (
     <DefaultLayout>
-        <AddUser />
-        <DeleteUser />
+        <DeleteMeeting />
     </DefaultLayout>
   );
 }
