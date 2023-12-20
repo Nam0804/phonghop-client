@@ -63,7 +63,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #225560;
+    border: 2px solid;
     cursor: pointer;
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 20px;
@@ -82,7 +82,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #225560;
+    border: 2px solid;
     cursor: pointer;
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 20px;

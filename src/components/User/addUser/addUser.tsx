@@ -14,11 +14,13 @@ const AddUser = () => {
     };
 
     const handleCancel = () => {
+        form.resetFields();
         setVisible(false);
     };
 
     function handleSubmit() {
-        console.log('Add user successfully');
+        form.resetFields();
+        setVisible(false);
     }
 
     return (
