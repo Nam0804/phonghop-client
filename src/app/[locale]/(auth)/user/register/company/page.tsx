@@ -31,7 +31,7 @@ export default function RegisterNewCompany() {
     });
 
 
-    const processForm: SubmitHandler<Inputs> = async (data) => {
+    const processForm: SubmitHandler<Inputs> = data => {
         console.log(data);
         // api call here
         reset()
@@ -44,7 +44,10 @@ export default function RegisterNewCompany() {
         const fields = steps[currentStep].fields;
         const output = await trigger(fields as FieldName[], { shouldFocus: true });
         console.log(output);
+        console.log(errors);
         if(!output) return;
+        console.log('it here');
+
         if(currentStep ==1){
             setCurrentStep(2);
 
@@ -57,6 +60,7 @@ export default function RegisterNewCompany() {
             await handleSubmit(processForm)();
         }
     }
+    
     const prevStep = () => {
         if (currentStep > 1) {
             setCurrentStep(1);
@@ -69,9 +73,10 @@ export default function RegisterNewCompany() {
 
     return (
         <DefaultLoginLayout>
+            <form className={`${styles.content} w-75`} onSubmit={handleSubmit(processForm)}>
             {currentStep === 1 && (
                     <>
-                        <form className={`${styles.content} w-75`} onSubmit={handleSubmit(processForm)}>
+                        
                             <h3>Register New Account</h3>
                             <p>Please input your information</p>
                             <div className={styles.input}>
@@ -113,7 +118,7 @@ export default function RegisterNewCompany() {
                             <div className='w-100 text-end pt-5'>
                                 <Button className={`${styles.nextBtn}`} onClick={nextStep}>NEXT</Button>
                             </div>
-                        </form>
+                       
 
                         <div className={`${styles.progressbar} mb-3`}>
                             <div className={styles.halfColor}></div>
@@ -164,6 +169,8 @@ export default function RegisterNewCompany() {
 
                 </>
             )}
+            </form>
+            
         </DefaultLoginLayout>
     );
 };
