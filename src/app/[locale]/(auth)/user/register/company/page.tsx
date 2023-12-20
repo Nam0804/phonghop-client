@@ -17,6 +17,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const steps = [
+    {},
     { id: 1, title: 'Company Information', fields:['company_name','company_domain','company_address','company_taxcode'] },
     { id: 2, title: 'Manager Information',fields:['mng_name','mng_title','mng_email','mng_phone','password','confirmation_password'] },
 ]
@@ -33,30 +34,24 @@ export default function RegisterNewCompany() {
 
     const processForm: SubmitHandler<Inputs> = data => {
         console.log(data);
-        // api call here
+        axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
+            console.log(response);
+        })
         reset()
     }
 
     // Next and Prev Step
     type FieldName = keyof Inputs;
     const nextStep = async() => {
-
         const fields = steps[currentStep].fields;
         const output = await trigger(fields as FieldName[], { shouldFocus: true });
-        console.log(output);
-        console.log(errors);
         if(!output) return;
-        console.log('it here');
 
         if(currentStep ==1){
             setCurrentStep(2);
-
         }
 
         if (currentStep == 2) {
-            // if(currentStep === steps.length - 1){
-               
-            // }
             await handleSubmit(processForm)();
         }
     }
@@ -66,15 +61,11 @@ export default function RegisterNewCompany() {
             setCurrentStep(1);
         }
     }
-
-    console.log(currentStep);
-
-
-
+    
     return (
         <DefaultLoginLayout>
             <form className={`${styles.content} w-75`} onSubmit={handleSubmit(processForm)}>
-            {currentStep === 1 && (
+            {currentStep == 1 && (
                     <>
                         
                             <h3>Register New Account</h3>
@@ -127,41 +118,71 @@ export default function RegisterNewCompany() {
                     </>
 
             )}
-            {currentStep === 2 && (
+            {currentStep == 2 && (
                 <>
                     <div className={styles.content}>
                         <h3>Register Company Account</h3>
                         <p>Please input your company manager information.</p>
                         <div className={styles.input}>
                             <img src="/userlogin.svg" alt="" className={styles.icon} />
-                            <input type="text" name="mng_name" placeholder="Manager Name*" className={styles.inputsection} />
+                            <input type="text"  {...register('name')} placeholder="Manager Name*" className={styles.inputsection} />
                         </div>
+                        {errors.name &&(
+                                        <p className="mt-2 text-danger">
+                                            {errors.name.message}
+                                        </p>
+                                    )}
                         <div className={styles.input}>
                             <img src="/title.svg" alt="" className={styles.icon} />
-                            <input type="text" name="title" placeholder="Manager Title*" className={styles.inputsection} />
+                            <input type="text"  {...register('title')} placeholder="Manager Title*" className={styles.inputsection} />
                         </div>
+                        {errors.title &&(
+                                        <p className="mt-2 text-danger">
+                                            {errors.title.message}
+                                        </p>
+                                    )}
                         <div className={styles.input}>
                             <img src="/mail.svg" alt="" className={styles.icon} />
-                            <input type="text" name="email" placeholder="Manager Email*" className={styles.inputsection} />
+                            <input type="text" {...register('email')} placeholder="Manager Email*" className={styles.inputsection} />
                         </div>
+                        {errors.email &&(
+                                        <p className="mt-2 text-danger">
+                                            {errors.email.message}
+                                        </p>
+                                    )}
                         <div className={styles.input}>
                             <img src="/phone.svg" alt="" className={styles.icon} />
-                            <input type="text" name="username" placeholder="Manager Phone" className={styles.inputsection} />
+                            <input type="text" {...register('phone')} placeholder="Manager Phone" className={styles.inputsection} />
                         </div>
+                        {errors.phone &&(
+                                        <p className="mt-2 text-danger">
+                                            {errors.phone.message}
+                                        </p>
+                                    )}
                         <div className={styles.input}>
                             <img src="/pass.svg" alt="" className={styles.icon} />
-                            <input type="password" name="password" placeholder="Password*" className={styles.inputsection} />
+                            <input type="password" {...register('password')} placeholder="Password*" className={styles.inputsection} />
                             <img src="/eyeshide.svg" alt="" className={styles.showhide} />
                         </div>
+                        {errors.password &&(
+                                        <p className="mt-2 text-danger">
+                                            {errors.password.message}
+                                        </p>
+                                    )}
                         <div className={styles.input}>
                             <img src="/pass.svg" alt="" className={styles.icon} />
-                            <input type="password" name="confirmpassword" placeholder="Confirm Password*" className={styles.inputsection} />
+                            <input type="password" {...register('password_confirmation')} placeholder="Confirm Password*" className={styles.inputsection} />
                             <img src="/eyeshide.svg" alt="" className={styles.showhide} />
                         </div>
+                        {(errors.password_confirmation)  &&(
+                                        <p className="mt-2 text-danger">
+                                            {errors.password_confirmation.message}
+                                        </p>
+                                    )}
                     </div>
                     <div className='w-75 d-flex justify-content-between pt-5'>
-                        <Button className={styles.createBtn}>CREATE ACCOUNT</Button>
-                        <Button className={styles.cancelbtn}>CANCEL</Button>
+                        <Button className={styles.createBtn} onClick={nextStep}>CREATE ACCOUNT</Button>
+                        <Button className={styles.cancelbtn} onClick={prevStep}>CANCEL</Button>
                     </div>
                     <div className={`${styles.progressbar} mb-3`}>
                         <div className={styles.halfColorEnd}></div>
