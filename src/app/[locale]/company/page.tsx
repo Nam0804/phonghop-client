@@ -1,6 +1,6 @@
 import React from "react";
 import DefaultLayout from "@/layouts/User/DefaultLayout";
-import styles from 'src/css/CompanyList.module.css'
+import styles from 'cssPath/CompanyList.module.css'
 import Table from "@/constants/Table/Table";
 import datas from "./datatable";
 import Button from "@/constants/Form/Button";
@@ -31,9 +31,9 @@ const CompanyList = () => {
                     <h1 className={styles.label}>Company List</h1>
                 </div>
                 <div className={styles.companytable}>
-                    {/*<Table data={datas} columns={columns} actions={actions}>*/}
-                    {/*    */}
-                    {/*</Table>*/}
+                    <Table data={datas} columns={columns} actions={actions}>
+                        
+                    </Table>
                 </div>
                 <div className={styles.addco}>
                     <Button className={styles.addbtn}>ADD NEW COMPANY</Button>

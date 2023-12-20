@@ -2,7 +2,7 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Input from '@/constants/Form/Input';
-import styles from 'src/css/Login.module.css';
+import styles from 'cssPath/Login.module.css';
 import DefaultLoginLayout from '@/layouts/User/DefaultLoginLayout';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
 import Link from 'next/link';
@@ -23,12 +23,10 @@ const LoginPage: React.FC<{}> = () => {
           email: email,
           password: password
         };
-        
-        const headers = {
-          'Accept': 'application/vnd.api+json',
-        };
-        
-        axios.post('http://localhost:8000/api/auth/login', postData, { headers: headers })
+
+        axios.post(process.env.API_URL + 'auth/login', postData, {
+          withCredentials: false,
+        })
           .then(response => {
           
             if(response)
@@ -76,7 +74,7 @@ const LoginPage: React.FC<{}> = () => {
                 </div>
                 <Button type="button" className={styles.loginbtn} onClick={handleLogin}>LOG IN</Button>
                 <div className={styles.account}>
-                    <p>Don't have an account?</p>
+                    <p> Don&apos;t have an account? </p>
                     <Link href="/other-page2"  className={styles.customlink}>
                         Register
                     </Link>
