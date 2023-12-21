@@ -18,17 +18,15 @@ const LoginPage: React.FC<{}> = () => {
     const [passwordVisible, setpasswordVisible] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const handleLogin = () => {
+    const handleLogin = () => {     
       const postData = {
           email: email,
           password: password
         };
-        
-        const headers = {
-          'Accept': 'application/vnd.api+json',
-        };
-        
-        axios.post('http://localhost:8000/api/auth/login', postData, { headers: headers })
+                
+        axios.post(process.env.API_URL + 'auth/login', postData, { 
+          withCredentials: false,
+        })
           .then(response => {
           
             if(response)
@@ -74,7 +72,7 @@ const LoginPage: React.FC<{}> = () => {
                 </div>
                 <Button type="button" className={styles.loginbtn} onClick={handleLogin}>LOG IN</Button>
                 <div className={styles.account}>
-                    <p>Don't have an account?</p>
+                    <p> Don&apos;t have an account? </p>
                     <Link href="/other-page2"  className={styles.customlink}>
                         Register
                     </Link>
