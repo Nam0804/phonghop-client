@@ -39,7 +39,7 @@
     opacity: 0.6;
     justify-content: center;
     padding-left: 20%;
-    margin-bottom: 4px;
+    margin-bottom: 24px;
 }
 
 .inputsection::placeholder {
@@ -201,5 +201,7 @@
     line-height: 15px;
     letter-spacing: 0em;
     text-align: left;
+    margin-top: -5%;
+    margin-bottom: 0 !important;
     color: #CC2936
 }
