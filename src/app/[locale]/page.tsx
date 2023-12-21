@@ -12,7 +12,7 @@ export default function Index() {
   const handleClick = () => {
     setDemo(!getDemo);
   }
-
+  
   return (
     <DefaultLayout>
         <h1>Xin chào tôi là An</h1>
