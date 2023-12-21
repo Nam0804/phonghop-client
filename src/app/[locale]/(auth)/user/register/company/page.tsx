@@ -44,6 +44,7 @@ export default function RegisterNewCompany() {
     type FieldName = keyof Inputs;
     const nextStep = async() => {
         const fields = steps[currentStep].fields;
+        console.log(fields);
         const output = await trigger(fields as FieldName[], { shouldFocus: true });
         if(!output) return;
 
@@ -61,7 +62,7 @@ export default function RegisterNewCompany() {
             setCurrentStep(1);
         }
     }
-    
+    console.log(errors);
     return (
         <DefaultLoginLayout>
             <form className={`${styles.content} w-75`} onSubmit={handleSubmit(processForm)}>
@@ -69,13 +70,13 @@ export default function RegisterNewCompany() {
                     <>
                         
                             <h3>Register New Account</h3>
-                            <p>Please input your information</p>
+                            <p className={styles.subContent}>Please input your information</p>
                             <div className={styles.input}>
                                 <img src="/company.svg" alt="" className={styles.icon} />
                                 <input type="text" placeholder="Company Name*" {...register('company_name')} className={styles.inputsection} />  
                             </div>
                             {errors.company_name &&(
-                                        <p className="mt-2 text-danger">
+                                        <p className={styles.errorMessage}>
                                             {errors.company_name.message}
                                         </p>
                                     )}
@@ -84,7 +85,7 @@ export default function RegisterNewCompany() {
                                 <input type="text"  {...register('company_domain')}  placeholder="Company Domain*" className={styles.inputsection} />
                             </div>
                             {errors.company_domain &&(
-                                        <p className="mt-2 text-danger">
+                                        <p className={styles.errorMessage}>
                                             {errors.company_domain.message}
                                         </p>
                                     )}
@@ -93,7 +94,7 @@ export default function RegisterNewCompany() {
                                 <input type="text" {...register('company_address')} placeholder="Company Address*" className={styles.inputsection} />
                             </div>
                             {errors.company_address &&(
-                                        <p className="mt-2 text-danger">
+                                        <p className={styles.errorMessage}>
                                             {errors.company_address.message}
                                         </p>
                                     )}
@@ -102,12 +103,13 @@ export default function RegisterNewCompany() {
                                 <input type="text" {...register('company_taxcode')} placeholder="Tax Code" className={styles.inputsection} />
                             </div>
                             {errors.company_taxcode &&(
-                                        <p className="mt-2 text-danger">
+                                        <p className={styles.errorMessage}>
                                             {errors.company_taxcode.message}
                                         </p>
                                     )}
-                            <div className='w-100 text-end pt-5'>
-                                <Button className={`${styles.nextBtn}`} onClick={nextStep}>NEXT</Button>
+                            <div className={`text-end pt-5 ${styles.w90}`}>
+                                {/* <Button className={`${styles.nextBtn}`} onClick={nextStep}>NEXT</Button> */}
+                                <button className={`${styles.nextBtn}`} onClick={nextStep}>Next</button>
                             </div>
                        
 
@@ -122,13 +124,13 @@ export default function RegisterNewCompany() {
                 <>
                     <div className={styles.content}>
                         <h3>Register Company Account</h3>
-                        <p>Please input your company manager information.</p>
+                        <p className={styles.subContent}>Please input your company manager information.</p>
                         <div className={styles.input}>
                             <img src="/userlogin.svg" alt="" className={styles.icon} />
                             <input type="text"  {...register('name')} placeholder="Manager Name*" className={styles.inputsection} />
                         </div>
                         {errors.name &&(
-                                        <p className="mt-2 text-danger">
+                                        <p className={styles.errorMessage}>
                                             {errors.name.message}
                                         </p>
                                     )}
@@ -137,7 +139,7 @@ export default function RegisterNewCompany() {
                             <input type="text"  {...register('title')} placeholder="Manager Title*" className={styles.inputsection} />
                         </div>
                         {errors.title &&(
-                                        <p className="mt-2 text-danger">
+                                        <p className={styles.errorMessage}>
                                             {errors.title.message}
                                         </p>
                                     )}
@@ -146,7 +148,7 @@ export default function RegisterNewCompany() {
                             <input type="text" {...register('email')} placeholder="Manager Email*" className={styles.inputsection} />
                         </div>
                         {errors.email &&(
-                                        <p className="mt-2 text-danger">
+                                        <p className={styles.errorMessage}>
                                             {errors.email.message}
                                         </p>
                                     )}
@@ -155,7 +157,7 @@ export default function RegisterNewCompany() {
                             <input type="text" {...register('phone')} placeholder="Manager Phone" className={styles.inputsection} />
                         </div>
                         {errors.phone &&(
-                                        <p className="mt-2 text-danger">
+                                        <p className={styles.errorMessage}>
                                             {errors.phone.message}
                                         </p>
                                     )}
@@ -165,7 +167,7 @@ export default function RegisterNewCompany() {
                             <img src="/eyeshide.svg" alt="" className={styles.showhide} />
                         </div>
                         {errors.password &&(
-                                        <p className="mt-2 text-danger">
+                                        <p className={styles.errorMessage}>
                                             {errors.password.message}
                                         </p>
                                     )}
@@ -175,12 +177,12 @@ export default function RegisterNewCompany() {
                             <img src="/eyeshide.svg" alt="" className={styles.showhide} />
                         </div>
                         {(errors.password_confirmation)  &&(
-                                        <p className="mt-2 text-danger">
+                                        <p className={styles.errorMessage}>
                                             {errors.password_confirmation.message}
                                         </p>
                                     )}
                     </div>
-                    <div className='w-75 d-flex justify-content-between pt-5'>
+                    <div className=' d-flex justify-content-between pt-5'>
                         <Button className={styles.createBtn} onClick={nextStep}>CREATE ACCOUNT</Button>
                         <Button className={styles.cancelbtn} onClick={prevStep}>CANCEL</Button>
                     </div>
