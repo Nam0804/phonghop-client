@@ -3,7 +3,7 @@ import { Modal} from 'antd';
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/DeleteUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-const DeleteUser = () => {
+const DeleteUser = ({user_id}:any) => {
     const [visible, setVisible] = useState(false);
 
     const showPopup = () => {
@@ -14,9 +14,29 @@ const DeleteUser = () => {
         setVisible(false);
     };
 
-    const confirmDeleteAction = (user_id:any) => {
-        console.log('Success:', user_id);
-        setVisible(false);
+    const confirmDeleteAction = () => {
+        const apiUrl = `http://127.0.0.1:8000/delete-users`;
+
+        // Make a DELETE request to the API
+        fetch(apiUrl, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('User deleted successfully.');
+                } else {
+                    console.error('Error deleting user:', response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                setVisible(false);
+            });
     };
 
     return (
@@ -35,7 +55,7 @@ const DeleteUser = () => {
             >
                 <div className={styles.buttonContainer}>
                     <div>
-                        <Button className={styles.buttonDelete} onClick={confirmDeleteAction} label='DELETE' />
+                        <Button className={styles.buttonDelete} onClick={() => confirmDeleteAction()} label='DELETE' />
                     </div>
                     <div>
                         <Button className={styles.buttonCancel} htmltype="submit" onClick={handleCancel} label='CANCEL'  />
