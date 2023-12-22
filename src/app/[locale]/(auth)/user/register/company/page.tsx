@@ -15,6 +15,8 @@ import { FormDataSchema } from '@/lib/schema';
 import { useForm, SubmitHandler, Field, FieldName } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Modal from "@/constants/Modal/ViewModal";
+
 
 const steps = [
     {},
@@ -25,12 +27,18 @@ const steps = [
 type Inputs = z.infer<typeof FormDataSchema>;
 
 export default function RegisterNewCompany() {
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
     const [isPasswordVisible, setPasswordVisibility] = useState(false);
     const [isRePasswordVisible, setRePasswordVisibility] = useState(false);
 
 
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
     const togglePasswordVisibility = () => {
         setPasswordVisibility(!isPasswordVisible);
     };
@@ -42,12 +50,13 @@ export default function RegisterNewCompany() {
     });
 
 
+
     const processForm: SubmitHandler<Inputs> = data => {
         clearErrors();
         axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
             console.log(response);
             if (response?.status == 200) {
-                setCurrentStep(3);
+                setIsModalOpen(true);
             }
         })
     }
@@ -61,11 +70,11 @@ export default function RegisterNewCompany() {
             const output = await trigger(fields as FieldName[], { shouldFocus: true });
             if (!output) {
                 return;
-            }            
-            else{
+            }
+            else {
                 clearErrors();
                 setCurrentStep(2);
-            } 
+            }
         }
 
         if (currentStep == 2) {
@@ -73,9 +82,10 @@ export default function RegisterNewCompany() {
             const output = await trigger(fields as FieldName[], { shouldFocus: true });
             if (!output) {
                 return;
-            } 
+            }
             else {
-                await handleSubmit(processForm)()};
+                await handleSubmit(processForm)()
+            };
         }
     }
 
@@ -184,9 +194,9 @@ export default function RegisterNewCompany() {
                             <div className={styles.input}>
                                 <img src="/pass.svg" alt="" className={styles.icon} />
                                 <input type={isPasswordVisible ? 'text' : 'password'} {...register('password')} placeholder="Password*" className={styles.inputsection} />
-                                <div className={styles.showhide}  onClick={togglePasswordVisibility}>
+                                <div className={styles.showhide} onClick={togglePasswordVisibility}>
                                     {isPasswordVisible ? <img src="/eyeshow.svg" alt="" className={styles.showhide} /> : <img src="/eyeshide.svg" alt="" className={styles.showhide} />}
-                                </div> 
+                                </div>
                             </div>
                             {errors.password && (
                                 <p className={styles.errorMessage}>
@@ -196,9 +206,9 @@ export default function RegisterNewCompany() {
                             <div className={styles.input}>
                                 <img src="/pass.svg" alt="" className={styles.icon} />
                                 <input type={isRePasswordVisible ? 'text' : 'password'} {...register('password_confirmation')} placeholder="Confirm Password*" className={styles.inputsection} />
-                                <div className={styles.showhide}  onClick={toggleRePasswordVisibility}>
+                                <div className={styles.showhide} onClick={toggleRePasswordVisibility}>
                                     {isRePasswordVisible ? <img src="/eyeshow.svg" alt="" className={styles.showhide} /> : <img src="/eyeshide.svg" alt="" className={styles.showhide} />}
-                                </div> 
+                                </div>
                             </div>
                             {(errors.password_confirmation) && (
                                 <p className={styles.errorMessage}>
@@ -217,17 +227,21 @@ export default function RegisterNewCompany() {
                     </>
                 )}
             </form>
-            {currentStep == 3 && (
-                <div className={styles.content}>
-                    <h3>Register Company Account</h3>
-                    <p className={styles.subContent}>Please check your email to verify your account.</p>
-                    <div className=' d-flex justify-content-between pt-5'>
-                        <Link href='/'>
-                            <Button className={styles.createBtn}>BACK TO HOME</Button>
-                        </Link>
-                    </div>
-                </div>
-            )}
+            {isModalOpen && (
+                <Modal title="Register Successfully!" onClose={closeModal} >
+                    {
+                        <>
+                            <div>
+                                <p>Your account is successfully registered.</p>
+                                <p>Kindly check your email for confirmation letter!</p>
+                            </div>
+                            <div className={styles.btngroup}>
+                                <Button className={styles.passbtn}>CHANGE PASSWORD</Button>
+                                <Button color="#FFF" className={styles.closebtn} onClick={closeModal}>CLOSE</Button>
+                            </div>
+                        </>
+                    }
+                </Modal>)}
 
         </DefaultLoginLayout>
     );
