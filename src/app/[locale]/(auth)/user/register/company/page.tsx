@@ -46,6 +46,9 @@ export default function RegisterNewCompany() {
         console.log(data);
         axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
             console.log(response);
+            if (response?.status == 200) {
+                setCurrentStep(3);
+            }
         })
         reset()
     }
@@ -72,7 +75,9 @@ export default function RegisterNewCompany() {
             if (!output) {
                 return;
             } 
-            else await handleSubmit(processForm)();
+            else {
+                clearErrors();
+                await handleSubmit(processForm)()};
         }
     }
 
@@ -86,7 +91,6 @@ export default function RegisterNewCompany() {
             <form className={`${styles.content} w-75`} onSubmit={handleSubmit(processForm)}>
                 {currentStep == 1 && (
                     <>
-
                         <h3>Register New Account</h3>
                         <p className={styles.subContent}>Please input your information</p>
                         <div className={styles.input}>
@@ -215,6 +219,17 @@ export default function RegisterNewCompany() {
                     </>
                 )}
             </form>
+            {currentStep == 3 && (
+                <div className={styles.content}>
+                    <h3>Register Company Account</h3>
+                    <p className={styles.subContent}>Please check your email to verify your account.</p>
+                    <div className=' d-flex justify-content-between pt-5'>
+                        <Link href='/'>
+                            <Button className={styles.createBtn}>BACK TO HOME</Button>
+                        </Link>
+                    </div>
+                </div>
+            )}
 
         </DefaultLoginLayout>
     );
