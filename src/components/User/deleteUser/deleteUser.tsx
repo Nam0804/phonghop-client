@@ -48,7 +48,7 @@ const DeleteUser = ({user_id}:any) => {
                         Are you sure to delete this staff?
                     </div>
                 }
-                visible={visible}
+                open={visible}
                 footer={null}
                 closable={false}
                 width={626}
