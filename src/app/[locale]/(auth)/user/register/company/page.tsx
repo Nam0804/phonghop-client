@@ -6,17 +6,16 @@ import styles from '@/css/CompanyRegister.module.css';
 import DefaultLoginLayout from '@/layouts/User/DefaultLoginLayout';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Button from '@/constants/Form/Button';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { FormDataSchema } from '@/lib/schema';
 import { useForm, SubmitHandler, Field, FieldName } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Modal from "@/constants/Modal/ViewModal";
-
 
 const steps = [
     {},
@@ -31,6 +30,7 @@ export default function RegisterNewCompany() {
     const [currentStep, setCurrentStep] = useState(1);
     const [isPasswordVisible, setPasswordVisibility] = useState(false);
     const [isRePasswordVisible, setRePasswordVisibility] = useState(false);
+    const [apiData, setApiData] = useState(null);
 
 
     const openModal = () => {
@@ -45,7 +45,7 @@ export default function RegisterNewCompany() {
     const toggleRePasswordVisibility = () => {
         setRePasswordVisibility(!isRePasswordVisible);
     };
-    const { register, handleSubmit, watch, reset, trigger, clearErrors, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, watch, reset, trigger, clearErrors, setError, formState: { errors } } = useForm<Inputs>({
         resolver: zodResolver(FormDataSchema)
     });
 
@@ -53,14 +53,33 @@ export default function RegisterNewCompany() {
 
     const processForm: SubmitHandler<Inputs> = data => {
         clearErrors();
-        axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
-            console.log(response);
-            if (response?.status == 200) {
-                setIsModalOpen(true);
-            }
-        })
-    }
+        try {
+            axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
+                console.log(response);
+                if (response?.status == 422) {
+                    const errorResponse = response?.data?.errors;
+                    Object.keys(errorResponse).forEach((key) => {
+                        setError(key as FieldName, {
+                            type: 'manual',
+                            message: errorResponse[key][0]
+                        })
+                    })
+                    console.log(errors);
+                }
+                if (response?.status == 200) {
+                    setIsModalOpen(true);
+                }
+            })
+        } catch (error) {
+            const err = error as AxiosError;
+            const response_err = err.response;
+            console.log(response_err);
+            return response_err;
+        }
 
+
+
+    }
     // Next and Prev Step
     type FieldName = keyof Inputs;
     const nextStep = async () => {
@@ -138,7 +157,6 @@ export default function RegisterNewCompany() {
                             </p>
                         )}
                         <div className={`text-end pt-5 ${styles.w90}`}>
-                            {/* <Button className={`${styles.nextBtn}`} onClick={nextStep}>NEXT</Button> */}
                             <button className={`${styles.nextBtn}`} onClick={nextStep}>Next</button>
                         </div>
 
@@ -231,14 +249,16 @@ export default function RegisterNewCompany() {
                 <Modal title="Register Successfully!" onClose={closeModal} >
                     {
                         <>
-                            <div>
-                                <p>Your account is successfully registered.</p>
-                                <p>Kindly check your email for confirmation letter!</p>
+                            <div className='text-center'>
+                                <p className={styles.popupInfo}>Your account is successfully registered.</p>
+                                <p className={styles.popupInfo}>Kindly check your email for confirmation letter!</p>
                             </div>
-                            <div className={styles.btngroup}>
-                                <Button className={styles.passbtn}>CHANGE PASSWORD</Button>
-                                <Button color="#FFF" className={styles.closebtn} onClick={closeModal}>CLOSE</Button>
+                            <div className='d-flex justify-content-center mt-4'>
+                                <Link href="/login" >
+                                    <button className={`${styles.loginbtn}`}>LOGIN</button>
+                                </Link>
                             </div>
+
                         </>
                     }
                 </Modal>)}

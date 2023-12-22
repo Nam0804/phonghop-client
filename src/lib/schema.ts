@@ -4,7 +4,7 @@ export const FormDataSchema = z.object({
     company_name: z.string().min(1).max(50),
     company_domain: z.string().min(1).max(50),
     company_address: z.string().min(1).max(200),
-    company_taxcode: z.string().min(1).max(50),
+    company_taxcode: z.string().max(50),
     name: z.string().min(1).max(50),
     email: z.string().email(),
     title: z.string().min(1).max(50),
