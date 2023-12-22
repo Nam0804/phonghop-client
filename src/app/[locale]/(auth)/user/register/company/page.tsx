@@ -43,14 +43,13 @@ export default function RegisterNewCompany() {
 
 
     const processForm: SubmitHandler<Inputs> = data => {
-        console.log(data);
+        clearErrors();
         axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
             console.log(response);
             if (response?.status == 200) {
                 setCurrentStep(3);
             }
         })
-        reset()
     }
 
     // Next and Prev Step
@@ -76,7 +75,6 @@ export default function RegisterNewCompany() {
                 return;
             } 
             else {
-                clearErrors();
                 await handleSubmit(processForm)()};
         }
     }
