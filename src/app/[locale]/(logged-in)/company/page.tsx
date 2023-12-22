@@ -1,5 +1,4 @@
 import React from "react";
-import DefaultLayout from "@/layouts/User/DefaultLayout";
 import styles from '@/css/CompanyList.module.css'
 import Table from "@/constants/Table/Table";
 import datas from "./datatable";

@@ -32,7 +32,7 @@ const LoginPage: React.FC<{}> = () => {
         if (response) {
           console.log(response.data.data.token);
           Cookies.set('token', response.data.data.token);
-          router.push('/');
+          router.push('/company');
         } else {
           console.error('Token not found')
         }
