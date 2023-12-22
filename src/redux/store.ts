@@ -1,11 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, createAction } from '@reduxjs/toolkit';
 import counterReducer from '../features/login/loginSlice';
 
 const store = configureStore({
   reducer: {
     counter: counterReducer,
-    // Nếu có nhiều slice khác, bạn có thể thêm chúng ở đây
   },
 });
+
+const addTodo = createAction('INCREMENT')
+addTodo({ val: 5 })
 
 export default store;
