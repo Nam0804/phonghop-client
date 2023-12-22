@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Modal, Form} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Modal, Form, message} from 'antd';
 import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/AddUser.module.css';
@@ -8,7 +8,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const AddUser = () => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
+    const [users, setUsers] = useState([]);
+    const baseUrl = 'http://127.0.0.1:8000/api';
 
+    useEffect(() => {
+        fetch("http://127.0.0.1:8000/api/store-user")
+            .then(response => response.json())
+            .then(json => setUsers(json))
+    }, [])
     const showPopup = () => {
         setVisible(true);
     };
@@ -19,11 +26,28 @@ const AddUser = () => {
     };
 
     function handleSubmit() {
-        form
-            .validateFields()
-            .then(() => {
-                form.resetFields();
-                setVisible(false);
+        form.validateFields()
+            .then(async (values) => {
+                try {
+                    const response = await fetch(baseUrl + "/users", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(values),
+                    });
+
+                    if (response.ok) {
+                        message.success('User created successfully');
+                        form.resetFields();
+                        setVisible(false);
+                    } else {
+                        message.error('Failed to create user');
+                    }
+                } catch (e) {
+                    console.error('Error creating user:', e);
+                    message.error('Failed to create user');
+                }
             })
             .catch((errorInfo) => {
                 console.log(errorInfo);
