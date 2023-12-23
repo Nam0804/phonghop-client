@@ -1,7 +1,7 @@
 'use client'
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import styles from './DefaultLoginLayout.module.css';
+import styles from '@/css/DefaultLoginLayout.module.css';
 
 
 
