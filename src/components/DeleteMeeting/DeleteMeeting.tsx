@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {Form, Modal} from 'antd';
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/DeleteMeeting.module.css';
+import {fetch} from "undici-types";
+import method from "async-validator/dist-types/validator/method";
 
 const DeleteMeeting = () => {
     const [visible, setVisible] = useState(false);
@@ -17,14 +19,22 @@ const DeleteMeeting = () => {
     };
 
     const confirmDeleteAction = (availability: any) => {
-        if (availability == 0){
+        if (availability == 0) {
             setErrorMessage('This room is under booking, cannot be deleted!');
-        }else {
-            setVisible(false);
+        } else {
+            const BearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
+            fetch('http://localhost:8080/api/delete-meeting-room', {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    'Accept': 'application/json',
+                    'Authentications': 'Bearer ' + BearerToken
+                },
+            })
+                .then(response => response.json())
+                .catch(errorMessage => console.log(errorMessage));
         }
-
     };
-
     return (
         <>
             <button onClick={showPopup}>Delete User</button>
