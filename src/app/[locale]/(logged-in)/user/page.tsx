@@ -12,8 +12,6 @@ export default function Index() {
     }
 
     return (
-        <DefaultLayout>
-            <AddUser/>
-        </DefaultLayout>
+        <AddUser/>
     );
 }

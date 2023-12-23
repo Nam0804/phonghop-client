@@ -4,18 +4,13 @@ import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/AddUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios";
 
 const AddUser = () => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [users, setUsers] = useState([]);
-    const baseUrl = 'http://127.0.0.1:8000/api';
 
-    useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/store-user")
-            .then(response => response.json())
-            .then(json => setUsers(json))
-    }, [])
     const showPopup = () => {
         setVisible(true);
     };
@@ -29,13 +24,19 @@ const AddUser = () => {
         form.validateFields()
             .then(async (values) => {
                 try {
-                    const response = await fetch(baseUrl + "/users", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(values),
-                    });
+                    const password = Math.random().toString(36);
+                    values = {
+                        password: password,
+                        company_id: 1,
+                        type: 1
+                    }
+                    const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
+
+                    const response = await axios.post("http://127.0.0.1:8000/api/store-user",
+                        values
+                        , {
+                            headers: {Authorization: 'Bearer ' + bearerToken}
+                        });
 
                     if (response.ok) {
                         message.success('User created successfully');
@@ -74,7 +75,7 @@ const AddUser = () => {
                 >
                     <div className={styles.formControl}>
                         <Form.Item
-                            label={<span className={styles.label}>Name*</span> }
+                            label={<span className={styles.label}>Name*</span>}
                             name="name"
                             rules={[
                                 {
@@ -86,7 +87,7 @@ const AddUser = () => {
                                     ),
                                 },
                             ]}
-                            style={{ width: '100%' }}
+                            style={{width: '100%'}}
                         >
                             <Input className={styles.Input}/>
                         </Form.Item>
@@ -94,9 +95,9 @@ const AddUser = () => {
                     </div>
                     <div className={styles.formControl}>
                         <Form.Item
-                            label={<span className={styles.label}>Title</span> }
-                            name="role"
-                            style={{ width: '100%' }}
+                            label={<span className={styles.label}>Title</span>}
+                            name="title"
+                            style={{width: '100%'}}
                         >
                             <Input className={styles.Input}/>
                         </Form.Item>
@@ -104,19 +105,19 @@ const AddUser = () => {
                     </div>
                     <div className={styles.formControl}>
                         <Form.Item
-                            label={<span className={styles.label}>Email*</span> }
+                            label={<span className={styles.label}>Email*</span>}
                             name="email"
-                                rules={[
-                                        {
-                                            required: true,
-                                            message: (
-                                                <span className={styles.errorMessage}>
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        <span className={styles.errorMessage}>
                                             This field is required!
                                         </span>
-                                            ),
-                                        },
+                                    ),
+                                },
                             ]}
-                            style={{ width: '100%' }}
+                            style={{width: '100%'}}
                         >
                             <Input className={styles.Input}/>
                         </Form.Item>
@@ -124,9 +125,9 @@ const AddUser = () => {
                     </div>
                     <div className={styles.formControl}>
                         <Form.Item
-                            label={<span className={styles.label}>Phone Number</span> }
+                            label={<span className={styles.label}>Phone Number</span>}
                             name="phone"
-                            style={{ width: '100%' }}
+                            style={{width: '100%'}}
                         >
                             <Input className={styles.Input}/>
                         </Form.Item>
