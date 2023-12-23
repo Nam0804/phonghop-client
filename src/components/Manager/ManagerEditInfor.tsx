@@ -20,7 +20,6 @@ const ManagerEditInfor = (user:any) => {
         setVisible(false);
     };
     const handleEdit = () => {
-        onSave(updatedInfor);
         form.resetFields();
     };
     return (
