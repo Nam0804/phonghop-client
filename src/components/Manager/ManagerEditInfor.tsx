@@ -3,6 +3,8 @@ import React, {useState, useEffect} from "react";
 import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import styles from "@/css/ManagerEditInfor.module.css"
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const ManagerEditInfor = (user:any) => {
     const [form] = Form.useForm();
@@ -41,8 +43,8 @@ const ManagerEditInfor = (user:any) => {
                 >
                     <div className={styles.formControl}>
                         <Form.Item
-                            label={<span className={styles.label}>Company</span>}
-                            name="Company-name"
+                            label={<span className={styles.label}>Manager Name*</span>}
+                            name="manager-name"
                         >
                             <Input
                                 className={styles.Input}
@@ -51,7 +53,10 @@ const ManagerEditInfor = (user:any) => {
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>
-                        <Form.Item label="Manager-name">
+                        <Form.Item
+                            label={<span className={styles.label}>Manager Title*</span>}
+                            name="manager-title"
+                        >
                             <Input
                                 className={styles.Input}
                                 value={updatedInfor.managerName}
@@ -60,7 +65,8 @@ const ManagerEditInfor = (user:any) => {
                     </div>
                     <div className={styles.formControl}>
                         <Form.Item
-                            label="Title"
+                            label={<span className={styles.label}>Company*</span>}
+                            name="company"
                             rules={[
                                 {min: 6},
                                 {max: 100}
@@ -75,7 +81,10 @@ const ManagerEditInfor = (user:any) => {
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>
-                        <Form.Item label="Email">
+                        <Form.Item
+                            label={<span className={styles.label}>Email Address*</span>}
+                            name="email"
+                        >
                             <Input
                                 className={styles.Input}
                                 value={updatedInfor.email}
@@ -84,7 +93,8 @@ const ManagerEditInfor = (user:any) => {
                     </div>
                     <div className={styles.formControl}>
                         <Form.Item
-                            label="Phone"
+                            label={<span className={styles.label}>Phone Number*</span>}
+                            name="phone"
                             rules={[
                                 {min: 10, message: 'Please input a valid phone number'},
                                 {max: 20, message: 'Please input a valid phone number'}
