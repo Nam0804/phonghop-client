@@ -22,17 +22,28 @@ const DeleteMeeting = () => {
         if (availability == 0) {
             setErrorMessage('This room is under booking, cannot be deleted!');
         } else {
-            const BearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-            fetch('http://localhost:8080/api/delete-meeting-room', {
+            const apiUrl = 'http://127.0.0.1:8000/api/delete-meeting-room';
+            const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
+            fetch(apiUrl, {
                 method: 'DELETE',
                 headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                    'Accept': 'application/json',
-                    'Authentications': 'Bearer ' + BearerToken
+                    'Content-Type': 'application/json',
+                    'Authentication': 'Bearer' + bearerToken
                 },
             })
-                .then(response => response.json())
-                .catch(errorMessage => console.log(errorMessage));
+                .then(response => {
+                    if (response.ok) {
+                        console.log('User deleted successfully.');
+                    } else {
+                        console.error('Error deleting user:', response.status);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    setVisible(false);
+                });
         }
     };
     return (
