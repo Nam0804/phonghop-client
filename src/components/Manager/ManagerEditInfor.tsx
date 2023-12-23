@@ -1,8 +1,8 @@
 import {Form, Modal} from "antd";
 import React, {useState, useEffect} from "react";
 import Input from "@/constants/Form/Input";
-import styles from "*.module.css";
 import Button from "@/constants/Form/Button";
+import styles from "@/css/ManagerEditInfor.module.css"
 
 const ManagerEditInfor = (user:any) => {
     const [form] = Form.useForm();
