@@ -16,12 +16,13 @@ const DeleteUser = ({user_id}:any) => {
 
     const confirmDeleteAction = () => {
         const apiUrl = `http://127.0.0.1:8000/delete-users`;
-
+        const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
         // Make a DELETE request to the API
         fetch(apiUrl, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Authentication': 'Bearer' + bearerToken
             },
         })
             .then(response => {
