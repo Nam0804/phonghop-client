@@ -1,5 +1,4 @@
 'use client'
-import DefaultLayout from "@/layouts/User/DefaultLayout";
 import styles from '@/css/CompanyList.module.css'
 import {Table, Tag } from 'antd';
 import Button from "@/constants/Form/Button";
@@ -152,7 +151,6 @@ const CompanyList = () => {
         },
       ];
     return(
-        <DefaultLayout>
             <div className={styles.container}>
                 <div className={styles.labelsection}>
                     <div className={styles.square}>
@@ -194,7 +192,6 @@ const CompanyList = () => {
                     <Button className={styles.addbtn}>ADD NEW ROOM</Button>
                 </div>
             </div>
-        </DefaultLayout>
     );
 }
 export default CompanyList
