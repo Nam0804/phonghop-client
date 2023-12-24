@@ -27,9 +27,9 @@ const DeleteUser = ({user_id}:any) => {
         })
             .then(response => {
                 if (response.status === 204) {
-                    console.log('Room deleted successfully.');
+                    console.log('User deleted successfully.');
                 } else {
-                    console.error('Error deleting room:', response.status);
+                    console.error('Error deleting user:', response.status);
                 }
             })
             .catch(error => {
