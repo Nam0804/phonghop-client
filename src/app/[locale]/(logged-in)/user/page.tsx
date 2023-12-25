@@ -1,5 +1,5 @@
 'use client'
-import DefaultLayout from '@/layouts/User/DefaultLayout';
+import DeleteUser from "@/components/User/deleteUser/deleteUser";
 import { useState } from 'react';
 import AddUser from "@/components/User/addUser/addUser";
 
@@ -12,6 +12,9 @@ export default function Index() {
     }
 
     return (
-        <AddUser/>
+        <>
+            <DeleteUser user_id={7} />
+            <AddUser />
+        </>
     );
 }
