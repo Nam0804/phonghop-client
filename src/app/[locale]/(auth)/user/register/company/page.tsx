@@ -23,6 +23,12 @@ const steps = [
     { id: 2, title: 'Manager Information', fields: ['mng_name', 'mng_title', 'mng_email', 'mng_phone', 'password', 'confirmation_password'] },
 ]
 
+interface ErrorResponse {
+    data?: {
+        errors?: Record<string, string[]>;
+    };
+  }
+
 type Inputs = z.infer<typeof FormDataSchema>;
 
 export default function RegisterNewCompany() {
@@ -53,30 +59,41 @@ export default function RegisterNewCompany() {
 
     const processForm: SubmitHandler<Inputs> = data => {
         clearErrors();
-        try {
-            axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
-                console.log(response);
-                if (response?.status == 422) {
-                    const errorResponse = response?.data?.errors;
-                    Object.keys(errorResponse).forEach((key) => {
-                        setError(key as FieldName, {
-                            type: 'manual',
-                            message: errorResponse[key][0]
-                        })
+        axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
+        
+            if (response?.data?.errors) {
+                const errorResponse = response?.data?.errors;
+                Object.keys(errorResponse).forEach((key) => {
+                    setError(key as FieldName, {
+                        type: 'manual',
+                        message: errorResponse[key][0]
                     })
-                    console.log(errors);
-                }
-                if (response?.status == 200) {
-                    setIsModalOpen(true);
-                }
-            })
-        } catch (error) {
-            const err = error as AxiosError;
-            const response_err = err.response;
-            console.log(response_err);
-            return response_err;
-        }
-
+                })
+                console.log(errors);
+            }
+            if (response?.status == 200) {
+                setIsModalOpen(true);
+            }
+        })
+        .catch((error: AxiosError) => {
+            console.error('Error in API request:', error);
+        
+            if (error.response?.status === 422) {
+              const errorResponse = error.response?.data?.errors;
+        
+              if (errorResponse) {
+                Object.keys(errorResponse).forEach((key) => {
+                  setError(key as FieldName, {
+                    type: 'manual',
+                    message: errorResponse[key][0]
+                  });
+                });
+              }
+            }
+        
+            console.log(errors);
+            return error;
+          });
 
 
     }
