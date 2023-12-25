@@ -1,35 +1,58 @@
-import {Form, Modal} from "antd";
+import {Form, message, Modal} from "antd";
 import React, {useState, useEffect} from "react";
 import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import styles from "@/css/ManagerEditInfor.module.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios";
 
 
-const ManagerEditInfor = (user:any) => {
+const ManagerEditInfor = ({user}: any) => {
     const [form] = Form.useForm();
-    const [updatedInfor, setUpdatedInfor] = useState({...user});
+    const [formData, setFormData] = useState({...user});
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        // Update the form fields when the user prop changes
-        form.setFieldsValue(updatedInfor);
-    }, [user]);
+        form.setFieldsValue({
+            'manager-name': user.managerName,
+            'company': user.company,
+            'manager-title': user.title,
+            'email': user.email,
+            'phone': user.phone,
+        });
+    }, [form, user]);
     const showPopup = () => {
         setVisible(true);
     }
     const handleCancel = () => {
         setVisible(false);
     };
-    const handleEdit = () => {
-        form.validateFields()
-            .then(response => {
-                const apiUrl = process.env.API_URL + 'update-user';
-                const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-                response = {
-
+    const handleEdit = async () => {
+        try {
+            const apiUrl = process.env.API_URL + 'update-user';
+            const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
+            const values = await form.validateFields();
+            const response = await axios.put(
+                apiUrl,
+                values,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + bearerToken,
+                    },
                 }
-            })
+            );
+
+            if (response.status === 200) {
+                message.success('Update user successfully');
+                setVisible(false);
+            } else {
+                message.error('Failed to update user');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            message.error('Failed to update user');
+        }
     };
     return (
         <>
@@ -53,27 +76,21 @@ const ManagerEditInfor = (user:any) => {
                             label={<span className={styles.label}>Manager Name*</span>}
                             name="manager-name"
                         >
-                            <Input
-                                className={styles.Input}
-                                value={updatedInfor.Company}
-                            />
-                        </Form.Item>
-                    </div>
-                    <div className={styles.formControl}>
-                        <Form.Item
-                            label={<span className={styles.label}>Manager Title*</span>}
-                            name="manager-title"
-                        >
-                            <Input
-                                className={styles.Input}
-                                value={updatedInfor.managerName}
-                            />
+                            <p className={styles.formFields}>{user.managerName}</p>
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>
                         <Form.Item
                             label={<span className={styles.label}>Company*</span>}
                             name="company"
+                        >
+                            <p className={styles.formFields}>{user.company}</p>
+                        </Form.Item>
+                    </div>
+                    <div className={styles.formControl}>
+                        <Form.Item
+                            label={<span className={styles.label}>Manager Title*</span>}
+                            name="manager-title"
                             rules={[
                                 {min: 6},
                                 {max: 100}
@@ -82,8 +99,8 @@ const ManagerEditInfor = (user:any) => {
                             <Input
                                 className={styles.Input}
                                 type="text"
-                                value={updatedInfor.title}
-                                onChange={(e: any) => setUpdatedInfor({...updatedInfor, title: e.target.value})}
+                                value={formData.title}
+                                onChange={(e: any) => setFormData({...formData, title: e.target.value})}
                             />
                         </Form.Item>
                     </div>
@@ -92,10 +109,7 @@ const ManagerEditInfor = (user:any) => {
                             label={<span className={styles.label}>Email Address*</span>}
                             name="email"
                         >
-                            <Input
-                                className={styles.Input}
-                                value={updatedInfor.email}
-                            />
+                            <p className={styles.formFields}>{user.email}</p>
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>
@@ -110,15 +124,15 @@ const ManagerEditInfor = (user:any) => {
                             <Input
                                 className={styles.Input}
                                 type="number"
-                                value={updatedInfor.phoneNumbers}
-                                onChange={(e: any) => setUpdatedInfor({...updatedInfor, phoneNumbers: e.target.value})}
+                                value={formData.phone}
+                                onChange={(e: any) => setFormData({...formData, phone: e.target.value})}
                             />
                         </Form.Item>
                     </div>
                     <Form.Item>
                         <div className={styles.buttonContainer}>
                             <div>
-                                <Button className={styles.buttonEdit} htmlType="submit" onClick={handleEdit()}
+                                <Button className={styles.buttonEdit} htmlType="submit" onClick={handleEdit}
                                         label='SAVE'/>
                             </div>
                             <div>
