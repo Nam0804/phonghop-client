@@ -27,7 +27,7 @@ interface ErrorResponse {
     data?: {
         errors?: Record<string, string[]>;
     };
-  }
+}
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
@@ -60,7 +60,7 @@ export default function RegisterNewCompany() {
     const processForm: SubmitHandler<Inputs> = data => {
         clearErrors();
         axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
-        
+
             if (response?.data?.errors) {
                 const errorResponse = response?.data?.errors;
                 Object.keys(errorResponse).forEach((key) => {
@@ -75,25 +75,25 @@ export default function RegisterNewCompany() {
                 setIsModalOpen(true);
             }
         })
-        .catch((error: AxiosError) => {
-            console.error('Error in API request:', error);
-        
-            if (error.response?.status === 422) {
-              const errorResponse = error.response?.data?.errors;
-        
-              if (errorResponse) {
-                Object.keys(errorResponse).forEach((key) => {
-                  setError(key as FieldName, {
-                    type: 'manual',
-                    message: errorResponse[key][0]
-                  });
-                });
-              }
-            }
-        
-            console.log(errors);
-            return error;
-          });
+            .catch((error: AxiosError) => {
+                console.error('Error in API request:', error);
+
+                if (error.response?.status === 422) {
+                    const errorResponse = error.response?.data?.errors;
+
+                    if (errorResponse) {
+                        Object.keys(errorResponse).forEach((key) => {
+                            setError(key as FieldName, {
+                                type: 'manual',
+                                message: errorResponse[key][0]
+                            });
+                        });
+                    }
+                }
+
+                console.log(errors);
+                return error;
+            });
 
 
     }
