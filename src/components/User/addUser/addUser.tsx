@@ -34,7 +34,7 @@ const AddUser = () => {
                     }
                     const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
                     const response = await axios.post(
-                        "http://127.0.0.1:8000/api/store-user",
+                        process.env.API_URL + "store-user",
                         values,
                         {
                             headers: {Authorization: 'Bearer ' + bearerToken}
