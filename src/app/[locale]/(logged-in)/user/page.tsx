@@ -1,6 +1,7 @@
 'use client'
-import { useState } from 'react';
 import DeleteUser from "@/components/User/deleteUser/deleteUser";
+import { useState } from 'react';
+import AddUser from "@/components/User/addUser/addUser";
 
 
 export default function Index() {
@@ -11,6 +12,9 @@ export default function Index() {
     }
 
     return (
-        <DeleteUser user_id={7}/>
+        <>
+            <DeleteUser user_id={7} />
+            <AddUser />
+        </>
     );
 }
