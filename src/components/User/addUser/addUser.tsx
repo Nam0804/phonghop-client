@@ -26,17 +26,20 @@ const AddUser = () => {
                 try {
                     const password = Math.random().toString(36);
                     values = {
+                        ...values,
                         password: password,
+                        password_confirmation: password,
                         company_id: 1,
                         type: 1
                     }
                     const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-
-                    const response = await axios.post("http://127.0.0.1:8000/api/store-user",
-                        values
-                        , {
+                    const response = await axios.post(
+                        "http://127.0.0.1:8000/api/store-user",
+                        values,
+                        {
                             headers: {Authorization: 'Bearer ' + bearerToken}
-                        });
+                        }
+                    );
 
                     if (response.ok) {
                         message.success('User created successfully');
