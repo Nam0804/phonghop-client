@@ -16,14 +16,13 @@ const DeleteUser = ({user_id}:any) => {
     };
 
     const confirmDeleteAction = () => {
-        const apiUrl = `http://127.0.0.1:8000/delete-users`;
+        const apiUrl = `http://127.0.0.1:8000/api/delete-users/${user_id}`;
         const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
         axios.delete(apiUrl, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + bearerToken
-            },
-            data: {id: user_id}
+            }
         })
             .then(response => {
                 if (response.status === 204) {
