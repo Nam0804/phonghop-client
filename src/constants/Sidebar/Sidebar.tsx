@@ -54,7 +54,7 @@ const Sidebar = () => {
         </li>
         <li className={styles.sidebarItem}>
           <Image src="/user.svg" alt="User logo" width={'32'} height={'32'}/>
-          <a href="/products" className={styles.sidebarText}>Users</a>
+          <a href="/users" className={styles.sidebarText}>Users</a>
         </li>
       </ul>
       <div>
