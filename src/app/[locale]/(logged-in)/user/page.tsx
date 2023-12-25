@@ -12,11 +12,11 @@ export default function Index() {
 
     return (
         <ManagerEditInfor user={{
-            user_id: '6',
-            company: 'company1',
-            managerName: 'manager1',
+            id:'6',
+            company: 'FPT Company',
+            managerName: 'staff4',
             title: 'Manager',
-            email:'manager1@gmail.com',
+            email:'staff4@gmail.com',
             phone: '3235253235'
         }}/>
     );

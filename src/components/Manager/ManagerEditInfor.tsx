@@ -29,9 +29,11 @@ const ManagerEditInfor = ({user}: any) => {
     };
     const handleEdit = async () => {
         try {
-            const apiUrl = process.env.API_URL + 'update-user';
+            const apiUrl = process.env.API_URL + `update-user/${user.id}`;
             const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-            const values = await form.validateFields();
+            const values = {
+                ...formData,
+            };
             const response = await axios.put(
                 apiUrl,
                 values,
