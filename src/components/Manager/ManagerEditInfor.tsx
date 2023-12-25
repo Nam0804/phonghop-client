@@ -22,7 +22,14 @@ const ManagerEditInfor = (user:any) => {
         setVisible(false);
     };
     const handleEdit = () => {
-        form.resetFields();
+        form.validateFields()
+            .then(response => {
+                const apiUrl = process.env.API_URL + 'update-user';
+                const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
+                response = {
+
+                }
+            })
     };
     return (
         <>
