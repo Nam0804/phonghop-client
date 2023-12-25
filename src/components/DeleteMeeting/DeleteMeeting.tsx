@@ -21,7 +21,7 @@ const DeleteMeeting = ({ room_id }:any) => {
         if (availabilities == 0) {
             setErrorMessage('This room is under booking, cannot be deleted!');
         } else {
-            const apiUrl = `http://127.0.0.1:8000/api/delete-meeting-room/${room_id}`;
+            const apiUrl = process.env.API_URL + `delete-meeting-room/${room_id}`;
             const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
             axios.delete(apiUrl, {
                 headers: {
