@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Form, Modal} from 'antd';
+import {Modal} from 'antd';
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/DeleteMeeting.module.css';
 import axios from "axios";
