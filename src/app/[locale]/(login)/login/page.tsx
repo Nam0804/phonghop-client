@@ -3,7 +3,6 @@ import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Input from '@/constants/Form/Input';
 import styles from '@/css/Login.module.css';
-import DefaultLoginLayout from '@/layouts/User/DefaultLoginLayout';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -18,6 +17,7 @@ const LoginPage: React.FC<{}> = () => {
   const router = useRouter()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordVisible, setpasswordVisible] = useState(false);
   const handleLogin = () => {
     const postData = {
       email: email,
@@ -54,15 +54,13 @@ const LoginPage: React.FC<{}> = () => {
     <>
       <div className={styles.inputform}>
         <div className={styles.input}>
-          {
-            !email && <img src="/mail.svg" alt="" className={styles.icon} />
-          }
-
-          <Input type="text" name="username" placeholder="Email" className={styles.inputsection} style={{ marginBottom: '24px' }} onChange={(e: any) => setEmail(e.target.value)}></Input>
+          <img src="/mail.svg" alt="" className={styles.icon}/>
+          <Input type="text" name="username" placeholder="Email" className={styles.inputsection} style={{marginBottom:'24px'}} onChange={(e:any) => setEmail(e.target.value)}></Input>
         </div>
         <div className={styles.input}>
           <img src="/pass.svg" alt="" className={styles.icon} />
-          <Input type="text" name="password" placeholder="Password" className={styles.inputsection} style={{ marginBottom: '48px' }} onChange={(e: any) => setPassword(e.target.value)}></Input>
+          <Input  type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" className={styles.inputsection} style={{marginBottom:'48px'}} onChange={(e:any) => setPassword(e.target.value)}></Input>
+          <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={()=>setpasswordVisible(!passwordVisible)}/>
         </div>
         <div className={styles.forgot}>
           <Checkbox onChange={onChange}>Remember me</Checkbox>
@@ -73,7 +71,7 @@ const LoginPage: React.FC<{}> = () => {
         <Button type="button" className={styles.loginbtn} onClick={handleLogin}>LOG IN</Button>
         <div className={styles.account}>
           <p> Don&apos;t have an account? </p>
-          <Link href="/other-page2" className={styles.customlink}>
+          <Link href="/login/register" className={styles.customlink}>
             Register
           </Link>
         </div>
