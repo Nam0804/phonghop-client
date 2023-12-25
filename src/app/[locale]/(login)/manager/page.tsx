@@ -1,14 +1,10 @@
 'use client'
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Input from '@/constants/Form/Input';
-import styles from '@/css/CompanyRegister.module.css';
-import DefaultLoginLayout from '@/layouts/User/DefaultLoginLayout';
-import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
+import  styles from '@/css/CompanyRegister.module.css';
+import  DefaultLoginLayout from '@/app/[locale]/(login)/login/layout';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
 import Button from '@/constants/Form/Button';
 import axios, { AxiosError } from 'axios';
 import { FormDataSchema } from '@/lib/schema';
@@ -131,7 +127,7 @@ export default function RegisterNewCompany() {
         }
     }
     return (
-        <DefaultLoginLayout>
+        <>
             <form className={`${styles.content} w-75`} onSubmit={handleSubmit(processForm)}>
                 {currentStep == 1 && (
                     <>
@@ -280,6 +276,6 @@ export default function RegisterNewCompany() {
                     }
                 </Modal>)}
 
-        </DefaultLoginLayout>
+        </>
     );
 };
