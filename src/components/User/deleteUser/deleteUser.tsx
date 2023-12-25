@@ -4,7 +4,7 @@ import Button from "@/constants/Form/Button";
 import styles from '/src/css/DeleteUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-const DeleteUser = ({user_id}:any) => {
+const DeleteUser = ({id}:any) => {
     const [visible, setVisible] = useState(false);
 
     const showPopup = () => {
@@ -23,7 +23,7 @@ const DeleteUser = ({user_id}:any) => {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + bearerToken
             },
-            data: user_id
+            data: id
         })
             .then(response => {
                 if (response.status === 204) {
