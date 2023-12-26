@@ -2,7 +2,7 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '@/css/DefaultLoginLayout.module.css';
-import StoreProvider from '@/app/StoreProvider';
+import StoreProvider from '@/providers/StoreProvider';
 
 const locales = ['en', 'vn'];
 

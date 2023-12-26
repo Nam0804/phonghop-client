@@ -1,4 +1,4 @@
-import StoreProvider from '@/app/StoreProvider';
+import StoreProvider from '@/providers/StoreProvider';
 import Header from '@/constants/Header/Header';
 import Sidebar from '@/constants/Sidebar/Sidebar';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
