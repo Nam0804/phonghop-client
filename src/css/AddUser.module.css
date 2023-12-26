@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap');
+
 .formTitle {
     font-family: 'Be Vietnam Pro';
     font-size: 32px;
@@ -19,7 +20,9 @@
 }
 
 .formControl {
+    display: flex;
     width: 100%;
+    align-items: center;
     justify-content: space-between;
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 20px;
@@ -49,7 +52,7 @@
     margin-top: 20px;
 }
 
-.buttonEdit {
+.buttonAdd {
     width: 240px;
     height: 52px;
     padding: 10px;
