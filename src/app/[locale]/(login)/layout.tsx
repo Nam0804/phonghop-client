@@ -2,6 +2,7 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '@/css/DefaultLoginLayout.module.css';
+import StoreProvider from '@/app/StoreProvider';
 
 const locales = ['en', 'vn'];
 
@@ -18,7 +19,9 @@ const DefaultLoginLayout = ({ children, params: { locale } }: any) => {
             <div className='col-lg-6 col-md-6 col-sm-12'>
               <div className={styles.customStyle}>
                 <img src='/assets/images/Layer_1.png' style={{ marginTop: '52px' }}></img>
-                {children}
+                <StoreProvider>
+                  {children}
+                </StoreProvider>
               </div>
             </div>
           </div>
