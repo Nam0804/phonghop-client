@@ -1,8 +1,7 @@
 'use client'
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import  styles from '@/css/CompanyRegister.module.css';
-import  DefaultLoginLayout from '@/app/[locale]/(login)/login/layout';
+import styles from '@/css/CompanyRegister.module.css';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import Button from '@/constants/Form/Button';
@@ -12,6 +11,7 @@ import { useForm, SubmitHandler, Field, FieldName } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Modal from "@/constants/Modal/ViewModal";
+import { get } from 'lodash';
 
 const steps = [
     {},
@@ -75,7 +75,8 @@ export default function RegisterNewCompany() {
                 console.error('Error in API request:', error);
 
                 if (error.response?.status === 422) {
-                    const errorResponse = error.response?.data?.errors;
+                    // const errorResponse = error.response?.data?.errors;
+                    const errorResponse = get(error, 'response.data.errors');
 
                     if (errorResponse) {
                         Object.keys(errorResponse).forEach((key) => {
