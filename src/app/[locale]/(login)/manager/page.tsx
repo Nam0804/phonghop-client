@@ -2,7 +2,6 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '@/css/CompanyRegister.module.css';
-import DefaultLoginLayout from '@/app/[locale]/(login)/login/layout';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import Button from '@/constants/Form/Button';
