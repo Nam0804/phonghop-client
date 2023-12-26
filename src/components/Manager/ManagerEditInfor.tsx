@@ -14,13 +14,10 @@ const ManagerEditInfor = ({user}: any) => {
 
     useEffect(() => {
         form.setFieldsValue({
-            'manager-name': user.managerName,
-            'company': user.company,
             'manager-title': user.title,
-            'email': user.email,
             'phone': user.phone,
         });
-    }, [form, user]);
+    }, [ user]);
     const showPopup = () => {
         setVisible(true);
     }
@@ -31,12 +28,14 @@ const ManagerEditInfor = ({user}: any) => {
         try {
             const apiUrl = process.env.API_URL + `update-user/${user.id}`;
             const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-            const values = {
-                ...formData,
+            const { title, phone } = form.getFieldsValue(['manager-title', 'phone']);
+            const updateData = {
+                'manager-title': title,
+                'phone': phone,
             };
             const response = await axios.put(
                 apiUrl,
-                values,
+                updateData,
                 {
                     headers: {
                         'Accept': 'application/json',
