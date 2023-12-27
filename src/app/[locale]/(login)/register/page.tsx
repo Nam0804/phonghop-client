@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Button from '@/constants/Form/Button';
 import Input from '@/constants/Form/Input';
-import styles from './Register.module.css';
+import styles from '@/css/Register.module.css';
 
 
 const RegisterPage = () => {
