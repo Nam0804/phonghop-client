@@ -33,7 +33,7 @@ const AddUser = () => {
                         type: 1
                     }
                     const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-                    const response = await axios.post(
+                    const { data } = await axios.post(
                         process.env.API_URL + "store-user",
                         values,
                         {
@@ -41,7 +41,7 @@ const AddUser = () => {
                         }
                     );
 
-                    if (response.ok) {
+                    if (data.ok) {
                         message.success('User created successfully');
                         form.resetFields();
                         setVisible(false);
