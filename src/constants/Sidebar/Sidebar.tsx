@@ -6,10 +6,11 @@ import Image from "next/image";
 import Button from "@/constants/Form/Button";
 import { useState, useEffect } from "react";
 import Modal from "@/constants/Modal/ViewModal";
+import Profile from "@/components/User/profile";
 const Sidebar = () => {
   const [userData, setUserData] = useState<{ type?: number }>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,6 +38,10 @@ const Sidebar = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const togglePopup = () => {
+    setIsProfileOpen(!isProfileOpen);
+}
   return (
     <aside className={styles.sidebar}>
       <ul className={styles.listsidebar}>
@@ -60,68 +65,9 @@ const Sidebar = () => {
       <div>
         <div className={styles.sidebarItem2}>
             <Image src="/book.png" alt="Book logo" width={'32'} height={'32'}/>
-            <a className={styles.sidebarText} onClick={() => openModal("Username")}>Username</a>
+            <a className={styles.sidebarText} onClick={() => togglePopup()}>Username</a>
         </div>
-        {isModalOpen && (
-          <Modal title="Personal Information" onClose={closeModal}>
-            {userData.type === 2 ? (
-              <>
-                <div className={styles.inputform}>
-                  <label htmlFor="name">Name*</label>
-                  <input type="text" id="name" />
-                </div>
-                <div className={styles.inputform}>
-                  <label htmlFor="title">Title*</label>
-                  <input type="text" id="title" />
-                </div>
-                <div className={styles.inputform}>
-                  <label htmlFor="company">Company*</label>
-                  <input type="text" id="company" />
-                </div>
-                <div className={styles.inputform}>
-                  <label htmlFor="email">Email Address*</label>
-                  <input type="email" id="email" />
-                </div>
-                <div className={styles.inputform}>
-                  <label htmlFor="phone">Phone Number*</label>
-                  <input type="text" id="phone" />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className={styles.inputform}>
-                  <label htmlFor="name">Manager Name*</label>
-                  <input type="text" id="name" />
-                </div>
-                <div className={styles.inputform}>
-                  <label htmlFor="title">Manager Title*</label>
-                  <input type="text" id="title" />
-                </div>
-                <div className={styles.inputform}>
-                  <label htmlFor="company">Company*</label>
-                  <input type="text" id="company" />
-                </div>
-                <div className={styles.inputform}>
-                  <label htmlFor="email">Email Address*</label>
-                  <input type="email" id="email" />
-                </div>
-                <div className={styles.inputform}>
-                  <label htmlFor="phone">Phone Number*</label>
-                  <input type="text" id="phone" />
-                </div>
-              </>
-            )}
-            <div className={styles.editsection}>
-              <button className={styles.editbtn}>EDIT INFORMATION</button>
-            </div>
-            <div className={styles.btngroup}>
-              <Button className={styles.passbtn}>CHANGE PASSWORD</Button>
-              <Button color="#FFF" className={styles.closebtn} onClick={closeModal}>
-                CLOSE
-              </Button>
-            </div>
-          </Modal>
-        )}
+      {isProfileOpen && <Profile togglePopup={() => togglePopup()} />}
 
       </div>
     </aside>
