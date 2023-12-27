@@ -11,25 +11,6 @@ const Sidebar = () => {
   const [userData, setUserData] = useState<{ type?: number }>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/api/users/1");
-        const data = await response.json();
-        setUserData(data);
-    
-        if (data.type === 2) {
-          openModal("Staff");
-        } else if (data.type === 1) {
-          openModal("Manager");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    
-    fetchData();
-  }, []);
 
   const openModal = (type: string) => {
     setIsModalOpen(true);
@@ -40,35 +21,36 @@ const Sidebar = () => {
   };
 
   const togglePopup = () => {
+    console.log('Before togglePopup:', isProfileOpen);
     setIsProfileOpen(!isProfileOpen);
-}
+    console.log('After togglePopup:', isProfileOpen);
+  };
   return (
     <aside className={styles.sidebar}>
       <ul className={styles.listsidebar}>
         <li className={styles.sidebarItem}>
           <Image src="/company.svg" alt="Company logo" width={'32'} height={'32'} />
-          <Link href={"/vn/company"} style={{textDecoration:'none'}} className={styles.sidebarText}>Company</Link>
+          <Link href={"/vn/company"} style={{ textDecoration: 'none' }} className={styles.sidebarText}>Company</Link>
         </li>
         <li className={styles.sidebarItem}>
-          <Image src="/room.svg" alt="Room logo" width={'32'} height={'32'}/>
+          <Image src="/room.svg" alt="Room logo" width={'32'} height={'32'} />
           <a href="/home" className={styles.sidebarText}>Room</a>
         </li>
         <li className={styles.sidebarItem}>
-          <Image src="/booking.svg" alt="Booking logo" width={'32'} height={'32'}/>
+          <Image src="/booking.svg" alt="Booking logo" width={'32'} height={'32'} />
           <a href="/users" className={styles.sidebarText}>Booking</a>
         </li>
         <li className={styles.sidebarItem}>
-          <Image src="/user.svg" alt="User logo" width={'32'} height={'32'}/>
-          <Link href={"/vn/users"} style={{textDecoration:'none'}} className={styles.sidebarText}>Users</Link>
+          <Image src="/user.svg" alt="User logo" width={'32'} height={'32'} />
+          <Link href={"/vn/users"} style={{ textDecoration: 'none' }} className={styles.sidebarText}>Users</Link>
         </li>
       </ul>
       <div>
         <div className={styles.sidebarItem2}>
-            <Image src="/book.png" alt="Book logo" width={'32'} height={'32'}/>
-            <a className={styles.sidebarText} onClick={() => togglePopup()}>Username</a>
+          <Image src="/book.png" alt="Book logo" width={'32'} height={'32'} />
+          <a className={styles.sidebarText} onClick={() => togglePopup()}>Username</a>
         </div>
-      {isProfileOpen && <Profile togglePopup={() => togglePopup()} />}
-
+        {isProfileOpen && <Profile togglePopup={() => togglePopup()} />}
       </div>
     </aside>
   );
