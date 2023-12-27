@@ -3,17 +3,16 @@ import Header from '@/constants/Header/Header';
 import Sidebar from '@/constants/Sidebar/Sidebar';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { notFound } from 'next/navigation';
-import { useRouter } from 'next/router';
+import { Toaster } from "react-hot-toast";
 
 
 // Can be imported from a shared config
 const locales = ['en', 'vn'];
 
-
 export default function LocaleLayout({ children, params: { locale } }: any) {
 
   const messages = useMessages();
-  // Validate that the incoming `locale` parameter is valid
+
   if (!locales.includes(locale as any)) notFound();
 
   return (
@@ -28,6 +27,7 @@ export default function LocaleLayout({ children, params: { locale } }: any) {
         <section style={{ width: 'calc(100% - 80px)', float: 'right' }}>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <StoreProvider>
+            <Toaster position="top-right" />
               {children}
             </StoreProvider>
           </NextIntlClientProvider>

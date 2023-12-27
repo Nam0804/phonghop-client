@@ -1,24 +1,24 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 
-const authSlice = createSlice({
-  name: 'auth',
+const userSlice = createSlice({
+  name: 'user',
   initialState: {
     value: 0
   },
   reducers: {
-    initializeAuth: (state, action: PayloadAction<any>) => {
+    initializeUser: (state, action: PayloadAction<any>) => {
       state.value = action.payload
     }
   }
 })
 
-export const { initializeAuth } = authSlice.actions
+export const { initializeUser } = userSlice.actions
 
 const store = configureStore({
-  reducer: authSlice.reducer
+  reducer: userSlice.reducer
 })
 
-export default authSlice.reducer
+export default userSlice.reducer
 
 // Can still subscribe to the store
 store.subscribe(() => console.log(store.getState()))

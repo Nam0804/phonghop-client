@@ -8,10 +8,10 @@ const HomePage = () => {
     const t = useTranslations('Index');
     const locale = useLocale();
 
-    const auth = useAppSelector((state) => state.auth)
+    const user = useAppSelector((state) => state.user)
     return (
         <div>
-            {auth.value}
+            {user.value}
             {t('title')}
             {locale}
         </div>
