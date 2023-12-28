@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react';
-// import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
 
 
 export default function Index() {
@@ -11,6 +10,7 @@ export default function Index() {
     }
 
     return (
-        <></>
+        <>
+        </>
     );
 }
