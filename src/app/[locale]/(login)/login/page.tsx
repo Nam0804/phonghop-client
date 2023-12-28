@@ -18,6 +18,7 @@ const LoginPage: React.FC<{}> = () => {
     const router = useRouter()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const isFormValid = email !== '' && password !== '';
     const handleLogin = () => {
       const postData = {
           email: email,
@@ -95,11 +96,11 @@ const LoginPage: React.FC<{}> = () => {
             <div className={styles.inputform}>
                 <div className={styles.input}>
                     <img src="/mail.svg" alt="" className={styles.icon}/>
-                    <Input type="text" name="username" placeholder="Email" className={styles.inputsection} style={{marginBottom:'24px'}} onChange={(e:any) => setEmail(e.target.value)}></Input>
+                    <Input type="text" name="username" placeholder="Email" className={styles.inputsection} style={{marginBottom:'24px'}} onChange={(e:any) => setEmail(e.target.value)} value={email}></Input>
                 </div>
                 <div className={styles.input}>
                     <img src="/pass.svg" alt="" className={styles.icon}/>
-                    <Input  type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" className={styles.inputsection} style={{marginBottom:'48px'}} onChange={(e:any) => setPassword(e.target.value)}></Input>
+                    <Input  type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" className={styles.inputsection} style={{marginBottom:'48px'}} onChange={(e:any) => setPassword(e.target.value)} value={password}></Input>
                     <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={()=>setpasswordVisible(!passwordVisible)}/>
                 </div>
                 <div className={styles.forgot}>
@@ -108,10 +109,10 @@ const LoginPage: React.FC<{}> = () => {
                         Forgot password?
                     </Link>
                 </div>
-                <Button type="button" className={styles.loginbtn} onClick={handleButtonClick}>LOG IN</Button>
+                <Button type="button" className={styles.loginbtn} onClick={handleButtonClick} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>LOG IN</Button>
                 <div className={styles.account}>
                     <p>Don't have an account?</p>
-                    <Link href="/other-page2"  className={styles.customlink}>
+                    <Link href="/vn/register"  className={styles.customlink}>
                         Register
                     </Link>
                 </div>
