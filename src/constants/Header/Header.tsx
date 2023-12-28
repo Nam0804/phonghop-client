@@ -18,7 +18,7 @@ const Header = () => {
   };
   const handleLogout = () => {
     
-    window.location.href = '/vn/user/login';
+    window.location.href = '/vn/login';
 
     closeModal();
   };

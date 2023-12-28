@@ -2,6 +2,7 @@
 
 import { ReactElement, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import StoreProvider from '@/providers/StoreProvider';
 
 export default function ClientLayout({
     children,
@@ -16,7 +17,9 @@ export default function ClientLayout({
 
     return (
         <div key={'body'}>
-            {children}
+            <StoreProvider>
+                {children}
+            </StoreProvider>
         </div>
     )
 }

@@ -5,15 +5,14 @@ import {useLocale, useTranslations} from 'next-intl';
 
 const HomePage = () => {
 
-    const t = useTranslations('Index');
-    const locale = useLocale();
-
-    const user = useAppSelector((state) => state.user)
+    // const t = useTranslations('Index');
+    // const locale = useLocale();
+    // const user = useAppSelector((state) => state.user)
     return (
         <div>
-            {user.value}
-            {t('title')}
-            {locale}
+            {/* {user.value} */}
+            {/* {t('title')} */}
+            {/* {locale} */}
         </div>
     );
 };

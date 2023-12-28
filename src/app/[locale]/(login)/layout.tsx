@@ -15,12 +15,14 @@ const DefaultLoginLayout = ({ children, params: { locale } }: any) => {
 
   const messages = useMessages();
 
+  const loading = useAppSelector((state) => state.loading)
+
   if (!locales.includes(locale as any)) notFound();
 
   return (
     <html lang={locale}>
       <body>
-        <SpinFC spinning={false}>
+        <SpinFC spinning={loading}>
           <div className={styles.container}>
             <div className='row'>
               <div className='col-lg-6 col-md-6 col-sm-12'>
