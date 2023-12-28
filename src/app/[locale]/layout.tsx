@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Providers } from "@/redux/provider"
 import ClientLayout from './clientLayout';
+import StoreProvider from '@/providers/StoreProvider';
 
 export const metadata: Metadata = {
     title: "PhongHop.vn",
@@ -18,8 +19,10 @@ export default function RootLayout({
         <html lang={params.locale}>
             <body tabIndex={-1}>
                 <ClientLayout params={params}>
-                    <Providers>{children}</Providers>
-                </ClientLayout>                
+                    <Providers>
+                        {children}
+                    </Providers>
+                </ClientLayout>
             </body>
         </html>
     );
