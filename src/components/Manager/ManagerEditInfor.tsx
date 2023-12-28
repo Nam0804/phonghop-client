@@ -14,10 +14,10 @@ const ManagerEditInfor = ({user}: any) => {
 
     useEffect(() => {
         form.setFieldsValue({
-            'manager-title': user[0].attributes.title,
-            'phone': user[0].attributes.phone,
+            'manager-title': user.attributes.title,
+            'phone': user.attributes.phone,
         });
-    }, [ user]);
+    }, [form, user]);
     const showPopup = () => {
         setVisible(true);
     }
@@ -26,11 +26,11 @@ const ManagerEditInfor = ({user}: any) => {
     };
     const handleEdit = async () => {
         try {
-            const apiUrl = process.env.API_URL + `update-user/${user[0].id}`;
-            const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
+            const apiUrl = process.env.API_URL + `update-user/${user.id}`;
+            const bearerToken = '5|eorFq7VV5FwykcowkJbqLFekPxZ8rcofO076xeOB2f47b1a4';
             const updateData = {
-                phone: user[0].attributes.phone,
-                title: user[0].attributes.title,
+                phone: user.attributes.phone,
+                title: user.attributes.title,
             };
             const response = await axios.put(
                 apiUrl,
@@ -76,7 +76,7 @@ const ManagerEditInfor = ({user}: any) => {
                             label={<span className={styles.label}>Manager Name*</span>}
                             name="manager-name"
                         >
-                            <p className={styles.formFields}>{user[0].attributes.name}</p>
+                            <p className={styles.formFields}>{user.attributes.name}</p>
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>
@@ -84,7 +84,7 @@ const ManagerEditInfor = ({user}: any) => {
                             label={<span className={styles.label}>Company*</span>}
                             name="company"
                         >
-                            <p className={styles.formFields}>{user[0].relationships.company.data.company_name}</p>
+                            <p className={styles.formFields}>{user.relationships.company.data.company_name}</p>
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>
@@ -109,7 +109,7 @@ const ManagerEditInfor = ({user}: any) => {
                             label={<span className={styles.label}>Email Address*</span>}
                             name="email"
                         >
-                            <p className={styles.formFields}>{user[0].attributes.email}</p>
+                            <p className={styles.formFields}>{user.attributes.email}</p>
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>
