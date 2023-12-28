@@ -47,12 +47,10 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
     }
   }, [apiSliceProfile]);
   const dispatch = useDispatch();
-  console.log(apiSliceProfile);
 
 
   return (
     <>
-      <div>kakakak</div>
       {userData.type === 2 ? (<>
         <Modal title="Personal Information" width={1000} height={1000} onClose={handleClose}><div className={styles.inputform}>
           <label htmlFor="name">Name*</label>

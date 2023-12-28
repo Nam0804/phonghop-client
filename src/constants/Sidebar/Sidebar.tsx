@@ -21,9 +21,7 @@ const Sidebar = () => {
   };
 
   const togglePopup = () => {
-    console.log('Before togglePopup:', isProfileOpen);
     setIsProfileOpen(!isProfileOpen);
-    console.log('After togglePopup:', isProfileOpen);
   };
   return (
     <aside className={styles.sidebar}>
