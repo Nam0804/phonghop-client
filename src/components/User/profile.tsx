@@ -79,9 +79,9 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
         </div>
         <div className={styles.btngroup}>
           <Button className={styles.passbtn}>CHANGE PASSWORD</Button>
-          {/* <Button color="#FFF" className={styles.closebtn} onClick={closeModal}>
+          <Button color="#FFF" className={styles.closebtn} onClick={handleClose}>
             CLOSE
-          </Button> */}
+          </Button>
         </div>
           </Modal>
       </>) : (<>
@@ -110,9 +110,9 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
         </div>
         <div className={styles.btngroup}>
           <Button className={styles.passbtn}>CHANGE PASSWORD</Button>
-          {/* <Button color="#FFF" className={styles.closebtn} onClick={closeModal}>
+          <Button color="#FFF" className={styles.closebtn} onClick={handleClose}>
             CLOSE
-          </Button> */}
+          </Button>
         </div>
           </Modal>
       </>)}
