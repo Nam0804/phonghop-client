@@ -8,6 +8,7 @@
     background:  #EAEEF6;
 }
 .customStyle{
+    position: relative;
     display: flex;
     flex-direction: column;
     border-radius: 16px;
