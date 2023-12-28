@@ -73,3 +73,39 @@
     font-weight: 500;
     line-height: normal;
 }
+.closebtn{
+    color:  #225560;
+    font-family: Be Vietnam Pro;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+    width: 240px;
+    height: 52px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid  #225560;
+}
+.passbtn{
+    border: none;
+    color:  #FFF;
+    font-family: Be Vietnam Pro;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    width: 240px;
+    height: 52px;
+    padding: 10px;
+    border-radius: 8px;
+    background:#225560;
+}
+.btngroup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 33px;
+}
