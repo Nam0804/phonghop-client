@@ -1,14 +1,20 @@
 'use client'
+import { NextPage } from 'next';
+import { useAppSelector } from '@/lib/hooks'
+import {useLocale, useTranslations} from 'next-intl';
 
-import React from 'react';
+const HomePage = () => {
 
-export default function Home() {
-
+    // const t = useTranslations('Index');
+    // const locale = useLocale();
+    // const user = useAppSelector((state) => state.user)
     return (
-        <>
-            <div key={'unique'} >
-                Trang chủ to vcl
-            </div>
-        </>
+        <div>
+            {/* {user.value} */}
+            {/* {t('title')} */}
+            {/* {locale} */}
+        </div>
     );
 };
+
+export default HomePage;
