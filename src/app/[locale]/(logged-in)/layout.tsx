@@ -4,6 +4,7 @@ import Sidebar from '@/constants/Sidebar/Sidebar';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { Toaster } from "react-hot-toast";
+import { useAppSelector } from '@/lib/hooks';
 
 
 // Can be imported from a shared config

@@ -1,8 +1,9 @@
 "use client"
 
-import { ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StoreProvider from '@/providers/StoreProvider';
+import { AppStore } from '@/lib/store';
 
 export default function ClientLayout({
     children,
@@ -15,11 +16,11 @@ export default function ClientLayout({
         require('bootstrap/dist/js/bootstrap.bundle.min.js')
     }, []);
 
+    const storeRef = React.useRef<AppStore>()
+
     return (
         <div key={'body'}>
-            <StoreProvider>
-                {children}
-            </StoreProvider>
+            {children}
         </div>
     )
 }
