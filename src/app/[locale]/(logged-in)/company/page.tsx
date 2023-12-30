@@ -5,6 +5,7 @@ import Table from "@/constants/Table/Table";
 import datas from "./datatable";
 import Button from "@/constants/Form/Button";
 import Modal from "@/constants/Modal/ChangePasswordModal";
+import AddNewCompany from "@/components/Admin/AddNewCompany";
 
 const CompanyList = () => {
     const columns = [
@@ -53,7 +54,8 @@ const CompanyList = () => {
                 <Table data={datas} columns={columns} actions={actions}></Table>
             </div>
             <div className={styles.addco}>
-                <Button className={styles.addbtn}>ADD NEW COMPANY</Button>
+                {/* <Button className={styles.addbtn}>ADD NEW COMPANY</Button> */}
+                <AddNewCompany></AddNewCompany>
             </div>
             <div>
                 {isModalOpen && (
