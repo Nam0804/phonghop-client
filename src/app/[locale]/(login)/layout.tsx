@@ -14,8 +14,6 @@ const DefaultLoginLayout = ({ children, params: { locale } }: any) => {
 
   const messages = useMessages();
 
-  const loading = useAppSelector((state) => state.loading)
-
   console.log(messages);
   
   if (!locales.includes(locale as any)) notFound();
