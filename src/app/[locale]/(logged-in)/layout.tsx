@@ -1,25 +1,38 @@
+import StoreProvider from '@/providers/StoreProvider';
 import Header from '@/constants/Header/Header';
 import Sidebar from '@/constants/Sidebar/Sidebar';
-import {notFound} from 'next/navigation';
- 
+import { NextIntlClientProvider, useMessages } from 'next-intl';
+import { notFound } from 'next/navigation';
+import { Toaster } from "react-hot-toast";
+import { useAppSelector } from '@/lib/hooks';
+
+
 // Can be imported from a shared config
 const locales = ['en', 'vn'];
- 
-export default function LocaleLayout({children, params: {locale}}:any) {
-  // Validate that the incoming `locale` parameter is valid
+
+export default function LocaleLayout({ children, params: { locale } }: any) {
+
+  const messages = useMessages();
+
   if (!locales.includes(locale as any)) notFound();
+
   return (
     <html lang={locale}>
       <body style={{ margin: 0, padding: 0 }}>
-      <header>
-        <Header></Header>
-      </header>
-      <div style={{width:'80px',float:'left',height:'100%'}}>
-        <Sidebar></Sidebar>
-      </div>
-      <section style={{width:'calc(100% - 80px)',float:'right'}}>
-        {children}
-      </section>
+        <header>
+          <Header></Header>
+        </header>
+        <div style={{ width: '80px', float: 'left', height: '100%' }}>
+          <Sidebar></Sidebar>
+        </div>
+        <section style={{ width: 'calc(100% - 80px)', float: 'right' }}>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <StoreProvider>
+            <Toaster position="top-right" />
+              {children}
+            </StoreProvider>
+          </NextIntlClientProvider>
+        </section>
       </body>
     </html>
   );

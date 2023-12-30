@@ -1,48 +1,117 @@
 'use client'
-import React, { useState } from "react";
-import styles from '@/css/CompanyList.module.css';
-import Table from "@/constants/Table/Table";
-import datas from "./datatable";
+import React from "react";
+import styles from '@/css/CompanyList.module.css'
 import Button from "@/constants/Form/Button";
+<<<<<<< HEAD
 import Modal from "@/constants/Modal/ChangePasswordModal";
 import AddNewCompany from "@/components/Admin/AddNewCompany";
+=======
+import {Table, Tag } from 'antd';
+import { DatePicker, Space } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import './customantd.css';
+import DeleteMeeting from "@/components/DeleteCompany/DeleteCompany";
+>>>>>>> 9d244c464ae8d0b07b9f505a0937ead86823cc18
 
-const CompanyList = () => {
-    const columns = [
-        'No',
-        'Company_Name',
-        'Company_Domain',
-        'Address',
-        'Manager_Name',
-        'Manager_Title',
-        'Email',
-        'Manager_Phone_Number',
-    ]
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
-
-    const openModal = () => {
-        setIsModalOpen(true);
-        setIsChangePasswordModalOpen(false);
-    };
-
-    const openChangePasswordModal = () => {
-        setIsChangePasswordModalOpen(true);
-        setIsModalOpen(false);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setIsChangePasswordModalOpen(false);
-    };
-    const [passwordVisible, setpasswordVisible] = useState(false);
-    const [password, setPassword] = useState('');
-    const actions = [
-        <button key="eye" className={styles.custombutton}><img src="/eye.svg" ></img></button>,
-        <button key="skipdownline" className={styles.custombutton}><img src="/skipdownline.svg"></img></button>,
-        <button key="edit" className={styles.custombutton}><img src="/edit.svg" onClick={openModal}></img></button>,
-        <button key="delete" className={styles.custombutton} style={{ backgroundColor: '#E56353' }}><img src="/delete.svg"></img></button>,
-    ];
+const CompanyPage = () => {
+    const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
+    useEffect(() => {
+        const token = "45|OMb1B7djnXw6DiGS96sEBu6cWK32J7hs1UADcdCVbe5ef1a0";
+        const config ={
+            headers:{
+                Authorization: `Bearer ${token}`,
+            },
+        }; 
+        fetch("http://localhost:8000/api/index-companies",config)
+        .then((res) => res.json())
+        .then((result) => {
+          console.log(result.data)
+            setAllStaffData(result.data);
+        })
+      }, []);
+    interface DataType {
+        attributes:{
+            key: string;
+            no: number;
+            name:string;
+            domain:string;
+            address:string;
+            title: string;
+            email: string;
+            phonenumber:number;
+        }
+      }
+      const columns: ColumnsType<DataType> = [
+        {
+          title: 'No',
+          dataIndex: 'id',
+          key: 'id',
+          render: (number) => <a>{number}</a>,
+          sorter: (a, b) => a.attributes.no - b.attributes.no,
+          width:73,
+          fixed:'left',
+        },
+        {
+          title: 'Company Name',
+          dataIndex: ['attributes', 'name'],
+          key: 'attributes[name]',
+          sorter:(a, b) => a.attributes.name.localeCompare(b.attributes.name),
+          fixed:'left',
+          width:146,
+        },
+        {
+          title: 'Company Domain',
+          dataIndex: ['attributes', 'domain'],
+          key: 'attributes[domain]',
+          sorter:(a, b) => a.attributes.domain.localeCompare(b.attributes.domain),
+          width: 149,
+        },
+        {
+            title: 'Address',
+            dataIndex: ['attributes', 'address'],
+            key: 'attributes[address]',
+            width:159
+        },
+        {
+            title: 'Manager Name',
+            dataIndex: ['attributes', 'phone'],
+            key: 'attributes[phone]',
+            width: 128,
+        },
+        {
+            title: 'Manager Title',
+            dataIndex: ['attributes', 'phone'],
+            key: 'attributes[phone]',
+            width: 143,
+        },
+        {
+            title: 'Email',
+            dataIndex: ['attributes', 'phone'],
+            key: 'attributes[phone]',
+            width: 162,
+        },
+        {
+            title: 'Manager Phone Number',
+            dataIndex: ['attributes', 'phone'],
+            key: 'attributes[phone]',
+            width: 145,
+        },
+        {
+          title: 'Action',
+          key: 'action',
+          render: (_, record) => (
+            <Space size="middle">
+                <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
+                <button key="edit" className={styles.custombutton}><img src="/edit.svg"></img></button>
+                <DeleteMeeting></DeleteMeeting>
+            </Space>
+          ),
+          fixed: 'right',
+          width: 191,
+        },
+      ];
     return (
         <div className={styles.container}>
             <div className={styles.labelsection}>
@@ -51,80 +120,15 @@ const CompanyList = () => {
                 <h1 className={styles.label}>Company List</h1>
             </div>
             <div className={styles.companytable}>
-                <Table data={datas} columns={columns} actions={actions}></Table>
+                <Table columns={columns} dataSource={allStaffData} 
+                    scroll={{x:1000}} 
+                />
             </div>
             <div className={styles.addco}>
                 {/* <Button className={styles.addbtn}>ADD NEW COMPANY</Button> */}
                 <AddNewCompany></AddNewCompany>
             </div>
-            <div>
-                {isModalOpen && (
-                    <Modal title="Personal Information" onClose={closeModal} >
-                        {
-                            <>
-                                <div className={styles.inputgroup}>
-                                    <div className={styles.inputform}>
-                                        <label htmlFor="name">Name*</label>
-                                        <input type="text" id="name" />
-                                    </div>
-                                    <div className={styles.inputform}>
-                                        <label htmlFor="title">Email Address*</label>
-                                        <input type="text" id="title" />
-                                    </div>
-                                    <div className={styles.inputform}>
-                                        <label htmlFor="company">Phone Number*</label>
-                                        <input type="text" id="company" />
-                                    </div>
-                                </div>
-                                <div className={styles.editsection}>
-                                    <button className={styles.editbtn} onClick={openChangePasswordModal}>CHANGE PASSWORD</button>
-                                </div>
-                                <div className={styles.btngroup}>
-                                    <Button className={styles.passbtn}>EDIT INFORMATION</Button>
-                                    <Button color="#FFF" className={styles.closebtn} onClick={closeModal}>CLOSE</Button>
-                                </div>
-
-                            </>
-                        }
-                    </Modal>
-                )}
-            </div>
-            <div>
-                {isChangePasswordModalOpen && (
-                    <Modal title="Change Password" onClose={closeModal} >
-                        {
-                            <>
-                                <div className={styles.inputgroup}>
-                                    <div className={styles.inputform1}>
-                                        <label htmlFor="name">Current Password*</label>
-                                        <img src="/pass.svg" alt="" className={styles.icon} />
-                                        <input type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" />
-                                        <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={() => setpasswordVisible(!passwordVisible)} />
-                                    </div>
-                                    <div className={styles.inputform1}>
-                                        <label htmlFor="title">New Password*</label>
-                                        <img src="/pass.svg" alt="" className={styles.icon} />
-                                        <input type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" />
-                                        <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={() => setpasswordVisible(!passwordVisible)} />
-                                    </div>
-                                    <div className={styles.inputform1} style={{ marginBottom: '50px' }}>
-                                        <label htmlFor="company">Confirm Password*</label>
-                                        <img src="/pass.svg" alt="" className={styles.icon} />
-                                        <input type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" />
-                                        <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={() => setpasswordVisible(!passwordVisible)} />
-                                    </div>
-                                </div>
-                                <div className={styles.btngroup}>
-                                    <Button className={styles.passbtn}>SAVE</Button>
-                                    <Button color="#FFF" className={styles.closebtn} onClick={closeModal}>CLOSE</Button>
-                                </div>
-
-                            </>
-                        }
-                    </Modal>
-                )}
-            </div>
         </div>
     );
 }
-export default CompanyList
+export default CompanyPage

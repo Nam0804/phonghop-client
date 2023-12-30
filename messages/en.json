@@ -1,5 +1,9 @@
 {
     "Index": {
       "title": "Hello world!"
+    },
+    "Login": {
+      "success" : "Login successful",
+      "error" : "Login error"
     }
 }
