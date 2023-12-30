@@ -6,7 +6,7 @@ import axios from "axios";
 import './customantd.css'
 import customstyle from '@/css/CompanyList.module.css'
 
-const DeleteMeeting = ({ room_id }:any) => {
+const DeleteCompany = ({ company_id }:any) => {
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -19,31 +19,28 @@ const DeleteMeeting = ({ room_id }:any) => {
         setVisible(false);
     };
 
-    const confirmDeleteAction = (availabilities: any) => {
-        if (availabilities == 0) {
-            setErrorMessage('This room is under booking, cannot be deleted!');
-        } else {
-            const apiUrl = process.env.API_URL + `delete-meeting-room/${room_id}`;
-            const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-            axios.delete(apiUrl, {
+    const deleteRoom = async () => {
+        try {
+            const apiUrl = `http://localhost:8000/api/delete-company/${company_id}`;
+            const bearerToken = '1|FrRHqIiDPPINlg9UM9zxzW15Vz8PwpRGuzd1TIMwbff51f52';
+    
+            const response = await axios.delete(apiUrl, {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.api+json',
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                     'Authorization': 'Bearer ' + bearerToken
                 }
-            })
-                .then(response => {
-                    if (response.status === 204) {
-                        console.log('Room deleted successfully.');
-                    } else {
-                        console.error('Error deleting room:', response.status);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                })
-                .finally(() => {
-                    setVisible(false);
-                });
+            });
+    
+            if (response.status === 200) {
+                console.log('Company deleted successfully.');
+            } else {
+                console.error('Error deleting company:', response.status, response.data);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setVisible(false);
         }
     };
     return (
@@ -69,7 +66,7 @@ const DeleteMeeting = ({ room_id }:any) => {
                     )}
                     <div className={styles.buttonContainer}>
                         <div>
-                            <Button className={styles.buttonDelete} onClick={() => confirmDeleteAction(1)} label='DELETE COMPANY'/>
+                            <Button className={styles.buttonDelete} onClick={deleteRoom} label='DELETE COMPANY'/>
                         </div>
                         <div>
                             <Button className={styles.buttonCancel} htmltype="submit" onClick={handleCancel}
@@ -80,4 +77,4 @@ const DeleteMeeting = ({ room_id }:any) => {
         </>
     );
 };
-export default DeleteMeeting;
+export default DeleteCompany;

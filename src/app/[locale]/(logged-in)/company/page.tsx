@@ -8,26 +8,47 @@ import type { ColumnsType } from 'antd/es/table';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import './customantd.css';
-import DeleteMeeting from "@/components/DeleteCompany/DeleteCompany";
+import DeleteCompany from "@/components/DeleteCompany/DeleteCompany";
+import { json } from "stream/consumers";
 
 const CompanyPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
     useEffect(() => {
-        const token = "45|OMb1B7djnXw6DiGS96sEBu6cWK32J7hs1UADcdCVbe5ef1a0";
+        const token = "1|FrRHqIiDPPINlg9UM9zxzW15Vz8PwpRGuzd1TIMwbff51f52";
         const config ={
             headers:{
                 Authorization: `Bearer ${token}`,
             },
-        }; 
+        };
+        // axios.get("http://localhost:8000/api/index-companies",config)
+        // .then(response => {
+        
+        //   if(response)
+        //   {
+        //     console.log(response.data.data)
+        //     setAllStaffData(response.data.data);
+        //   }else{
+        //     console.error('Not found')
+        //   }
+        // })
+        // .catch(error => {
+        //   if (error.response) {
+        //     console.error('HTTP Error:', error.response.data);
+        //   } else if (error.request) {
+        //     console.error('No response received for the request.');
+        //   } else {
+        //     console.error('Error setting up the request or handling the response:', error.message);
+        //   }
+        // }); 
         fetch("http://localhost:8000/api/index-companies",config)
         .then((res) => res.json())
         .then((result) => {
-          console.log(result.data)
-            setAllStaffData(result.data);
+          console.log(result.data.data)
+            setAllStaffData(result.data.data);
         })
       }, []);
     interface DataType {
-        attributes:{
+            id:number;
             key: string;
             no: number;
             name:string;
@@ -36,7 +57,6 @@ const CompanyPage = () => {
             title: string;
             email: string;
             phonenumber:number;
-        }
       }
       const columns: ColumnsType<DataType> = [
         {
@@ -44,53 +64,53 @@ const CompanyPage = () => {
           dataIndex: 'id',
           key: 'id',
           render: (number) => <a>{number}</a>,
-          sorter: (a, b) => a.attributes.no - b.attributes.no,
+          sorter: (a, b) => a.no - b.no,
           width:73,
           fixed:'left',
         },
         {
           title: 'Company Name',
-          dataIndex: ['attributes', 'name'],
-          key: 'attributes[name]',
-          sorter:(a, b) => a.attributes.name.localeCompare(b.attributes.name),
+          dataIndex: 'name',
+          key: 'name',
+          sorter:(a, b) => a.name.localeCompare(b.name),
           fixed:'left',
           width:146,
         },
         {
           title: 'Company Domain',
-          dataIndex: ['attributes', 'domain'],
-          key: 'attributes[domain]',
-          sorter:(a, b) => a.attributes.domain.localeCompare(b.attributes.domain),
+          dataIndex: 'domain',
+          key: 'domain',
+          sorter:(a, b) => a.domain.localeCompare(b.domain),
           width: 149,
         },
         {
             title: 'Address',
-            dataIndex: ['attributes', 'address'],
-            key: 'attributes[address]',
+            dataIndex: 'address',
+            key: 'address',
             width:159
         },
         {
             title: 'Manager Name',
-            dataIndex: ['attributes', 'phone'],
-            key: 'attributes[phone]',
+            dataIndex: ['manager', 'manager_name'],
+            key: 'manager[manager_name]',
             width: 128,
         },
         {
             title: 'Manager Title',
-            dataIndex: ['attributes', 'phone'],
-            key: 'attributes[phone]',
+            dataIndex: ['manager', 'manager_title'],
+            key: 'manager[manager_title]',
             width: 143,
         },
         {
             title: 'Email',
-            dataIndex: ['attributes', 'phone'],
-            key: 'attributes[phone]',
+            dataIndex: ['manager', 'manager_email'],
+            key: 'manager[manager_email]',
             width: 162,
         },
         {
             title: 'Manager Phone Number',
-            dataIndex: ['attributes', 'phone'],
-            key: 'attributes[phone]',
+            dataIndex: ['manager', 'manager_phone'],
+            key: 'manager[manager_phone]',
             width: 145,
         },
         {
@@ -100,7 +120,8 @@ const CompanyPage = () => {
             <Space size="middle">
                 <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
                 <button key="edit" className={styles.custombutton}><img src="/edit.svg"></img></button>
-                <DeleteMeeting></DeleteMeeting>
+                <p>{JSON.stringify(record.id)}</p>
+                <DeleteCompany company_id={record.id}></DeleteCompany>
             </Space>
           ),
           fixed: 'right',
