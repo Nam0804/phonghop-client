@@ -6,8 +6,8 @@ const loadingSlice = createSlice({
     value: false
   },
   reducers: {
-    setLoading: (state, action: PayloadAction<any>) => {
-        state.value = action.payload
+    setLoading: (state, action: PayloadAction<any>) => {      
+      state.value = action.payload
     }
   }
 })
@@ -19,6 +19,3 @@ const store = configureStore({
 })
 
 export default loadingSlice.reducer
-
-// Can still subscribe to the store
-store.subscribe(() => console.log(store.getState()))
