@@ -20,7 +20,9 @@ export default function RootLayout({
             <body tabIndex={-1}>
                 <ClientLayout params={params}>
                     <Providers>
-                        {children}
+                        <StoreProvider>
+                            {children}
+                        </StoreProvider>
                     </Providers>
                 </ClientLayout>
             </body>

@@ -16,6 +16,7 @@ import api from '@/axiosService';
 import { useLocale, useTranslations } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/loadingSlice';
+import SpinFC from 'antd/es/spin';
 
 
 
@@ -37,17 +38,19 @@ const LoginPage: React.FC<{}> = () => {
     };
 
     try {
+      dispatch(setLoading(true));
       const res = await api.post('auth/login', postData)
 
-      dispatch(setLoading(true));
       toast.success(t('success'));
       Cookies.set('token', res.data.data.token);
-      dispatch(setLoading(false));
-      router.push(`/${locale}`)
+
+      router.push(`/${locale}/company`)
 
     } catch (error) {
       console.log(error);
       toast.error(t('error'));
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -111,7 +114,7 @@ const LoginPage: React.FC<{}> = () => {
 
         <Button type="button" className={styles.loginbtn} onClick={handleButtonClick} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>LOG IN</Button>        <div className={styles.account}>
           <p>Don't have an account?</p>
-          <Link href="/vn/register"  className={styles.customlink}>
+          <Link href="/vn/register" className={styles.customlink}>
             Register
           </Link>
         </div>

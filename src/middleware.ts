@@ -5,8 +5,6 @@ export default async function middleware(request: NextRequest) {
   const [, locale, ...segments] = request.nextUrl.pathname.split('/');
   
   const authRoutes = ["/login"];
-
-  console.log(request.cookies);
   
   const token = request.cookies.get("token")?.value;
 
