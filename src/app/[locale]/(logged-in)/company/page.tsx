@@ -2,6 +2,10 @@
 import React from "react";
 import styles from '@/css/CompanyList.module.css'
 import Button from "@/constants/Form/Button";
+<<<<<<< HEAD
+import Modal from "@/constants/Modal/ChangePasswordModal";
+import AddNewCompany from "@/components/Admin/AddNewCompany";
+=======
 import {Table, Tag } from 'antd';
 import { DatePicker, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
@@ -141,7 +145,8 @@ const CompanyPage = () => {
                 />
             </div>
             <div className={styles.addco}>
-                <Button className={styles.addbtn}>ADD NEW COMPANY</Button>
+                {/* <Button className={styles.addbtn}>ADD NEW COMPANY</Button> */}
+                <AddNewCompany></AddNewCompany>
             </div>
         </div>
     );
