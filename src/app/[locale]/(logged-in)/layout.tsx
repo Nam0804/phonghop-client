@@ -17,23 +17,19 @@ export default function LocaleLayout({ children, params: { locale } }: any) {
   if (!locales.includes(locale as any)) notFound();
 
   return (
-    <html lang={locale}>
-      <body style={{ margin: 0, padding: 0 }}>
-        <header>
-          <Header></Header>
-        </header>
-        <div style={{ width: '80px', float: 'left', height: '100%' }}>
-          <Sidebar></Sidebar>
-        </div>
-        <section style={{ width: 'calc(100% - 80px)', float: 'right' }}>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            <StoreProvider>
+    <>
+      <header>
+        <Header></Header>
+      </header>
+      <div style={{ width: '80px', float: 'left', height: '100%' }}>
+        <Sidebar></Sidebar>
+      </div>
+      <section style={{ width: 'calc(100% - 80px)', float: 'right' }}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
             <Toaster position="top-right" />
-              {children}
-            </StoreProvider>
-          </NextIntlClientProvider>
-        </section>
-      </body>
-    </html>
+            {children}
+        </NextIntlClientProvider>
+      </section>
+    </>
   );
 }

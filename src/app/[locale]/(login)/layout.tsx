@@ -14,30 +14,31 @@ const DefaultLoginLayout = ({ children, params: { locale } }: any) => {
 
   const messages = useMessages();
 
-
+  console.log(messages);
+  
   if (!locales.includes(locale as any)) notFound();
 
   return (
-    <SpinFC spinning={false}>
-      <div className={styles.container}>
-        <div className='row'>
-          <div className='col-lg-6 col-md-6 col-sm-12'>
-            <img src='/assets/images/Turtorial1.png' width={'100%'} height={'900px'} alt="Tutorial" />
-          </div>
-          <div className='col-lg-6 col-md-6 col-sm-12'>
-            <div className={styles.customStyle}>
-              <img src='/assets/images/Layer_1.png' style={{ marginTop: '52px' }}></img>
-              <NextIntlClientProvider locale={locale} messages={messages}>
-                <StoreProvider>
-                  <Toaster position="top-right" />
-                  {children}
-                </StoreProvider>
-              </NextIntlClientProvider>
+    <>
+      <SpinFC spinning={false}>
+        <div className={styles.container}>
+          <div className='row'>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <img src='/assets/images/Turtorial1.png' width={'100%'} height={'900px'} alt="Tutorial" />
+            </div>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <div className={styles.customStyle}>
+                <img src='/assets/images/Layer_1.png' style={{ marginTop: '52px' }}></img>
+                <NextIntlClientProvider locale={locale} messages={messages}>
+                    <Toaster position="top-right" />
+                    {children}
+                </NextIntlClientProvider>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </SpinFC>
+      </SpinFC>
+    </>
   );
 };
 export default DefaultLoginLayout;
