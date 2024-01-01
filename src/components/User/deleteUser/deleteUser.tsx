@@ -4,6 +4,7 @@ import Button from "@/constants/Form/Button";
 import styles from '/src/css/DeleteUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
+import api from '@/axiosService';
 const DeleteUser = ({user_id}:any) => {
     const [visible, setVisible] = useState(false);
 
@@ -16,27 +17,8 @@ const DeleteUser = ({user_id}:any) => {
     };
 
     const confirmDeleteAction = () => {
-        const apiUrl = process.env.API_URL + `delete-users/${user_id}`;
         const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-        axios.delete(apiUrl, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + bearerToken
-            }
-        })
-            .then(response => {
-                if (response.status === 204) {
-                    console.log('User deleted successfully.');
-                } else {
-                    console.error('Error deleting user:', response.status);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            })
-            .finally(() => {
-                setVisible(false);
-            });
+        api.delete(`delete-users/${user_id}`,bearerToken);
     };
 
     return (
