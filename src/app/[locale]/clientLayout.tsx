@@ -2,7 +2,6 @@
 
 import React, { ReactElement, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { AppStore } from '@/lib/store';
 
 export default function ClientLayout({
     children,

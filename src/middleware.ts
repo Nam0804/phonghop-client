@@ -11,7 +11,7 @@ export default async function middleware(request: NextRequest) {
   const handleI18nRouting = createIntlMiddleware({
     locales: ['en', 'vn'],
     defaultLocale: 'en',
-    localePrefix: 'as-needed'
+    localePrefix: 'always'
   });
 
   if (!token // || Date.now() > token
