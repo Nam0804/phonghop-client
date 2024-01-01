@@ -9,14 +9,12 @@ import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Button from '@/constants/Form/Button';
-import axios from 'axios';
 import Modal from '@/constants/Modal/FirstLogModal'
 import { toast } from 'react-hot-toast';
 import api from '@/axiosService';
 import { useLocale, useTranslations } from 'next-intl';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/loadingSlice';
-import SpinFC from 'antd/es/spin';
 
 
 
@@ -25,7 +23,6 @@ const LoginPage: React.FC<{}> = () => {
   const t = useTranslations('Login');
   const locale = useLocale();
   const router = useRouter()
-  const loading = useAppSelector((state) => state.loading)
   const dispatch = useAppDispatch()
 
   const [email, setEmail] = useState('');
