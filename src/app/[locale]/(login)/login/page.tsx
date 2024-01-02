@@ -3,50 +3,91 @@ import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Input from '@/constants/Form/Input';
 import styles from '@/css/Login.module.css';
-import DefaultLoginLayout from '@/layouts/User/DefaultLoginLayout';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Button from '@/constants/Form/Button';
-import axios from 'axios';
+import Modal from '@/constants/Modal/FirstLogModal'
+import { toast } from 'react-hot-toast';
+import api from '@/axiosService';
+import { useLocale, useTranslations } from 'next-intl';
+import { useAppDispatch } from '@/lib/hooks';
+import { setLoading } from '@/lib/features/loadingSlice';
 
 
 
 const LoginPage: React.FC<{}> = () => {
+
+  const t = useTranslations('Login');
+  const locale = useLocale();
   const router = useRouter()
+  const dispatch = useAppDispatch()
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const handleLogin = () => {
+  const isFormValid = email !== '' && password !== '';
+  const handleLogin = async () => {
     const postData = {
       email: email,
       password: password
     };
 
-    axios.post(process.env.API_URL + 'auth/login', postData, {
-      withCredentials: false,
-    })
-      .then(response => {
+    try {
+      dispatch(setLoading(true));
+      const res = await api.post('auth/login', postData)
 
-        if (response) {
-          console.log(response.data.data.token);
-          Cookies.set('token', response.data.data.token);
-          router.push('/');
-        } else {
-          console.error('Token not found')
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error('HTTP Error:', error.response.data);
-        } else if (error.request) {
-          console.error('No response received for the request.');
-        } else {
-          console.error('Error setting up the request or handling the response:', error.message);
-        }
-      });
+      toast.success(t('success'));
+      Cookies.set('token', res.data.data.token);
+
+      router.push(`/${locale}/company`)
+
+    } catch (error) {
+      console.log(error);
+      toast.error(t('error'));
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFirstTimeLogin, setIsFirstTimeLogin] = useState(true);
+
+  const someAsyncFunction = async () => {
+    return { isFirstTimeLogin: true };
+  };
+
+
+  useEffect(() => {
+    const checkFirstTimeLogin = async () => {
+      try {
+        const response = await someAsyncFunction();
+
+        if (response.isFirstTimeLogin) {
+          setIsModalOpen(true);
+        }
+      } catch (error) {
+        console.error('Error checking first-time login:', error);
+      }
+    };
+
+    checkFirstTimeLogin();
+  }, []);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleButtonClick = () => {
+    handleLogin();
+    openModal();
+  };
+  const [passwordVisible, setpasswordVisible] = useState(false);
   const onChange = (e: CheckboxChangeEvent) => {
     console.log(`checked = ${e.target.checked}`);
   };
@@ -54,15 +95,12 @@ const LoginPage: React.FC<{}> = () => {
     <>
       <div className={styles.inputform}>
         <div className={styles.input}>
-          {
-            !email && <img src="/mail.svg" alt="" className={styles.icon} />
-          }
+          <img src="/mail.svg" alt="" className={styles.icon} />
 
-          <Input type="text" name="username" placeholder="Email" className={styles.inputsection} style={{ marginBottom: '24px' }} onChange={(e: any) => setEmail(e.target.value)}></Input>
-        </div>
+          <Input type="text" name="username" placeholder="Email" className={styles.inputsection} style={{ marginBottom: '24px' }} onChange={(e: any) => setEmail(e.target.value)} value={email}></Input>        </div>
         <div className={styles.input}>
           <img src="/pass.svg" alt="" className={styles.icon} />
-          <Input type="text" name="password" placeholder="Password" className={styles.inputsection} style={{ marginBottom: '48px' }} onChange={(e: any) => setPassword(e.target.value)}></Input>
+          <Input type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" className={styles.inputsection} style={{ marginBottom: '48px' }} onChange={(e: any) => setPassword(e.target.value)} value={password}></Input>          <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={() => setpasswordVisible(!passwordVisible)} />
         </div>
         <div className={styles.forgot}>
           <Checkbox onChange={onChange}>Remember me</Checkbox>
@@ -70,12 +108,39 @@ const LoginPage: React.FC<{}> = () => {
             Forgot password?
           </Link>
         </div>
-        <Button type="button" className={styles.loginbtn} onClick={handleLogin}>LOG IN</Button>
-        <div className={styles.account}>
-          <p> Don&apos;t have an account? </p>
-          <Link href="/other-page2" className={styles.customlink}>
+
+        <Button type="button" className={styles.loginbtn} onClick={handleButtonClick} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>LOG IN</Button>        <div className={styles.account}>
+          <p>Don't have an account?</p>
+          <Link href="/vn/register" className={styles.customlink}>
             Register
           </Link>
+        </div>
+        <div>
+          {isModalOpen && (
+            <Modal title="Kindly change your password for first time log in." onClose={closeModal} >
+              {
+                <>
+                  <div className={styles.inputgroup}>
+                    <div className={styles.inputform1}>
+                      <img src="/pass.svg" alt="" className={styles.icon1} />
+                      <input type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" />
+                      <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={() => setpasswordVisible(!passwordVisible)} />
+                    </div>
+                    <div className={styles.inputform1}>
+                      <img src="/pass.svg" alt="" className={styles.icon1} />
+                      <input type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" />
+                      <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={() => setpasswordVisible(!passwordVisible)} />
+                    </div>
+                  </div>
+                  <div className={styles.btngroup}>
+                    <Button className={styles.passbtn}>SAVE</Button>
+                    <Button color="#FFF" className={styles.closebtn} onClick={closeModal}>CLOSE</Button>
+                  </div>
+
+                </>
+              }
+            </Modal>
+          )}
         </div>
       </div>
     </>
