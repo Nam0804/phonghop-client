@@ -7,12 +7,13 @@ import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { notFound } from 'next/navigation';
 import SpinFC from 'antd/es/spin';
 import { useAppSelector } from '@/redux/hooks';
+import { get } from 'lodash';
 
 const locales = ['en', 'vn'];
 
 const DefaultLoginLayout = ({ children, params: { locale } }: any) => {
 
-  const loading = useAppSelector((state) => state.loading)
+  const loading: any = useAppSelector((state) => get(state, 'loading', false));
 
   if (!locales.includes(locale as any)) notFound();
 

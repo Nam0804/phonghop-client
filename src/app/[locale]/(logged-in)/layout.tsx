@@ -3,7 +3,7 @@ import Header from '@/constants/Header/Header';
 import Sidebar from '@/constants/Sidebar/Sidebar';
 import { useAppSelector } from '@/redux/hooks';
 import SpinFC from 'antd/es/spin';
-import { NextIntlClientProvider, useMessages } from 'next-intl';
+import { get } from 'lodash';
 import { notFound } from 'next/navigation';
 import { Toaster } from "react-hot-toast";
 
@@ -12,7 +12,7 @@ const locales = ['en', 'vn'];
 
 export default function LocaleLayout({ children, params: { locale } }: any) {
 
-  const loading = useAppSelector((state) => state.loading)
+  const loading: any = useAppSelector((state) => get(state, 'loading', false));
 
   if (!locales.includes(locale as any)) notFound();
 
