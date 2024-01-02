@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {Modal} from 'antd';
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/DeleteMeeting.module.css';
-import axios from "axios";
+import api from '@/axiosService';
 
-const DeleteMeeting = ({ room_id }:any) => {
+const DeleteMeeting = ({room_id}: any) => {
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -17,36 +17,29 @@ const DeleteMeeting = ({ room_id }:any) => {
         setVisible(false);
     };
 
-    const confirmDeleteAction = (availabilities: any) => {
+    const confirmDeleteAction = async (availabilities: any) => {
         if (availabilities == 0) {
             setErrorMessage('This room is under booking, cannot be deleted!');
         } else {
-            const apiUrl = process.env.API_URL + `delete-meeting-room/${room_id}`;
-            const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-            axios.delete(apiUrl, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + bearerToken
-                }
-            })
-                .then(response => {
-                    if (response.status === 204) {
-                        console.log('Room deleted successfully.');
-                    } else {
-                        console.error('Error deleting room:', response.status);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                })
-                .finally(() => {
-                    setVisible(false);
+            try {
+                const bearerToken = '5|LZTjWFa2QqubYjM1JSJZ1F7GFnqTdKxxbabeAJHH54f2abb6';
+                // Assuming api.delete returns a promise, you may want to handle the response
+                const response = await api.delete(`delete-meeting-room/${room_id}`, {
+                    headers: {Authorization: `Bearer ${bearerToken}`},
                 });
+                console.log('Delete response:', response);
+                // Handle success or update UI accordingly
+            } catch (error) {
+                console.error('Delete error:', error);
+                // Handle error, show a message to the user, or log it
+            } finally {
+                setVisible(false); // Regardless of success or failure, hide the popup
+            }
         }
     };
     return (
         <>
-            <button onClick={showPopup}>Delete User</button>
+            <button onClick={showPopup}>Delete Meeting</button>
             <Modal
                 title={
                     <div className={styles.warningTitle}>
@@ -65,7 +58,8 @@ const DeleteMeeting = ({ room_id }:any) => {
                 )}
                 <div className={styles.buttonContainer}>
                     <div>
-                        <Button className={styles.buttonDelete} onClick={() => confirmDeleteAction(1)} label='DELETE'/>
+                        <Button className={styles.buttonDelete} onClick={() => confirmDeleteAction(1)}
+                                label='DELETE'/>
                     </div>
                     <div>
                         <Button className={styles.buttonCancel} htmltype="submit" onClick={handleCancel}
