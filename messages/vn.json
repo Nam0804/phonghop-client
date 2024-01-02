@@ -13,5 +13,9 @@
   "Add": {
     "success": "Thêm thành công",
     "error": "Thêm lỗi"
+  },
+  "Edit": {
+    "success" : "Sửa thành công",
+    "error" : "Sửa không thành công"
   }
 }

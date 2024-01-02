@@ -4,18 +4,21 @@ import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import styles from "@/css/ManagerEditInfor.module.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "axios";
-
+import api from '@/axiosService';
+import { toast } from 'react-hot-toast';
+import { useLocale, useTranslations } from 'next-intl';
 
 const ManagerEditInfor = ({user}: any) => {
     const [form] = Form.useForm();
     const [formData, setFormData] = useState({...user});
     const [visible, setVisible] = useState(false);
+    const t = useTranslations('Edit');
+    const locale = useLocale();
 
     useEffect(() => {
         form.setFieldsValue({
-            'manager-title': user.attributes.title,
-            'phone': user.attributes.phone,
+            'manager-title': user.title,
+            'phone': user.phone,
         });
     }, [form, user]);
     const showPopup = () => {
@@ -26,32 +29,23 @@ const ManagerEditInfor = ({user}: any) => {
     };
     const handleEdit = async () => {
         try {
-            const apiUrl = process.env.API_URL + `update-user/${user.id}`;
-            const bearerToken = '5|eorFq7VV5FwykcowkJbqLFekPxZ8rcofO076xeOB2f47b1a4';
+            const values = await form.validateFields();
             const updateData = {
-                phone: user.attributes.phone,
-                title: user.attributes.title,
+                phone: user.phone,
+                title: user.title,
             };
-            const response = await axios.put(
-                apiUrl,
-                updateData,
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer ' + bearerToken,
-                    },
-                }
+            const response = await api.put(
+                `update-user/${user.id}`,
+                values,
             );
 
             if (response.status === 200) {
-                message.success('Update user successfully');
+                toast.success(t('success'));
                 setVisible(false);
-            } else {
-                message.error('Failed to update user');
             }
         } catch (error) {
-            console.error('Error:', error);
-            message.error('Failed to update user');
+            console.error(error);
+            toast.error(t('error'));
         }
     };
     return (
@@ -76,7 +70,7 @@ const ManagerEditInfor = ({user}: any) => {
                             label={<span className={styles.label}>Manager Name*</span>}
                             name="manager-name"
                         >
-                            <p className={styles.formFields}>{user.attributes.name}</p>
+                            <p className={styles.formFields}>{user.name}</p>
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>
@@ -84,7 +78,7 @@ const ManagerEditInfor = ({user}: any) => {
                             label={<span className={styles.label}>Company*</span>}
                             name="company"
                         >
-                            <p className={styles.formFields}>{user.relationships.company.data.company_name}</p>
+                            <p className={styles.formFields}>{user.company.data.company_name}</p>
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>
@@ -109,7 +103,7 @@ const ManagerEditInfor = ({user}: any) => {
                             label={<span className={styles.label}>Email Address*</span>}
                             name="email"
                         >
-                            <p className={styles.formFields}>{user.attributes.email}</p>
+                            <p className={styles.formFields}>{user.email}</p>
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>

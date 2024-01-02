@@ -6,6 +6,7 @@ import {Table, Tag } from 'antd';
 import { DatePicker, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from "react";
+import { get } from 'lodash';
 import './customantd.css'
 import api from '@/axiosService';
 import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
@@ -14,10 +15,16 @@ import DeleteUser from 'src/components/User/deleteUser/deleteUser';
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
     useEffect(() => {
-        const result = api.get("users/company/1");
-        console.log(result);
-        setAllStaffData(result.data);
-      }, []);
+        api.get("users/company/1")
+            .then((response: any) => {
+                const rawData = get(response, 'data.data.data', []);
+                setAllStaffData(rawData);
+            })
+            .catch((error: any) => {
+                console.log(error);
+            });
+    }, [allStaffData]);
+
     interface DataType {
         key: string;
         no: number;
@@ -38,7 +45,7 @@ const UserPage = () => {
         },
         {
           title: 'Name',
-          dataIndex: ['attributes', 'name'],
+          dataIndex: ['name'],
           key: 'attributes[name]',
           sorter:(a,b) => a.name.localeCompare(b.name),
           fixed:'left',
@@ -46,20 +53,20 @@ const UserPage = () => {
         },
         {
           title: 'Role',
-          dataIndex: ['attributes', 'title'],
+          dataIndex: ['title'],
           key: 'attributes[type]',
           sorter:(a,b) => a.title.localeCompare(b.title),
           width: 273,
         },
         {
             title: 'Email',
-            dataIndex: ['attributes', 'email'],
+            dataIndex: ['email'],
             key: 'attributes[email]',
             width:262
         },
         {
             title: 'Phone Number',
-            dataIndex: ['attributes', 'phone'],
+            dataIndex: ['phone'],
             key: 'attributes[phone]',
             width: 251,
         },
@@ -85,8 +92,8 @@ const UserPage = () => {
                 <h1 className={styles.label}>Staff List</h1>
             </div>
             <div className={styles.companytable}>
-                <Table columns={columns} dataSource={allStaffData} 
-                    scroll={{x:1000}} 
+                <Table columns={columns} dataSource={allStaffData}
+                    scroll={{x:1000}}
                 />
             </div>
             <div className={styles.addco}>

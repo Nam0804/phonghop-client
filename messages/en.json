@@ -13,5 +13,9 @@
   "Add": {
     "success": "Add successful",
     "error": "Add error"
+  },
+  "Edit": {
+    "success": "Edit successful",
+    "error": "Edit error"
   }
 }
