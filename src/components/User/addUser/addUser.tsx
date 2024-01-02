@@ -48,7 +48,7 @@ const AddUser = () => {
 
     return (
         <>
-            <button onClick={showPopup}>New User</button>
+            <button onClick={showPopup} className={styles.addbtn}>ADD NEW USER</button>
             <Modal
                 title={
                     <div className={styles.formTitle}>Add New Staff</div>
@@ -58,6 +58,7 @@ const AddUser = () => {
                 footer={null}
                 closable={false}
                 width={973}
+                centered
             >
                 <Form
                     form={form}

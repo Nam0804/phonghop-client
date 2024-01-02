@@ -11,7 +11,7 @@ import './customantd.css'
 import api from '@/axiosService';
 import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
 import DeleteUser from 'src/components/User/deleteUser/deleteUser';
-
+import AddUser from 'src/components/User/addUser/addUser';
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
     useEffect(() => {
@@ -97,7 +97,7 @@ const UserPage = () => {
                 />
             </div>
             <div className={styles.addco}>
-                <Button className={styles.addbtn}>ADD NEW USER</Button>
+                <AddUser />
             </div>
         </div>
     );

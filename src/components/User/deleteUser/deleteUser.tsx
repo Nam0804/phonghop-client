@@ -44,6 +44,7 @@ const DeleteUser = ({user_id}: any) => {
                 footer={null}
                 closable={false}
                 width={626}
+                centered
             >
                 <div className={styles.buttonContainer}>
                     <div>
