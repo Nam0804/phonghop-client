@@ -20,17 +20,14 @@ const DeleteUser = ({user_id}: any) => {
     const confirmDeleteAction = async () => {
         try {
             const bearerToken = '5|LZTjWFa2QqubYjM1JSJZ1F7GFnqTdKxxbabeAJHH54f2abb6';
-            // Assuming api.delete returns a promise, you may want to handle the response
             const response = await api.delete(`delete-users/${user_id}`, {
                 headers: { Authorization: `Bearer ${bearerToken}` },
             });
             console.log('Delete response:', response);
-            // Handle success or update UI accordingly
         } catch (error) {
             console.error('Delete error:', error);
-            // Handle error, show a message to the user, or log it
         } finally {
-            setVisible(false); // Regardless of success or failure, hide the popup
+            setVisible(false);
         }
     };
 

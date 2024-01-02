@@ -4,7 +4,7 @@ import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/AddUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "axios";
+import api from '@/axiosService';
 
 const AddUser = () => {
     const [visible, setVisible] = useState(false);
@@ -20,43 +20,36 @@ const AddUser = () => {
         setVisible(false);
     };
 
-    function handleSubmit() {
-        form.validateFields()
-            .then(async (values) => {
-                try {
-                    const password = Math.random().toString(36);
-                    values = {
-                        ...values,
-                        password: password,
-                        password_confirmation: password,
-                        company_id: 1,
-                        type: 1
-                    }
-                    const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-                    const { data } = await axios.post(
-                        process.env.API_URL + "store-user",
-                        values,
-                        {
-                            headers: {Authorization: 'Bearer ' + bearerToken}
-                        }
-                    );
-
-                    if (data.ok) {
-                        message.success('User created successfully');
-                        form.resetFields();
-                        setVisible(false);
-                    } else {
-                        message.error('Failed to create user');
-                    }
-                } catch (e) {
-                    console.error('Error creating user:', e);
-                    message.error('Failed to create user');
-                }
-            })
-            .catch((errorInfo) => {
-                console.log(errorInfo);
+    async function handleSubmit() {
+        try {
+            await form.validateFields();
+            const password = Math.random().toString(36);
+            const values = {
+                ...form.getFieldsValue(),
+                password: password,
+                password_confirmation: password,
+                company_id: 1,
+                type: 1
+            };
+            const bearerToken = '5|LZTjWFa2QqubYjM1JSJZ1F7GFnqTdKxxbabeAJHH54f2abb6';
+            const response = await api.post(`store-user`, values, {
+                headers: {
+                    Authorization: `Bearer ${bearerToken}`
+                },
             });
-    }
+
+            console.log('Add response:', response);
+
+            if (response.ok) {
+                message.success('User created successfully');
+                form.resetFields();
+                setVisible(false);
+            }
+        } catch (e) {
+            console.error('Error creating user:', e);
+            message.error('Failed to create user');
+        }
+    };
 
     return (
         <>
