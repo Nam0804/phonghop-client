@@ -29,7 +29,7 @@ const LoginPage: React.FC<{}> = () => {
   const [password, setPassword] = useState('');
   const isFormValid = email !== '' && password !== '';
   const handleLogin = async () => {
-    const postData = {
+    const postData = { 
       email: email,
       password: password
     };
@@ -51,29 +51,8 @@ const LoginPage: React.FC<{}> = () => {
     }
   };
 
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isFirstTimeLogin, setIsFirstTimeLogin] = useState(true);
-
-  const someAsyncFunction = async () => {
-    return { isFirstTimeLogin: true };
-  };
-
-
-  useEffect(() => {
-    const checkFirstTimeLogin = async () => {
-      try {
-        const response = await someAsyncFunction();
-
-        if (response.isFirstTimeLogin) {
-          setIsModalOpen(true);
-        }
-      } catch (error) {
-        console.error('Error checking first-time login:', error);
-      }
-    };
-
-    checkFirstTimeLogin();
-  }, []);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -123,18 +102,17 @@ const LoginPage: React.FC<{}> = () => {
                   <div className={styles.inputgroup}>
                     <div className={styles.inputform1}>
                       <img src="/pass.svg" alt="" className={styles.icon1} />
-                      <input type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" />
-                      <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={() => setpasswordVisible(!passwordVisible)} />
+                      <input type={passwordVisible ? 'text' : 'password'} name="password" className={styles.inputsection} placeholder="Password*" />
+                      <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide2} onClick={() => setpasswordVisible(!passwordVisible)} />
                     </div>
                     <div className={styles.inputform1}>
                       <img src="/pass.svg" alt="" className={styles.icon1} />
-                      <input type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" />
-                      <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={() => setpasswordVisible(!passwordVisible)} />
+                      <input type={passwordVisible ? 'text' : 'password'} name="password" className={styles.inputsection} placeholder="Confirm Password*" />
+                      <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide2} onClick={() => setpasswordVisible(!passwordVisible)} />
                     </div>
                   </div>
                   <div className={styles.btngroup}>
-                    <Button className={styles.passbtn}>SAVE</Button>
-                    <Button color="#FFF" className={styles.closebtn} onClick={closeModal}>CLOSE</Button>
+                    <Button className={styles.passbtn} onClick={closeModal}>CHANGE PASSWORD</Button>
                   </div>
 
                 </>

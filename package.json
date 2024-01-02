@@ -34,7 +34,7 @@
     "react-router-dom": "^6.21.0",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
-    "sort-by": "^1.2.0",
+    "sort-by": "^0.0.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
