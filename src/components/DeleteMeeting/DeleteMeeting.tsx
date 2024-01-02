@@ -3,11 +3,14 @@ import {Modal} from 'antd';
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/DeleteMeeting.module.css';
 import api from '@/axiosService';
+import { toast } from 'react-hot-toast';
+import { useLocale, useTranslations } from 'next-intl';
 
 const DeleteMeeting = ({room_id}: any) => {
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-
+    const t = useTranslations('Delete');
+    const locale = useLocale();
     const showPopup = () => {
         setVisible(true);
     };
@@ -22,13 +25,11 @@ const DeleteMeeting = ({room_id}: any) => {
             setErrorMessage('This room is under booking, cannot be deleted!');
         } else {
             try {
-                const bearerToken = '5|LZTjWFa2QqubYjM1JSJZ1F7GFnqTdKxxbabeAJHH54f2abb6';
-                const response = await api.delete(`delete-meeting-room/${room_id}`, {
-                    headers: {Authorization: `Bearer ${bearerToken}`},
-                });
-                console.log('Delete response:', response);
+                const response = await api.delete(`delete-meeting-room/${room_id}`);
+                toast.success(t('success'));
             } catch (error) {
-                console.error('Delete error:', error);
+                console.log(error);
+                toast.error(t('error'));
             } finally {
                 setVisible(false);
             }

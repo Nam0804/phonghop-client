@@ -5,6 +5,7 @@ import styles from '@/css/DeleteMeeting.module.css';
 import axios from "axios";
 import './customantd.css'
 import customstyle from '@/css/CompanyList.module.css'
+import { toast } from 'react-hot-toast';
 
 const DeleteMeeting = ({ room_id }:any) => {
     const [visible, setVisible] = useState(false);
@@ -25,12 +26,7 @@ const DeleteMeeting = ({ room_id }:any) => {
         } else {
             const apiUrl = process.env.API_URL + `delete-meeting-room/${room_id}`;
             const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-            axios.delete(apiUrl, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + bearerToken
-                }
-            })
+            axios.delete(apiUrl)
                 .then(response => {
                     if (response.status === 204) {
                         console.log('Room deleted successfully.');

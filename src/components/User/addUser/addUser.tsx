@@ -5,12 +5,15 @@ import Button from "@/constants/Form/Button";
 import styles from '/src/css/AddUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '@/axiosService';
+import { toast } from 'react-hot-toast';
+import { useLocale, useTranslations } from 'next-intl';
 
 const AddUser = () => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [users, setUsers] = useState([]);
-
+    const t = useTranslations('Add');
+    const locale = useLocale();
     const showPopup = () => {
         setVisible(true);
     };
@@ -31,23 +34,15 @@ const AddUser = () => {
                 company_id: 1,
                 type: 1
             };
-            const bearerToken = '5|LZTjWFa2QqubYjM1JSJZ1F7GFnqTdKxxbabeAJHH54f2abb6';
-            const response = await api.post(`store-user`, values, {
-                headers: {
-                    Authorization: `Bearer ${bearerToken}`
-                },
-            });
-
-            console.log('Add response:', response);
-
+            const response = await api.post(`store-user`, values);
             if (response.ok) {
-                message.success('User created successfully');
+                toast.success(t('success'));
                 form.resetFields();
                 setVisible(false);
             }
-        } catch (e) {
-            console.error('Error creating user:', e);
-            message.error('Failed to create user');
+        } catch (error) {
+            console.log(error);
+            toast.error(t('error'));
         }
     };
 
