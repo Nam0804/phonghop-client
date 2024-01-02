@@ -33,7 +33,7 @@ const DeleteUser = ({user_id}: any) => {
 
     return (
         <>
-            <button onClick={showPopup}>Delete User</button>
+            <button onClick={showPopup} className={styles.custombutton} style={{backgroundColor:'#E56353'}}><img src="/delete.svg"></img></button>
             <Modal
                 title={
                     <div className={styles.warningTitle}>

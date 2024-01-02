@@ -5,26 +5,18 @@ import Button from "@/constants/Form/Button";
 import {Table, Tag } from 'antd';
 import { DatePicker, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import axios from "axios";
 import { useEffect, useState } from "react";
 import './customantd.css'
+import api from '@/axiosService';
 import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
+import DeleteUser from 'src/components/User/deleteUser/deleteUser';
 
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
     useEffect(() => {
-        const token = "34|SJrxVEn6FBLtlsM9pO08LRElSUw4LkhIiP0pEODg022b32f7";
-        const config ={
-            headers:{
-                Authorization: `Bearer ${token}`,
-            },
-        }; 
-        fetch("http://localhost:8000/api/users/company/2",config)
-        .then((res) => res.json())
-        .then((result) => {
-          console.log(result.data.data)
-            setAllStaffData(result.data.data);
-        })
+        const result = api.get("users/company/1");
+        console.log(result);
+        setAllStaffData(result.data);
       }, []);
     interface DataType {
         key: string;
@@ -78,7 +70,7 @@ const UserPage = () => {
             <Space size="middle">
                 <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
                 <ManagerEditInfor user={record}/>
-                <button key="delete" className={styles.custombutton} style={{backgroundColor:'#E56353'}}><img src="/delete.svg"></img></button>
+                <DeleteUser user_id = {record.id}/>
             </Space>
           ),
           fixed: 'right',
