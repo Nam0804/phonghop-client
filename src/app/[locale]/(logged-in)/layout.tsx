@@ -1,23 +1,23 @@
-import StoreProvider from '@/providers/StoreProvider';
+'use client'
 import Header from '@/constants/Header/Header';
 import Sidebar from '@/constants/Sidebar/Sidebar';
-import { NextIntlClientProvider, useMessages } from 'next-intl';
+import { useAppSelector } from '@/redux/hooks';
+import SpinFC from 'antd/es/spin';
+import { get } from 'lodash';
 import { notFound } from 'next/navigation';
 import { Toaster } from "react-hot-toast";
-import { useAppSelector } from '@/lib/hooks';
-
 
 // Can be imported from a shared config
 const locales = ['en', 'vn'];
 
 export default function LocaleLayout({ children, params: { locale } }: any) {
 
-  const messages = useMessages();
+  const loading: any = useAppSelector((state) => get(state, 'loading', false));
 
   if (!locales.includes(locale as any)) notFound();
 
   return (
-    <>
+    <SpinFC spinning={!!loading.value ? loading : false}>
       <header>
         <Header></Header>
       </header>
@@ -25,11 +25,9 @@ export default function LocaleLayout({ children, params: { locale } }: any) {
         <Sidebar></Sidebar>
       </div>
       <section style={{ width: 'calc(100% - 80px)', float: 'right' }}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-            <Toaster position="top-right" />
-            {children}
-        </NextIntlClientProvider>
+        <Toaster position="top-right" />
+        {children}
       </section>
-    </>
+    </SpinFC>
   );
 }
