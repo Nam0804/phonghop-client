@@ -5,8 +5,9 @@ import styles from '@/css/DeleteMeeting.module.css';
 import axios from "axios";
 import './customantd.css'
 import customstyle from '@/css/CompanyList.module.css'
+import api from '@/axiosService';
 
-const DeleteCompany = ({ company_id }:any) => {
+const DeleteCompany = ({ company_id,onDeleteSuccess }:any) => {
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -18,22 +19,17 @@ const DeleteCompany = ({ company_id }:any) => {
         setErrorMessage('');
         setVisible(false);
     };
-
+    // headers: {
+    //     'Accept': 'application/vnd.api+json',
+    //     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    //     'Authorization': 'Bearer ' + bearerToken
+    // }
     const deleteRoom = async () => {
         try {
-            const apiUrl = `http://localhost:8000/api/delete-company/${company_id}`;
-            const bearerToken = '1|FrRHqIiDPPINlg9UM9zxzW15Vz8PwpRGuzd1TIMwbff51f52';
-    
-            const response = await axios.delete(apiUrl, {
-                headers: {
-                    'Accept': 'application/vnd.api+json',
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                    'Authorization': 'Bearer ' + bearerToken
-                }
-            });
-    
+            const response = await api.delete(`delete-company/${company_id}`);
             if (response.status === 200) {
                 console.log('Company deleted successfully.');
+                onDeleteSuccess();
             } else {
                 console.error('Error deleting company:', response.status, response.data);
             }
