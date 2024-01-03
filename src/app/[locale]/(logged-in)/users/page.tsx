@@ -86,7 +86,6 @@ const UserPage = () => {
           key: 'action',
           render: (_, record) => (
             <Space size="middle">
-                <p>{JSON.stringify(record)}</p>
                 <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
                 <ManagerEditInfor user={record}/>
                 <DeleteUser user_id = {record.id}/>

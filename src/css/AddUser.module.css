@@ -11,12 +11,14 @@
 }
 
 .label {
-    font-family: 'Be Vietnam Pro';
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 25px;
     color: #383838;
+    font-family: Be Vietnam Pro;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
     margin-left: 80px;
+    margin-top: 10px;
 }
 
 .formControl {
@@ -32,10 +34,34 @@
 
 .errorMessage {
     float: right;
-    margin-right: 290px;
+    padding-top: 4px;
+    margin-right: 300px;
+    font-family: Be Vietnam Pro;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.phoneError {
+    float: right;
+    padding-top: 4px;
+    margin-right: 220px;
+    font-family: Be Vietnam Pro;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .Input {
+    display: flex;
+    align-items: center;
+    font-family: Be Vietnam Pro;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
     height: 44px;
     width: 329px;
     border: 2px solid #225560;

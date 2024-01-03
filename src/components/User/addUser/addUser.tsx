@@ -108,18 +108,29 @@ const AddUser = () => {
                                         </span>
                                     ),
                                 },
+                                {
+                                    type: 'email',
+                                    message: (
+                                        <span className={styles.phoneError}>
+                        Please enter a valid email address
+                    </span>
+                                    ),
+                                },
                             ]}
                             style={{width: '100%'}}
                         >
                             <Input className={styles.Input}/>
                         </Form.Item>
-
                     </div>
                     <div className={styles.formControl}>
                         <Form.Item
                             label={<span className={styles.label}>Phone Number</span>}
                             name="phone"
                             style={{width: '100%'}}
+                            rules={[
+                                {min: 6, message:<span className={styles.phoneError}>Please input a valid phone number</span>},
+                                {max: 15, message:<span className={styles.phoneError}>Please input a valid phone number</span>}
+                            ]}
                         >
                             <Input className={styles.Input}/>
                         </Form.Item>
