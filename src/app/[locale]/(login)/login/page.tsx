@@ -36,11 +36,11 @@ const LoginPage: React.FC<{}> = () => {
     try {
       dispatch(setLoading(true));
       const res = await api.post('auth/login', postData)
-
       toast.success(t('success'));
       Cookies.set('token', res.data.data.token);
 
-      dispatch(initializeUser(res.data.data.user))
+      const user = res.data.data.user;
+      dispatch(initializeUser(user));
       router.push(`/${locale}/company`)
 
     } catch (error) {
