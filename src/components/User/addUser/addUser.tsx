@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '@/axiosService';
 import { toast } from 'react-hot-toast';
 import { useLocale, useTranslations } from 'next-intl';
+import { get } from 'lodash';
 
 const AddUser = () => {
     const [visible, setVisible] = useState(false);
@@ -35,7 +36,7 @@ const AddUser = () => {
                 type: 1
             };
             const response = await api.post(`store-user`, values);
-            if (response.ok) {
+            if (get(response, 'ok', false)) {
                 toast.success(t('success'));
                 form.resetFields();
                 setVisible(false);

@@ -19,7 +19,7 @@ const UserPage = () => {
     const user = useSelector((state) => state);
     useEffect(() => {
         console.log(user);
-        const company_id = user.company.data.company_id;
+        const company_id = get(user, 'company.data.company_id');
         if(company_id) {
             try {
                 api.get(`users/company/${company_id}`)
@@ -84,7 +84,7 @@ const UserPage = () => {
         {
           title: 'Action',
           key: 'action',
-          render: (_, record) => (
+          render: (_, record: any) => (
             <Space size="middle">
                 <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
                 <ManagerEditInfor user={record}/>
