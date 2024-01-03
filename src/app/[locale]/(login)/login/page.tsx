@@ -15,8 +15,7 @@ import api from '@/axiosService';
 import { useLocale, useTranslations } from 'next-intl';
 import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/loadingSlice';
-
-
+import { initializeUser } from '@/lib/features/user/userSlice';
 
 const LoginPage: React.FC<{}> = () => {
 
@@ -41,6 +40,7 @@ const LoginPage: React.FC<{}> = () => {
       toast.success(t('success'));
       Cookies.set('token', res.data.data.token);
 
+      dispatch(initializeUser(res.data.data.user))
       router.push(`/${locale}/company`)
 
     } catch (error) {

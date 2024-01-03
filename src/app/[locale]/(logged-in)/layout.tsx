@@ -1,7 +1,7 @@
 'use client'
 import Header from '@/constants/Header/Header';
 import Sidebar from '@/constants/Sidebar/Sidebar';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppSelector } from '@/lib/hooks';
 import SpinFC from 'antd/es/spin';
 import { get } from 'lodash';
 import { notFound } from 'next/navigation';
