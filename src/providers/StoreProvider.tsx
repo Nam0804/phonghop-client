@@ -21,5 +21,5 @@ export default function StoreProvider({
         {children}
       </PersistGate>
     </Provider>
-  )
+  )  
 }

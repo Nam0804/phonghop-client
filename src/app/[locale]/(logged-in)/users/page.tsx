@@ -10,8 +10,8 @@ import { get } from 'lodash';
 import './customantd.css'
 import api from '@/axiosService';
 import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
-import DeleteUser from 'src/components/User/deleteUser/deleteUser';
-import AddUser from 'src/components/User/addUser/addUser';
+import DeleteUser from '@/components/User/deleteUser/deleteUser';
+import AddUser from '@/components/User/addUser/addUser';
 import { useSelector } from 'react-redux'
 
 const UserPage = () => {
