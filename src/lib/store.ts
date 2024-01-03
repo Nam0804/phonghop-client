@@ -9,6 +9,7 @@ import { store } from '@/redux/store';
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['user'],
 }
 
 const rootReducer = combineReducers({
