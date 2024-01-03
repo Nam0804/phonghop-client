@@ -1,15 +1,11 @@
 'use client'
 import React, { useState, useEffect, useRef, use } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { useGetApiProfileQuery } from '@/redux/services/profileApi';
-import { selectApiProfileData } from "@/redux/slices/profileSlice";
+import { useGetApiProfileQuery } from '@/lib/services/profileApi';
+import { selectApiProfileData } from "@/lib/slices/profileSlice";
 import Modal from "@/constants/Modal/ProfileModal";
 import Button from "@/constants/Form/Button";
 import styles from "@/constants/Sidebar/Sidebar.module.css";
-import Cookies from 'js-cookie';
-import { Providers } from "@/redux/provider"
-
-
 
 export default function Profile({ togglePopup }: { togglePopup: any }) {
   const [show, setShow] = useState(false);

@@ -15,7 +15,7 @@ import api from '@/axiosService';
 import { useLocale, useTranslations } from 'next-intl';
 import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/loadingSlice';
-import { initializeUser } from 'src/lib/features/user/userSlice';
+import { initializeUser } from '@/lib/features/user/userSlice';
 
 const LoginPage: React.FC<{}> = () => {
 

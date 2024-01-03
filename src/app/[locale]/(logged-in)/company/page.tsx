@@ -9,9 +9,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import './customantd.css';
 import DeleteMeeting from "@/components/DeleteCompany/DeleteCompany";
+import { useAppSelector } from "@/lib/hooks";
+import { get } from "lodash";
 
 const CompanyPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
+
+    const profile: any = useAppSelector((state) => state);
+
     useEffect(() => {
         const token = "45|OMb1B7djnXw6DiGS96sEBu6cWK32J7hs1UADcdCVbe5ef1a0";
         const config ={
@@ -110,6 +115,7 @@ const CompanyPage = () => {
     return (
         <div className={styles.container}>
             <div className={styles.labelsection}>
+            {JSON.stringify(profile)}
                 <div className={styles.square}>
                 </div>
                 <h1 className={styles.label}>Company List</h1>

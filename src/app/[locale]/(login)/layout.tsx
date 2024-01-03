@@ -6,7 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { notFound } from 'next/navigation';
 import SpinFC from 'antd/es/spin';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppSelector } from '@/lib/hooks';
 import { get } from 'lodash';
 
 const locales = ['en', 'vn'];

@@ -24,11 +24,9 @@ export default function RootLayout({
             <body tabIndex={-1}>
                 <NextIntlClientProvider locale={params.locale} messages={messages}>
                     <ClientLayout params={params}>
-                        {/*<Providers>*/}
-                            <StoreProvider>
-                                {children}
-                            </StoreProvider>
-                        {/*</Providers>*/}
+                        <StoreProvider>
+                            {children}
+                        </StoreProvider>
                     </ClientLayout>
                 </NextIntlClientProvider>
             </body>
