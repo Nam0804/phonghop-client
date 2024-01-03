@@ -5,6 +5,7 @@ import styles from '/src/css/DeleteMeeting.module.css';
 import api from '@/axiosService';
 import { toast } from 'react-hot-toast';
 import { useLocale, useTranslations } from 'next-intl';
+import customstyle from '@/css/CompanyList.module.css'
 
 const DeleteMeeting = ({room_id}: any) => {
     const [visible, setVisible] = useState(false);
@@ -37,7 +38,7 @@ const DeleteMeeting = ({room_id}: any) => {
     };
     return (
         <>
-            <button onClick={showPopup}>Delete Meeting</button>
+            <button onClick={showPopup}>Delete User</button>
             <Modal
                 title={
                     <div className={styles.warningTitle}>
