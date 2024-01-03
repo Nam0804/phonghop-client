@@ -7,18 +7,29 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '@/axiosService';
 import customstyle from '@/css/CompanyList.module.css'
 import {Form as Form} from 'antd'
+import stylecomfirm from '@/css/DeleteMeeting.module.css';
 
-const EditNewCompany = ({rec}:any) => {
+const EditNewCompany = ({rec,onEditSuccess}:any) => {
     const [visible, setVisible] = useState(false);
     const [form1] = Form.useForm();
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     const showPopup = () => {
         setVisible(true);
     };
 
     const handleCancel = () => {
-        setVisible(false);
+        //setVisible(false);
+        setShowConfirmModal(true);
     };
+    const handleConfirmCancel = (confirmed: boolean) => {
+        if (confirmed) {
+          setShowConfirmModal(false);
+          setVisible(false);
+        } else {
+          setShowConfirmModal(false);
+        }
+      };
 
     useEffect(() => {
         form1.setFieldsValue({
@@ -38,11 +49,13 @@ const EditNewCompany = ({rec}:any) => {
             .then(async (values) => {
                 try {
                     console.log(values)
-                    const { data } = await api.put(`update-company/${rec.id}`,values)
-                    if (data.ok) {
+                    const data = await api.put(`update-company/${rec.id}`,values)
+                    if (data.status == 200) {
                         message.success('User update successfully');
-                        form1.resetFields();
                         setVisible(false);
+                        if (onEditSuccess) {
+                            onEditSuccess();
+                        }
                     } else {
                         message.error('Failed to create user');
                     }
@@ -72,7 +85,7 @@ const EditNewCompany = ({rec}:any) => {
             >
                 <Form
                     form={form1}
-                    name="Edit Company"
+                    name="Edit New Company"
                     requiredMark={false}
                 >
                     <p className={styles.toplabel}>Company Information</p>
@@ -101,6 +114,16 @@ const EditNewCompany = ({rec}:any) => {
                             label={<span className={styles.label}>Address*</span>}
                             name="company_address"
                             style={{width: '100%'}}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            This field is required!
+                                        </span>
+                                    ),
+                                },
+                            ]}
                         >
                             <input className={styles.Input}/>
                         </Form.Item>
@@ -122,7 +145,7 @@ const EditNewCompany = ({rec}:any) => {
                             ]}
                             style={{width: '100%'}}
                         >
-                            <input className={styles.Input}/>
+                            <input className={styles.Input} placeholder='IT Service/HealthCare'/>
                         </Form.Item>
 
                     </div>
@@ -131,6 +154,7 @@ const EditNewCompany = ({rec}:any) => {
                             label={<span className={styles.label}>Tax Code</span>}
                             name="company_taxcode"
                             style={{width: '100%'}}
+                            
                         >
                             <input className={styles.Input}/>
                         </Form.Item>
@@ -162,6 +186,16 @@ const EditNewCompany = ({rec}:any) => {
                             label={<span className={styles.label}>Title*</span>}
                             name="title"
                             style={{width: '100%'}}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            This field is required!
+                                        </span>
+                                    ),
+                                },
+                            ]}
                         >
                             <input className={styles.Input}/>
                         </Form.Item>
@@ -180,6 +214,14 @@ const EditNewCompany = ({rec}:any) => {
                                         </span>
                                     ),
                                 },
+                                {
+                                    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            Please enter email
+                                        </span>
+                                    ),
+                                },
                             ]}
                             style={{width: '100%'}}
                         >
@@ -191,12 +233,21 @@ const EditNewCompany = ({rec}:any) => {
                         <Form.Item
                             label={<span className={styles.label}>Phone Number*</span>}
                             name="phone"
+                            getValueFromEvent={(e) => e.target.value.slice(0, 12)}
                             rules={[
                                 {
                                     required: true,
                                     message: (
                                         <span className={styles.errorMessage}>
                                             This field is required!
+                                        </span>
+                                    ),
+                                },
+                                {
+                                    max: 12,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            Maximum length is 12 digits.
                                         </span>
                                     ),
                                 },
@@ -210,7 +261,7 @@ const EditNewCompany = ({rec}:any) => {
                     <Form.Item>
                         <div className={styles.buttonContainer}>
                             <div>
-                                <Button className={styles.buttonAdd} htmlType="submit" onClick={handleSubmit}
+                                <Button className={`${styles.buttonAdd} ${styles.formCompleted}`} htmlType="submit" onClick={handleSubmit}
                                         label='SAVE'/>
                             </div>
                             <div>
@@ -219,6 +270,28 @@ const EditNewCompany = ({rec}:any) => {
                         </div>
                     </Form.Item>
                 </Form>
+            </Modal>
+            <Modal
+                title={
+                    <div className={stylecomfirm.warningTitle}>
+                        Are you sure to cancel editing?
+                    </div>
+                }
+                open={showConfirmModal}
+                footer={null}
+                closable={false}
+                width={626}
+                centered
+            >
+                <div className={stylecomfirm.buttonContainer}>
+                    <div>
+                        <Button className={stylecomfirm.buttonDelete} onClick={() => handleConfirmCancel(false)} label='GO BACK TO EDITING'/>
+                    </div>
+                    <div>
+                        <Button className={stylecomfirm.buttonCancel} htmltype="submit" onClick={() => handleConfirmCancel(true)}
+                                label='CANCEL EDITING'/>
+                    </div>
+                </div>
             </Modal>
         </>
     );

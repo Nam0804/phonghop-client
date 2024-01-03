@@ -8,6 +8,7 @@ import type { ColumnsType } from 'antd/es/table';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import './customantd.css'
+import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
 
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
@@ -76,7 +77,7 @@ const UserPage = () => {
           render: (_, record) => (
             <Space size="middle">
                 <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
-                <button key="edit" className={styles.custombutton}><img src="/edit.svg"></img></button>
+                <ManagerEditInfor user={record}/>
                 <button key="delete" className={styles.custombutton} style={{backgroundColor:'#E56353'}}><img src="/delete.svg"></img></button>
             </Space>
           ),

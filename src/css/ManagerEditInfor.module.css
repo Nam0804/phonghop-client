@@ -9,6 +9,18 @@
     margin-bottom: 50px;
 }
 
+.formFields {
+    height: 44px;
+    width: 329px;
+    background-color: #EAEEF6;
+    border: 2px;
+    border-radius: 8px;
+    padding: 10px 24px 10px 24px;
+    gap: 10px;
+    margin-right: 90px;
+    float: right;
+}
+
 .label {
     font-family: 'Be Vietnam Pro';
     font-size: 20px;
@@ -47,6 +59,17 @@
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+}
+
+.custombutton{
+    width: 32px;
+    height: 32px;
+    background-color: #388697;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 4px;
 }
 
 .buttonEdit {

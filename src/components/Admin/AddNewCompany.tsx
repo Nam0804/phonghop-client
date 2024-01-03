@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Modal, message} from 'antd';
-import Input from "@/constants/Form/Input";
+import {Modal, message,Input} from 'antd';
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/AddUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,6 +10,8 @@ import {Form as Form2} from 'antd'
 const AddNewCompany = ({ onAddSuccess }:any) => {
     const [visible, setVisible] = useState(false);
     const [form] = Form2.useForm();
+    const [formCompleted, setFormCompleted] = useState(false)
+
 
     const showPopup = () => {
         setVisible(true);
@@ -28,10 +29,6 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                     const password = Math.random().toString(36);
                     values = {
                         ...form.getFieldsValue(),
-                        // name:'manager_name',
-                        // title:'manager_title',
-                        // email:'manager_email',
-                        // phone:'manager_phone',
                         password: password,
                         password_confirmation: password,
                     }
@@ -64,7 +61,7 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
 
     return (
         <>
-            <Button className={customstyle.addbtn} onClick={showPopup}>ADD NEW COMPANY</Button>
+            <button key="add" className={customstyle.addbtn} onClick={showPopup}>ADD NEW COMPANY</button>
             <Modal
                 title={
                     <div className={styles.formTitle}>Add New Company</div>
@@ -79,6 +76,10 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                     form={form}
                     name="Add new company"
                     requiredMark={false}
+                    onValuesChange={(changedValues, allValues) => {
+                        const isFormCompleted = Object.values(allValues).every(value => value !== undefined && value !== '');
+                        setFormCompleted(isFormCompleted);
+                      }}
                 >
                     <p className={styles.toplabel}>Company Information</p>
                     <div className={styles.formControl}>
@@ -97,7 +98,7 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                             ]}
                             style={{width: '100%'}}
                         >
-                            <input className={styles.Input}/>
+                            <Input type='text' className={styles.Input}/>
                         </Form2.Item>
 
                     </div>
@@ -105,9 +106,19 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                         <Form2.Item
                             label={<span className={styles.label}>Address*</span>}
                             name="company_address"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            This field is required!
+                                        </span>
+                                    ),
+                                },
+                            ]}
                             style={{width: '100%'}}
                         >
-                            <input className={styles.Input}/>
+                            <Input type='text' className={styles.Input}/>
                         </Form2.Item>
 
                     </div>
@@ -127,7 +138,7 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                             ]}
                             style={{width: '100%'}}
                         >
-                            <input className={styles.Input}/>
+                            <Input type='text' className={styles.Input} placeholder='IT Service/Healthcare'/>
                         </Form2.Item>
 
                     </div>
@@ -137,7 +148,7 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                             name="company_taxcode"
                             style={{width: '100%'}}
                         >
-                            <input className={styles.Input}/>
+                            <Input type='text' className={styles.Input}/>
                         </Form2.Item>
 
                     </div>
@@ -158,7 +169,7 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                             ]}
                             style={{width: '100%'}}
                         >
-                            <input className={styles.Input}/>
+                            <Input type='text' className={styles.Input}/>
                         </Form2.Item>
 
                     </div>
@@ -167,8 +178,18 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                             label={<span className={styles.label}>Title*</span>}
                             name="title"
                             style={{width: '100%'}}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            This field is required!
+                                        </span>
+                                    ),
+                                },
+                            ]}
                         >
-                            <input className={styles.Input}/>
+                            <Input type='text' className={styles.Input}/>
                         </Form2.Item>
 
                     </div>
@@ -185,28 +206,55 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                                         </span>
                                     ),
                                 },
+                                {
+                                    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            Please enter email
+                                        </span>
+                                    ),
+                                },
                             ]}
                             style={{width: '100%'}}
                         >
-                            <input className={styles.Input}/>
+                            <Input type='text' className={styles.Input}/>
                         </Form2.Item>
 
                     </div>
                     <div className={styles.formControl}>
                         <Form2.Item
-                            label={<span className={styles.label}>Phone Number</span>}
+                            label={<span className={styles.label}>Phone Number*</span>}
                             name="phone"
                             style={{width: '100%'}}
+                            getValueFromEvent={(e) => e.target.value.slice(0, 12)}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            This field is required!
+                                        </span>
+                                    ),
+                                },
+                                {
+                                    max: 12,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            Maximum length is 12 digits.
+                                        </span>
+                                    ),
+                                },
+                            ]}
                         >
-                            <input className={styles.Input}/>
+                            <Input type='number' className={styles.Input}/>
                         </Form2.Item>
 
                     </div>
                     <Form2.Item>
                         <div className={styles.buttonContainer}>
                             <div>
-                                <Button className={styles.buttonAdd} htmlType="submit" onClick={handleSubmit}
-                                        label='ADD NEW USER'/>
+                                <Button className={`${styles.buttonAdd} ${formCompleted ? styles.formCompleted : ''}`} htmlType="submit" onClick={handleSubmit}
+                                        label='ADD NEW USER' />
                             </div>
                             <div>
                                 <Button className={styles.buttonCancel} onClick={handleCancel} label='CANCEL'/>

@@ -14,6 +14,7 @@ import api from "@/axiosService";
 import { get } from "lodash";
 import toast from "react-hot-toast";
 import EditNewCompany from "@/components/Admin/EditNewCompany";
+import InformationCompany from "@/components/Admin/InfomationCompany";
 
 const CompanyPage = () => {
   const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
@@ -25,7 +26,10 @@ const CompanyPage = () => {
       const data = await api.get('index-companies')
       console.log(data.data.data.data);
       const res = get(data, 'data.data.data')
-      setAllStaffData(res)
+      const sortedData = res.sort(
+        (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );      
+      setAllStaffData(sortedData)
     } catch (error) {
       console.error(error);
       toast.error('Error');
@@ -43,6 +47,9 @@ const CompanyPage = () => {
   const handleAddSuccess = () => {
     fetchData();
   };
+  const handleEditSuccess = () => {
+    fetchData();
+  };
   interface DataType {
     id: number;
     key: string;
@@ -56,6 +63,7 @@ const CompanyPage = () => {
       manager_name: string,
       manager_phone: number,
     }
+    created_at: string;
   }
   const columns: ColumnsType<DataType> = [
     {
@@ -117,8 +125,9 @@ const CompanyPage = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
-          <EditNewCompany rec={record}></EditNewCompany>
+          <InformationCompany rec={record} ></InformationCompany>
+          <button key="skipdownline" className={styles.custombutton}><img src="/skipdownline.svg"></img></button>
+          <EditNewCompany rec={record} onEditSuccess={handleEditSuccess}></EditNewCompany>
           <DeleteCompany company_id={record.id} onDeleteSuccess={handleDeleteSuccess}></DeleteCompany>
         </Space>
       ),
