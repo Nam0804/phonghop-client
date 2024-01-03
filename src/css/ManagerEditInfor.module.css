@@ -10,6 +10,8 @@
 }
 
 .formFields {
+    display: flex;
+    align-items: center;
     height: 44px;
     width: 329px;
     background-color: #EAEEF6;
@@ -18,10 +20,13 @@
     padding: 10px 24px 10px 24px;
     gap: 10px;
     margin-right: 90px;
+    margin-bottom: 2px;
     float: right;
 }
 
 .label {
+    display: flex;
+    align-items: center;
     font-family: 'Be Vietnam Pro';
     font-size: 20px;
     font-weight: 400;
@@ -41,10 +46,29 @@
 
 .errorMessage {
     float: right;
-    margin-right: 290px;
+    padding-top: 4px;
+    margin-right: 300px;
+    font-family: Be Vietnam Pro;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.phoneError {
+    float: right;
+    padding-top: 4px;
+    margin-right: 220px;
+    font-family: Be Vietnam Pro;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .Input {
+    display: flex;
+    align-items: center;
     height: 44px;
     width: 329px;
     border: 2px solid #225560;
