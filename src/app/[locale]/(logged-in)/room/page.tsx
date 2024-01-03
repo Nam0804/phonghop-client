@@ -8,40 +8,46 @@ import customstyle from '@/css/MeetingRoomList.module.css';
 import CustomTimePicker from "@/components/Manager/TimePicker";
 import type { ColumnsType } from 'antd/es/table';
 import api from '@/axiosService';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./customantd.css";
-
+import AddNewRoom from '@/components/Room/createMeetingRoomModal';
+import { get } from "lodash";
+import toast from "react-hot-toast";
+import DeleteMeeting from '@/components/DeleteMeeting/DeleteMeeting';
+import EditRoom from '@/components/Room/EditMeetingRoomModal';
 
 const CompanyList = () => {      
-    const [selectedRoomData, setSelectedRoomData] = useState<DataType[] | null>(null);
-    const [allRoomsData, setAllRoomsData] = useState<DataType[]>([]);
-    
-    const handleRoomChange = async (event: any) => {
-      const selectedRoom = event.target.value;
-      try {
-        const response = await api.get(`meeting-rooms/${selectedRoom}`);
-        const roomData = response.data;
-        setSelectedRoomData(roomData);
+  const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const data = await api.get('meeting-rooms')
+      console.log(data.data.data.data);
+      const res = get(data, 'data.data.data')  
+      setAllRoomData(res)
       } catch (error) {
-        console.error('Error fetching selected room data:', error);
+        console.error(error);
+        toast.error('Error');
+
       }
-    };
-    
+    }, [])
     useEffect(() => {
-      const fetchAllRoomsData = async () => {
-        try {
-          const response = await api.get('meeting-rooms');
-          console.log(response);
-          const roomsData = response.data;
-          setAllRoomsData(roomsData);
-          setSelectedRoomData(roomsData); // Default to displaying all rooms
-        } catch (error) {
-          console.error('Error fetching all rooms data:', error);
-        }
-      };
-    
-      fetchAllRoomsData();
+      fetchData()
     }, []);
+
+    const handleDeleteSuccess = () => {
+      setDeleteConfirmationVisible(false);
+      fetchData();
+    };
+    const handleAddSuccess = () => {
+      fetchData();
+    };
+    const handleEditSuccess = () => {
+      fetchData();
+    };
+  
+
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
         console.log(date, dateString);
       };
@@ -126,8 +132,8 @@ const CompanyList = () => {
           key: 'action',
           render: (_, record) => (
             <Space size="middle">
-                <button key="edit" className={styles.custombutton}><img src="/edit.svg"></img></button>
-                <button key="delete" className={styles.custombutton} style={{backgroundColor:'#E56353'}}><img src="/delete.svg"></img></button>
+                <EditRoom rec={record} onEditSuccess={handleEditSuccess}></EditRoom>
+                <DeleteMeeting room_id={record.id} onDeleteSuccess={handleDeleteSuccess}></DeleteMeeting>
             </Space>
           ),
           fixed: 'right',
@@ -173,7 +179,7 @@ const CompanyList = () => {
                     />
                 </div>
                 <div className={styles.addco}>
-                    <Button className={styles.addbtn}>ADD NEW ROOM</Button>
+                    <AddNewRoom onAddSuccess={handleAddSuccess}>ADD NEW ROOM</AddNewRoom>
                 </div>
             </div>
     );
