@@ -7,57 +7,41 @@ import { DatePicker, Space } from 'antd';
 import customstyle from '@/css/MeetingRoomList.module.css';
 import CustomTimePicker from "@/components/Manager/TimePicker";
 import type { ColumnsType } from 'antd/es/table';
-import axios from "axios";
+import api from '@/axiosService';
 import { useEffect, useState } from "react";
 import "./customantd.css";
 
 
 const CompanyList = () => {      
-    const [selectedRoomData,setSelectedRoomData] = useState<DataType[] | null>(null);
+    const [selectedRoomData, setSelectedRoomData] = useState<DataType[] | null>(null);
     const [allRoomsData, setAllRoomsData] = useState<DataType[]>([]);
-    // const handleRoomChange = async (event:any) => {
-    //     const selectedRoom = event.target.value;
-    //     try{
-    //         const response = await axios.get(`http://localhost:8000/api/meeting-rooms/${selectedRoom}`);
-    //         const roomData = response.data;
-    //         setSelectedRoomData(roomData);
-    //     }catch(error){
-    //         console.error('lỗi',error);
-    //     }
-    // };
-
-    useEffect(() => {
-        // const fetchAllRoomsData = async () => {
-        //   try {
-        //     const token = "34|SJrxVEn6FBLtlsM9pO08LRElSUw4LkhIiP0pEODg022b32f7";
-        //     const config ={
-        //         headers:{
-        //             Authorization: `Bearer ${token}`,
-        //         },
-        //     };
-        //     const response = await axios.get('http://localhost:8000/api/meeting-rooms',config);
-        //     console.log(response)
-        //     const roomsData = response.data;
-        //     setAllRoomsData(roomsData);
-        //     //setSelectedRoomData(roomsData); // Mặc định hiển thị tất cả các phòng
-        //   } catch (error) {
-        //     console.error('Error fetching data:', error);
-        //   }
-        // };
     
-        // fetchAllRoomsData();
-        const token = "34|SJrxVEn6FBLtlsM9pO08LRElSUw4LkhIiP0pEODg022b32f7";
-        const config ={
-            headers:{
-                Authorization: `Bearer ${token}`,
-            },
-        }; 
-        fetch("http://localhost:8000/api/meeting-rooms",config)
-        .then((res) => res.json())
-        .then((result) => {
-            setAllRoomsData(result.data);
-        })
-      }, []);
+    const handleRoomChange = async (event: any) => {
+      const selectedRoom = event.target.value;
+      try {
+        const response = await api.get(`meeting-rooms/${selectedRoom}`);
+        const roomData = response.data;
+        setSelectedRoomData(roomData);
+      } catch (error) {
+        console.error('Error fetching selected room data:', error);
+      }
+    };
+    
+    useEffect(() => {
+      const fetchAllRoomsData = async () => {
+        try {
+          const response = await api.get('meeting-rooms');
+          console.log(response);
+          const roomsData = response.data;
+          setAllRoomsData(roomsData);
+          setSelectedRoomData(roomsData); // Default to displaying all rooms
+        } catch (error) {
+          console.error('Error fetching all rooms data:', error);
+        }
+      };
+    
+      fetchAllRoomsData();
+    }, []);
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
         console.log(date, dateString);
       };
@@ -163,7 +147,7 @@ const CompanyList = () => {
                         <div className={customstyle.date}>
                             <p>Date:</p>
                             <Space direction="vertical">
-                                <DatePicker onChange={onChange} showToday={false}/>
+                                <DatePicker style={{ width:'221px',height:'36px' }} onChange={onChange} showToday={false}/>
                             </Space>
                         </div>
                         <div className={customstyle.time}>

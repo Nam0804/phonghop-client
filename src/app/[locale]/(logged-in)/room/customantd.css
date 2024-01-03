@@ -6,6 +6,7 @@
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    padding: 13px 10px;
 }
 
 .ant-table-column-sorters span{
@@ -77,4 +78,11 @@ tbody tr td.ant-table-cell:nth-child(7)
 tbody tr td.ant-table-cell:nth-child(6) span
 {
     margin-right: 0;
+}
+.ant-table-wrapper .ant-table-thead >tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before{
+    height: 46px;
+}
+.timepicker{
+    height: 36px;
+    padding: 9px 10px;
 }

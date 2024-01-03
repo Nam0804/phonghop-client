@@ -21,12 +21,13 @@
     font-weight: 700;
     line-height: 22px;
     text-transform: uppercase;
+    margin-bottom: 0;
 }
 .roomPicker select{
     display: flex;
     width: 216px;
-    height: auto;
-    padding: 10px;
+    height: 32px;
+    padding: 5px 10px;
     justify-content: space-between;
     align-items: center;
     border-radius: 8px;
@@ -50,4 +51,5 @@
 }
 .roomPicker{
     gap: 32px;
+    margin-right: 6px;
 }
