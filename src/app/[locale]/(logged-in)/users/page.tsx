@@ -12,17 +12,28 @@ import api from '@/axiosService';
 import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
 import DeleteUser from 'src/components/User/deleteUser/deleteUser';
 import AddUser from 'src/components/User/addUser/addUser';
+import { useSelector } from 'react-redux'
+
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
+    const user = useSelector((state) => state);
     useEffect(() => {
-        api.get("users/company/1")
-            .then((response: any) => {
-                const rawData = get(response, 'data.data.data', []);
-                setAllStaffData(rawData);
-            })
-            .catch((error: any) => {
-                console.log(error);
-            });
+        console.log(user);
+        const company_id = user.company.data.company_id;
+        if(company_id) {
+            try {
+                api.get(`users/company/${company_id}`)
+                    .then((response: any) => {
+                        const rawData = get(response, 'data.data.data', []);
+                        setAllStaffData(rawData);
+                    })
+                    .catch((error: any) => {
+                        console.log(error);
+                    });
+            } catch (error) {
+                console.error("Error", error);
+            }
+        }
     }, [allStaffData]);
 
     interface DataType {
@@ -75,6 +86,7 @@ const UserPage = () => {
           key: 'action',
           render: (_, record) => (
             <Space size="middle">
+                <p>{JSON.stringify(record)}</p>
                 <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
                 <ManagerEditInfor user={record}/>
                 <DeleteUser user_id = {record.id}/>
