@@ -10,6 +10,8 @@ import api from '@/axiosService';
 const DeleteCompany = ({ company_id,onDeleteSuccess }:any) => {
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    // const t = useTranslations('Delete');
+    // const locale = useLocale();
 
     const showPopup = () => {
         setVisible(true);

@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-import { Modal} from 'antd';
+import React, {useState} from 'react';
+import {Modal} from 'antd';
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/DeleteUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "axios";
-const DeleteUser = ({user_id}:any) => {
-    const [visible, setVisible] = useState(false);
+import api from '@/axiosService';
+import { toast } from 'react-hot-toast';
+import { useLocale, useTranslations } from 'next-intl';
 
+const DeleteUser = ({user_id}: any) => {
+    const [visible, setVisible] = useState(false);
+    const t = useTranslations('Delete');
+    const locale = useLocale();
     const showPopup = () => {
         setVisible(true);
     };
@@ -15,33 +19,21 @@ const DeleteUser = ({user_id}:any) => {
         setVisible(false);
     };
 
-    const confirmDeleteAction = () => {
-        const apiUrl = process.env.API_URL + `delete-users/${user_id}`;
-        const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-        axios.delete(apiUrl, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + bearerToken
-            }
-        })
-            .then(response => {
-                if (response.status === 204) {
-                    console.log('User deleted successfully.');
-                } else {
-                    console.error('Error deleting user:', response.status);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            })
-            .finally(() => {
-                setVisible(false);
-            });
+    const confirmDeleteAction = async () => {
+        try {
+            const response = await api.delete(`delete-users/${user_id}`);
+            toast.success(t('success'));
+        } catch (error) {
+            console.log(error);
+            toast.error(t('error'));
+        } finally {
+            setVisible(false);
+        }
     };
 
     return (
         <>
-            <button onClick={showPopup}>Delete User</button>
+            <button onClick={showPopup} className={styles.custombutton} style={{backgroundColor:'#E56353'}}><img src="/delete.svg"></img></button>
             <Modal
                 title={
                     <div className={styles.warningTitle}>
@@ -52,13 +44,15 @@ const DeleteUser = ({user_id}:any) => {
                 footer={null}
                 closable={false}
                 width={626}
+                centered
             >
                 <div className={styles.buttonContainer}>
                     <div>
-                        <Button className={styles.buttonDelete} onClick={() => confirmDeleteAction()} label='DELETE' />
+                        <Button className={styles.buttonDelete} onClick={() => confirmDeleteAction()} label='DELETE'/>
                     </div>
                     <div>
-                        <Button className={styles.buttonCancel} htmltype="submit" onClick={handleCancel} label='CANCEL'  />
+                        <Button className={styles.buttonCancel} htmltype="submit" onClick={handleCancel}
+                                label='CANCEL'/>
                     </div>
                 </div>
             </Modal>

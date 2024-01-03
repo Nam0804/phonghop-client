@@ -4,13 +4,16 @@ import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/AddUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "axios";
+import api from '@/axiosService';
+import { toast } from 'react-hot-toast';
+import { useLocale, useTranslations } from 'next-intl';
 
 const AddUser = () => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [users, setUsers] = useState([]);
-
+    const t = useTranslations('Add');
+    const locale = useLocale();
     const showPopup = () => {
         setVisible(true);
     };
@@ -20,47 +23,32 @@ const AddUser = () => {
         setVisible(false);
     };
 
-    function handleSubmit() {
-        form.validateFields()
-            .then(async (values) => {
-                try {
-                    const password = Math.random().toString(36);
-                    values = {
-                        ...values,
-                        password: password,
-                        password_confirmation: password,
-                        company_id: 1,
-                        type: 1
-                    }
-                    const bearerToken = '2|SvAcZwcaNfXKQWK93eLcq8hht2WvVmO4eUL0dY5j995482db';
-                    const { data } = await axios.post(
-                        process.env.API_URL + "store-user",
-                        values,
-                        {
-                            headers: {Authorization: 'Bearer ' + bearerToken}
-                        }
-                    );
-
-                    if (data.ok) {
-                        message.success('User created successfully');
-                        form.resetFields();
-                        setVisible(false);
-                    } else {
-                        message.error('Failed to create user');
-                    }
-                } catch (e) {
-                    console.error('Error creating user:', e);
-                    message.error('Failed to create user');
-                }
-            })
-            .catch((errorInfo) => {
-                console.log(errorInfo);
-            });
-    }
+    async function handleSubmit() {
+        try {
+            await form.validateFields();
+            const password = Math.random().toString(36);
+            const values = {
+                ...form.getFieldsValue(),
+                password: password,
+                password_confirmation: password,
+                company_id: 1,
+                type: 1
+            };
+            const response = await api.post(`store-user`, values);
+            if (response.ok) {
+                toast.success(t('success'));
+                form.resetFields();
+                setVisible(false);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(t('error'));
+        }
+    };
 
     return (
         <>
-            <button onClick={showPopup}>New User</button>
+            <button onClick={showPopup} className={styles.addbtn}>ADD NEW USER</button>
             <Modal
                 title={
                     <div className={styles.formTitle}>Add New Staff</div>
@@ -70,6 +58,7 @@ const AddUser = () => {
                 footer={null}
                 closable={false}
                 width={973}
+                centered
             >
                 <Form
                     form={form}
