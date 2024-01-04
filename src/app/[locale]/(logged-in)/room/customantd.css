@@ -85,4 +85,5 @@ tbody tr td.ant-table-cell:nth-child(6) span
 .timepicker{
     height: 36px;
     padding: 9px 10px;
+    margin-left: 0;
 }
