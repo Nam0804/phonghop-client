@@ -42,8 +42,8 @@ const ManagerEditInfor = ({user}: any) => {
 
             if (response.status === 200) {
                 toast.success(t('success'));
-                setVisible(false);
             }
+            setVisible(false);
         } catch (error) {
             console.error(error);
             toast.error(t('error'));
