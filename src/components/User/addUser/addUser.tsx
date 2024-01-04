@@ -6,6 +6,7 @@ import styles from '/src/css/AddUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '@/axiosService';
 import { toast } from 'react-hot-toast';
+import { useSelector } from 'react-redux'
 import { useLocale, useTranslations } from 'next-intl';
 import { get } from 'lodash';
 
@@ -15,6 +16,7 @@ const AddUser = () => {
     const [users, setUsers] = useState([]);
     const t = useTranslations('Add');
     const locale = useLocale();
+    const user = useSelector((state) => state.user.value);
     const showPopup = () => {
         setVisible(true);
     };
@@ -32,15 +34,15 @@ const AddUser = () => {
                 ...form.getFieldsValue(),
                 password: password,
                 password_confirmation: password,
-                company_id: 1,
-                type: 1
+                company_id: user.id,
+                type: 2
             };
             const response = await api.post(`store-user`, values);
-            if (get(response, 'ok', false)) {
+            if (response.ok) {
                 toast.success(t('success'));
                 form.resetFields();
-                setVisible(false);
             }
+            setVisible(false);
         } catch (error) {
             console.log(error);
             toast.error(t('error'));
