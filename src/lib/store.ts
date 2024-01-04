@@ -3,7 +3,6 @@ import userReducer from './features/user/userSlice'
 import loadingReducer from './features/loadingSlice'
 import profileReducer from '@/lib/slices/profileSlice'
 import {
-    persistStore,
     persistReducer,
     FLUSH,
     REHYDRATE,
@@ -60,7 +59,6 @@ export const makeStore = () => {
     })
 }
 
-setupListeners(makeStore().dispatch);
 
 // Infer the type of makeStore
 export type AppStore = ReturnType<typeof makeStore>
@@ -68,4 +66,3 @@ export type AppStore = ReturnType<typeof makeStore>
 export type RootState = ReturnType<AppStore['getState']>
 export type AppDispatch = AppStore['dispatch']
 
-export const persistor = persistStore(makeStore())
