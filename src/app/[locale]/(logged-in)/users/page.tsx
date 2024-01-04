@@ -16,10 +16,9 @@ import { useSelector } from 'react-redux'
 
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
-    const user = useSelector((state) => state);
+    const user = useSelector((state) => state.user.value);
     useEffect(() => {
-        console.log(user);
-        const company_id = get(user, 'company.data.company_id');
+        const company_id = user.id;
         if(company_id) {
             try {
                 api.get(`users/company/${company_id}`)
