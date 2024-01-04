@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Providers } from "@/redux/provider"
 import ClientLayout from './clientLayout';
 import StoreProvider from '@/providers/StoreProvider';
 import { NextIntlClientProvider, useMessages } from 'next-intl';

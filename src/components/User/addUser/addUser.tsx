@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '@/axiosService';
 import { toast } from 'react-hot-toast';
 import { useLocale, useTranslations } from 'next-intl';
+import { get } from 'lodash';
 
 const AddUser = () => {
     const [visible, setVisible] = useState(false);
@@ -15,7 +16,6 @@ const AddUser = () => {
     const t = useTranslations('Add');
     const locale = useLocale();
     const showPopup = () => {
-        form.resetFields();
         setVisible(true);
     };
 
@@ -36,7 +36,7 @@ const AddUser = () => {
                 type: 2
             };
             const response = await api.post(`store-user`, values);
-            if (response.status === 200) {
+            if (response.ok) {
                 toast.success(t('success'));
                 form.resetFields();
                 setVisible(false);
@@ -127,7 +127,6 @@ const AddUser = () => {
                         <Form.Item
                             label={<span className={styles.label}>Phone Number</span>}
                             name="phone"
-                            type="text"
                             style={{width: '100%'}}
                             rules={[
                                 {min: 6, message:<span className={styles.phoneError}>Please input a valid phone number</span>},

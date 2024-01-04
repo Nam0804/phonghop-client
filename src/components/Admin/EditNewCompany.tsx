@@ -1,52 +1,63 @@
 import React, {useEffect, useState} from 'react';
-import {Modal, message,Input} from 'antd';
+import {Modal, message} from 'antd';
+import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/AddUser.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '@/axiosService';
 import customstyle from '@/css/CompanyList.module.css'
-import {Form as Form2} from 'antd'
+import {Form as Form} from 'antd'
+import stylecomfirm from '@/css/DeleteMeeting.module.css';
 
-const AddNewCompany = ({ onAddSuccess }:any) => {
+const EditNewCompany = ({rec,onEditSuccess}:any) => {
     const [visible, setVisible] = useState(false);
-    const [form] = Form2.useForm();
-    const [formCompleted, setFormCompleted] = useState(false)
-
+    const [form1] = Form.useForm();
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     const showPopup = () => {
         setVisible(true);
     };
 
     const handleCancel = () => {
-        form.resetFields();
-        setVisible(false);
+        //setVisible(false);
+        setShowConfirmModal(true);
     };
+    const handleConfirmCancel = (confirmed: boolean) => {
+        if (confirmed) {
+          setShowConfirmModal(false);
+          setVisible(false);
+        } else {
+          setShowConfirmModal(false);
+        }
+      };
+
+    useEffect(() => {
+        form1.setFieldsValue({
+            company_name: rec.name,
+            company_address: rec.address,
+            company_domain: rec.domain,
+            company_taxcode: rec.taxcode,
+            name: rec.manager.manager_name,
+            title: rec.manager.manager_title,
+            email: rec.manager.manager_email,
+            phone: rec.manager.manager_phone,
+        });
+    }, [rec]);
 
     function handleSubmit() {
-        form.validateFields()
+        form1.validateFields()
             .then(async (values) => {
                 try {
-                    const password = Math.random().toString(36);
-                    values = {
-                        ...form.getFieldsValue(),
-                        password: password,
-                        password_confirmation: password,
-                    }
-                    const data = await api.post(`user/register/company`,values)
+                    console.log(values)
+                    const data = await api.put(`update-company/${rec.id}`,values)
                     if (data.status == 200) {
-                        message.success('User created successfully');
-                        form.resetFields();
+                        message.success('User update successfully');
                         setVisible(false);
-                        if (onAddSuccess) {
-                            onAddSuccess();
+                        if (onEditSuccess) {
+                            onEditSuccess();
                         }
                     } else {
                         message.error('Failed to create user');
-                        form.resetFields();
-                        setVisible(false);
-                        if (onAddSuccess) {
-                            onAddSuccess();
-                        }
                     }
                 } catch (e) {
                     console.error('Error creating user:', e);
@@ -61,10 +72,10 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
 
     return (
         <>
-            <button key="add" className={customstyle.addbtn} onClick={showPopup}>ADD NEW COMPANY</button>
+            <button key="edit" className={customstyle.custombutton} onClick={showPopup}><img src="/edit.svg"></img></button>
             <Modal
                 title={
-                    <div className={styles.formTitle}>Add New Company</div>
+                    <div className={styles.formTitle}>Edit Company Infomation</div>
                 }
                 open={visible}
                 onCancel={handleCancel}
@@ -72,18 +83,14 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                 closable={false}
                 width={973}
             >
-                <Form2
-                    form={form}
-                    name="Add new company"
+                <Form
+                    form={form1}
+                    name="Edit New Company"
                     requiredMark={false}
-                    onValuesChange={(changedValues, allValues) => {
-                        const isFormCompleted = Object.values(allValues).every(value => value !== undefined && value !== '');
-                        setFormCompleted(isFormCompleted);
-                      }}
                 >
                     <p className={styles.toplabel}>Company Information</p>
                     <div className={styles.formControl}>
-                        <Form2.Item
+                        <Form.Item
                             label={<span className={styles.label}>Name*</span>}
                             name="company_name"
                             rules={[
@@ -98,14 +105,15 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                             ]}
                             style={{width: '100%'}}
                         >
-                            <Input type='text' className={styles.Input}/>
-                        </Form2.Item>
+                            <input className={styles.Input}/>
+                        </Form.Item>
 
                     </div>
                     <div className={styles.formControl}>
-                        <Form2.Item
+                        <Form.Item
                             label={<span className={styles.label}>Address*</span>}
                             name="company_address"
+                            style={{width: '100%'}}
                             rules={[
                                 {
                                     required: true,
@@ -116,14 +124,13 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                                     ),
                                 },
                             ]}
-                            style={{width: '100%'}}
                         >
-                            <Input type='text' className={styles.Input}/>
-                        </Form2.Item>
+                            <input className={styles.Input}/>
+                        </Form.Item>
 
                     </div>
                     <div className={styles.formControl}>
-                        <Form2.Item
+                        <Form.Item
                             label={<span className={styles.label}>Domain*</span>}
                             name="company_domain"
                             rules={[
@@ -138,23 +145,24 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                             ]}
                             style={{width: '100%'}}
                         >
-                            <Input type='text' className={styles.Input} placeholder='IT Service/Healthcare'/>
-                        </Form2.Item>
+                            <input className={styles.Input} placeholder='IT Service/HealthCare'/>
+                        </Form.Item>
 
                     </div>
                     <div className={styles.formControl}>
-                        <Form2.Item
+                        <Form.Item
                             label={<span className={styles.label}>Tax Code</span>}
                             name="company_taxcode"
                             style={{width: '100%'}}
+                            
                         >
-                            <Input type='text' className={styles.Input}/>
-                        </Form2.Item>
+                            <input className={styles.Input}/>
+                        </Form.Item>
 
                     </div>
                     <p className={styles.toplabel}>Company Manager Information</p>
                     <div className={styles.formControl}>
-                        <Form2.Item
+                        <Form.Item
                             label={<span className={styles.label}>Name*</span>}
                             name="name"
                             rules={[
@@ -169,12 +177,12 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                             ]}
                             style={{width: '100%'}}
                         >
-                            <Input type='text' className={styles.Input}/>
-                        </Form2.Item>
+                            <input className={styles.Input}/>
+                        </Form.Item>
 
                     </div>
                     <div className={styles.formControl}>
-                        <Form2.Item
+                        <Form.Item
                             label={<span className={styles.label}>Title*</span>}
                             name="title"
                             style={{width: '100%'}}
@@ -189,12 +197,12 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                                 },
                             ]}
                         >
-                            <Input type='text' className={styles.Input}/>
-                        </Form2.Item>
+                            <input className={styles.Input}/>
+                        </Form.Item>
 
                     </div>
                     <div className={styles.formControl}>
-                        <Form2.Item
+                        <Form.Item
                             label={<span className={styles.label}>Email*</span>}
                             name="email"
                             rules={[
@@ -217,15 +225,14 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                             ]}
                             style={{width: '100%'}}
                         >
-                            <Input type='text' className={styles.Input}/>
-                        </Form2.Item>
+                            <input className={styles.Input}/>
+                        </Form.Item>
 
                     </div>
                     <div className={styles.formControl}>
-                        <Form2.Item
+                        <Form.Item
                             label={<span className={styles.label}>Phone Number*</span>}
                             name="phone"
-                            style={{width: '100%'}}
                             getValueFromEvent={(e) => e.target.value.slice(0, 12)}
                             rules={[
                                 {
@@ -245,26 +252,49 @@ const AddNewCompany = ({ onAddSuccess }:any) => {
                                     ),
                                 },
                             ]}
+                            style={{width: '100%'}}
                         >
-                            <Input type='number' className={styles.Input}/>
-                        </Form2.Item>
+                            <input className={styles.Input}/>
+                        </Form.Item>
 
                     </div>
-                    <Form2.Item>
+                    <Form.Item>
                         <div className={styles.buttonContainer}>
                             <div>
-                                <Button className={`${styles.buttonAdd} ${formCompleted ? styles.formCompleted : ''}`} htmlType="submit" onClick={handleSubmit}
-                                        label='ADD NEW USER' />
+                                <Button className={`${styles.buttonAdd} ${styles.formCompleted}`} htmlType="submit" onClick={handleSubmit}
+                                        label='SAVE'/>
                             </div>
                             <div>
                                 <Button className={styles.buttonCancel} onClick={handleCancel} label='CANCEL'/>
                             </div>
                         </div>
-                    </Form2.Item>
-                </Form2>
+                    </Form.Item>
+                </Form>
+            </Modal>
+            <Modal
+                title={
+                    <div className={stylecomfirm.warningTitle}>
+                        Are you sure to cancel editing?
+                    </div>
+                }
+                open={showConfirmModal}
+                footer={null}
+                closable={false}
+                width={626}
+                centered
+            >
+                <div className={stylecomfirm.buttonContainer}>
+                    <div>
+                        <Button className={stylecomfirm.buttonDelete} onClick={() => handleConfirmCancel(false)} label='GO BACK TO EDITING'/>
+                    </div>
+                    <div>
+                        <Button className={stylecomfirm.buttonCancel} htmltype="submit" onClick={() => handleConfirmCancel(true)}
+                                label='CANCEL EDITING'/>
+                    </div>
+                </div>
             </Modal>
         </>
     );
 };
 
-export default AddNewCompany;
+export default EditNewCompany
