@@ -41,8 +41,8 @@ const AddUser = () => {
             if (response.ok) {
                 toast.success(t('success'));
                 form.resetFields();
-                setVisible(false);
             }
+            setVisible(false);
         } catch (error) {
             console.log(error);
             toast.error(t('error'));
