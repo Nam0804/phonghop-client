@@ -15,6 +15,7 @@ const AddUser = () => {
     const t = useTranslations('Add');
     const locale = useLocale();
     const showPopup = () => {
+        form.resetFields();
         setVisible(true);
     };
 
@@ -32,10 +33,10 @@ const AddUser = () => {
                 password: password,
                 password_confirmation: password,
                 company_id: 1,
-                type: 1
+                type: 2
             };
             const response = await api.post(`store-user`, values);
-            if (response.ok) {
+            if (response.status === 200) {
                 toast.success(t('success'));
                 form.resetFields();
                 setVisible(false);
@@ -126,6 +127,7 @@ const AddUser = () => {
                         <Form.Item
                             label={<span className={styles.label}>Phone Number</span>}
                             name="phone"
+                            type="text"
                             style={{width: '100%'}}
                             rules={[
                                 {min: 6, message:<span className={styles.phoneError}>Please input a valid phone number</span>},

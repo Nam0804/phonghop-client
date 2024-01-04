@@ -132,7 +132,7 @@ const ManagerEditInfor = ({user}: any) => {
                         >
                             <Input
                                 className={styles.Input}
-                                type="number"
+                                type="text"
                                 value={formData.phone}
                                 onChange={(e: any) => setFormData({...formData, phone: e.target.value})}
                             />
