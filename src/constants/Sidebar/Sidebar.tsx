@@ -32,7 +32,7 @@ const Sidebar = () => {
         </li>
         <li className={styles.sidebarItem}>
           <Image src="/room.svg" alt="Room logo" width={'32'} height={'32'} />
-          <a href="/home" className={styles.sidebarText}>Room</a>
+          <Link href={"/vn/room"} style={{textDecoration:'none'}} className={styles.sidebarText}>Room</Link>
         </li>
         <li className={styles.sidebarItem}>
           <Image src="/booking.svg" alt="Booking logo" width={'32'} height={'32'} />

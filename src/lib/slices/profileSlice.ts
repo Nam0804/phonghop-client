@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import { profileApi } from "@/redux/services/profileApi";
+import { profileApi } from "@/lib/services/profileApi";
 
 const initialState = {
   data: null,

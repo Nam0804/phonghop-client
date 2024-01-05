@@ -9,17 +9,43 @@
     margin-bottom: 50px;
 }
 
-.label {
-    font-family: 'Be Vietnam Pro';
-    font-size: 20px;
+.formFields {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    width: 329px;
+    color: var(--Text-Content, #323232);
+    font-family: Be Vietnam Pro;
+    font-size: 16px;
+    font-style: normal;
     font-weight: 400;
-    line-height: 25px;
+    line-height: normal;
+    background-color: #EAEEF6;
+    border: 2px;
+    border-radius: 8px;
+    padding: 10px 24px 10px 24px;
+    gap: 10px;
+    margin-right: 90px;
+    margin-bottom: 2px;
+    float: right;
+}
+
+.label {
+    display: flex;
+    align-items: center;
     color: #383838;
+    font-family: Be Vietnam Pro;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
     margin-left: 80px;
+    margin-top: 10px;
 }
 
 .formControl {
     width: 100%;
+    align-items: center;
     justify-content: space-between;
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 20px;
@@ -29,10 +55,34 @@
 
 .errorMessage {
     float: right;
-    margin-right: 290px;
+    padding-top: 4px;
+    margin-right: 300px;
+    font-family: Be Vietnam Pro;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.phoneError {
+    float: right;
+    padding-top: 4px;
+    margin-right: 220px;
+    font-family: Be Vietnam Pro;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .Input {
+    display: flex;
+    align-items: center;
+    font-family: Be Vietnam Pro;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
     height: 44px;
     width: 329px;
     border: 2px solid #225560;
@@ -47,6 +97,17 @@
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+}
+
+.custombutton{
+    width: 32px;
+    height: 32px;
+    background-color: #388697;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 4px;
 }
 
 .buttonEdit {

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import { Providers } from "@/redux/provider"
 import ClientLayout from './clientLayout';
 import StoreProvider from '@/providers/StoreProvider';
+import { NextIntlClientProvider, useMessages } from 'next-intl';
 
 export const metadata: Metadata = {
     title: "PhongHop.vn",
@@ -15,14 +15,19 @@ export default function RootLayout({
     children: React.ReactNode
     params: { locale: string }
 }) {
+
+    const messages = useMessages();
+
     return (
         <html lang={params.locale}>
             <body tabIndex={-1}>
-                <ClientLayout params={params}>
-                    <Providers>
-                        {children}
-                    </Providers>
-                </ClientLayout>
+                <NextIntlClientProvider locale={params.locale} messages={messages}>
+                    <ClientLayout params={params}>
+                        <StoreProvider>
+                            {children}
+                        </StoreProvider>
+                    </ClientLayout>
+                </NextIntlClientProvider>
             </body>
         </html>
     );

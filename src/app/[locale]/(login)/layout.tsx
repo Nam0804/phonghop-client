@@ -1,24 +1,24 @@
+'use client'
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '@/css/DefaultLoginLayout.module.css';
-import StoreProvider from '@/providers/StoreProvider';
 import { Toaster } from 'react-hot-toast';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { notFound } from 'next/navigation';
 import SpinFC from 'antd/es/spin';
 import { useAppSelector } from '@/lib/hooks';
+import { get } from 'lodash';
 
 const locales = ['en', 'vn'];
 
 const DefaultLoginLayout = ({ children, params: { locale } }: any) => {
 
-  const messages = useMessages();
-
+  const loading: any = useAppSelector((state) => get(state, 'loading', false));
 
   if (!locales.includes(locale as any)) notFound();
 
   return (
-    <SpinFC spinning={false}>
+    <SpinFC spinning={!!loading.value ? loading : false}>
       <div className={styles.container}>
         <div className='row'>
           <div className='col-lg-6 col-md-6 col-sm-12'>
@@ -27,12 +27,8 @@ const DefaultLoginLayout = ({ children, params: { locale } }: any) => {
           <div className='col-lg-6 col-md-6 col-sm-12'>
             <div className={styles.customStyle}>
               <img src='/assets/images/Layer_1.png' style={{ marginTop: '52px' }}></img>
-              <NextIntlClientProvider locale={locale} messages={messages}>
-                <StoreProvider>
-                  <Toaster position="top-right" />
-                  {children}
-                </StoreProvider>
-              </NextIntlClientProvider>
+              <Toaster position="top-right" />
+              {children}
             </div>
           </div>
         </div>

@@ -3,27 +3,28 @@ import { NextRequest } from 'next/server';
 
 export default async function middleware(request: NextRequest) {
   const [, locale, ...segments] = request.nextUrl.pathname.split('/');
-  
-  const authRoutes = ["/login"];
 
-  console.log(request.cookies);
-  
+  const authRoutes = ["/login", "register", "forgot-password", "reset-password"];
+
   const token = request.cookies.get("token")?.value;
 
   const handleI18nRouting = createIntlMiddleware({
     locales: ['en', 'vn'],
     defaultLocale: 'en',
-    localePrefix: 'as-needed' 
+    localePrefix: 'always'
   });
-  const response = handleI18nRouting(request);
-  if (!token 
-    // || Date.now() > token
+
+  if (!token && !authRoutes.includes(segments[0])
+    // TODO check token expired
   ) {
     request.cookies.delete("token");
     request.nextUrl.pathname = `/${locale}/login`;
+  }
+  const response = handleI18nRouting(request);
+
+  if (!token) {
     response.cookies.delete("token")
   }
-  
   return response;
 }
 
@@ -31,4 +32,5 @@ export const config = {
   matcher: [
     '/((?!api|_next|_vercel|.*\\..*).*)',
     '/([\\w-]+)?/users/(.+)'
-  ]};
+  ]
+};

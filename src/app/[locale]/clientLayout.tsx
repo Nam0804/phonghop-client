@@ -2,8 +2,6 @@
 
 import React, { ReactElement, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import StoreProvider from '@/providers/StoreProvider';
-import { AppStore } from '@/lib/store';
 
 export default function ClientLayout({
     children,
@@ -15,8 +13,6 @@ export default function ClientLayout({
     useEffect(() => {
         require('bootstrap/dist/js/bootstrap.bundle.min.js')
     }, []);
-
-    const storeRef = React.useRef<AppStore>()
 
     return (
         <div key={'body'}>

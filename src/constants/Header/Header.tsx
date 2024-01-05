@@ -4,7 +4,10 @@ import Image from "next/image";
 import Button from "../Form/Button";
 import Modal from "../Modal/LogoutModal";
 import styles from "./Header.module.css";
-
+import Cookies from 'js-cookie';
+import { useLocale, useTranslations } from 'next-intl';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { setLoading } from '@/lib/features/loadingSlice';
 
 const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,11 +19,33 @@ const Header = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const handleLogout = () => {
-    
-    window.location.href = '/vn/login';
+  const locale = useLocale();
+  const loading = useAppSelector((state) => state.loading)
+  const dispatch = useAppDispatch()
+  const handleLogout = async () => {
+    try {
+      dispatch(setLoading(true));
+      const response = await fetch('http://127.0.0.1:8000/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get('token')}`, 
+        },
+        credentials: 'include',
+      });
 
-    closeModal();
+      if (response.ok) {
+        Cookies.remove('token');
+        window.location.href = `/${locale}/login`;
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    } finally {
+      dispatch(setLoading(false));
+      closeModal();
+    }
   };
   return (
     <>
