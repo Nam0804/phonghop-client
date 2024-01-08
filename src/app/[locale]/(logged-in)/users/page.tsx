@@ -13,13 +13,13 @@ import toast from "react-hot-toast";
 import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
 import DeleteUser from '@/components/User/deleteUser/deleteUser';
 import AddUser from '@/components/User/addUser/addUser';
-import {useSelector} from 'react-redux'
+import {useSelector} from 'react-redux';
 import {useAppDispatch} from '@/lib/hooks';
 import {setLoading} from '@/lib/features/loadingSlice';
 
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
-    const user = useSelector((state) => state.user.value);
+    const user = useSelector((state:any) => state.user.value);
     const dispatch = useAppDispatch()
     const company_id = user.company_id;
     const fetchData = useCallback(async () => {

@@ -7,8 +7,15 @@ import Button from "@/constants/Form/Button";
 import { useState, useEffect } from "react";
 import Modal from "@/constants/Modal/ViewModal";
 import Profile from "@/components/User/profile";
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '@/lib/hooks';
+import { setLoading } from '@/lib/features/loadingSlice';
+
 const Sidebar = () => {
-  const [userData, setUserData] = useState<{ type?: number }>({});
+  const user = useSelector((state: any) => state.user.value);
+  const usertype = user.type;
+  const dispatch = useAppDispatch();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -23,25 +30,68 @@ const Sidebar = () => {
   const togglePopup = () => {
     setIsProfileOpen(!isProfileOpen);
   };
+
   return (
     <aside className={styles.sidebar}>
       <ul className={styles.listsidebar}>
-        <li className={styles.sidebarItem}>
-          <Image src="/company.svg" alt="Company logo" width={'32'} height={'32'} />
-          <Link href={"/vn/company"} style={{ textDecoration: 'none' }} className={styles.sidebarText}>Company</Link>
-        </li>
-        <li className={styles.sidebarItem}>
-          <Image src="/room.svg" alt="Room logo" width={'32'} height={'32'} />
-          <Link href={"/vn/room"} style={{textDecoration:'none'}} className={styles.sidebarText}>Room</Link>
-        </li>
-        <li className={styles.sidebarItem}>
-          <Image src="/booking.svg" alt="Booking logo" width={'32'} height={'32'} />
-          <a href="/users" className={styles.sidebarText}>Booking</a>
-        </li>
-        <li className={styles.sidebarItem}>
-          <Image src="/user.svg" alt="User logo" width={'32'} height={'32'} />
-          <Link href={"/vn/users"} style={{ textDecoration: 'none' }} className={styles.sidebarText}>Users</Link>
-        </li>
+        {usertype === 0 && (
+          <>
+            <Link href={"/vn/company"} className={styles.customlink}>
+              <li className={styles.sidebarItem}>
+                <Image src="/company.svg" alt="Company logo" width={'32'} height={'32'} />
+                <span className={styles.sidebarText}>Company</span>
+              </li>
+            </Link>
+          </>
+        )}
+        {usertype === 1 && (
+          <>
+            <Link href={"/vn/room"} className={styles.customlink}>
+              <li className={styles.sidebarItem}>
+                <Image src="/room.svg" alt="Room logo" width={'32'} height={'32'} />
+                <span className={styles.sidebarText}>Room</span>
+              </li>
+            </Link>
+            <Link href={"/vn/booking"} className={styles.customlink}>
+              <li className={styles.sidebarItem}>
+                <Image src="/booking.svg" alt="Booking logo" width={'32'} height={'32'} />
+                <span className={styles.sidebarText}>Booking</span>
+              </li>
+            </Link>
+            <Link href={"/vn/users"} className={styles.customlink}>
+              <li className={styles.sidebarItem}>
+                <Image src="/user.svg" alt="User logo" width={'32'} height={'32'} />
+                <span className={styles.sidebarText}>Users</span>            
+              </li>
+            </Link>
+          </>
+        )}
+        {usertype === 2 && (
+          <>
+            <Link href={"/vn/room"} className={styles.customlink}>
+              <li className={styles.sidebarItem}>
+                <Image src="/room.svg" alt="Room logo" width={'32'} height={'32'} />
+                <span className={styles.sidebarText}>Room</span>                
+              </li>
+            </Link>
+            <Link href={"/vn/booking"} className={styles.customlink}>
+              <li className={styles.sidebarItem}>
+                <Image src="/booking.svg" alt="Booking logo" width={'32'} height={'32'} />
+                <span className={styles.sidebarText}>Users</span>  
+              </li>
+            </Link>
+          </>
+        )}
+        {usertype === 3 && (
+          <>
+            <Link href={"/vn/room"} className={styles.customlink}>
+              <li className={styles.sidebarItem}>
+                <Image src="/room.svg" alt="Room logo" width={'32'} height={'32'} />
+                <span className={styles.sidebarText}>Room</span>                
+              </li>
+            </Link>
+          </>
+        )}
       </ul>
       <div>
         <div className={styles.sidebarItem2}>
