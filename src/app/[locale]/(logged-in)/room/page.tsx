@@ -52,6 +52,7 @@ const CompanyList = () => {
         console.log(date, dateString);
       };
       interface DataType {
+        id:number
         key: string;
         no: number;
         roomname: string;

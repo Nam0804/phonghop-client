@@ -7,10 +7,13 @@ import Button from "@/constants/Form/Button";
 import { useState, useEffect } from "react";
 import Modal from "@/constants/Modal/ViewModal";
 import Profile from "@/components/User/profile";
+import { useLocale } from "next-intl";
+
 const Sidebar = () => {
   const [userData, setUserData] = useState<{ type?: number }>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const locale = useLocale();
 
   const openModal = (type: string) => {
     setIsModalOpen(true);
@@ -36,7 +39,7 @@ const Sidebar = () => {
         </li>
         <li className={styles.sidebarItem}>
           <Image src="/booking.svg" alt="Booking logo" width={'32'} height={'32'} />
-          <a href="/users" className={styles.sidebarText}>Booking</a>
+          <Link href={`/${locale}/booking`} className={styles.sidebarText}>Booking</Link>
         </li>
         <li className={styles.sidebarItem}>
           <Image src="/user.svg" alt="User logo" width={'32'} height={'32'} />
