@@ -42,8 +42,8 @@ const ManagerEditInfor = ({user}: any) => {
 
             if (response.status === 200) {
                 toast.success(t('success'));
-                setVisible(false);
             }
+            setVisible(false);
         } catch (error) {
             console.error(error);
             toast.error(t('error'));
@@ -132,7 +132,7 @@ const ManagerEditInfor = ({user}: any) => {
                         >
                             <Input
                                 className={styles.Input}
-                                type="number"
+                                type="text"
                                 value={formData.phone}
                                 onChange={(e: any) => setFormData({...formData, phone: e.target.value})}
                             />

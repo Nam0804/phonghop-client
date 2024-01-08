@@ -150,7 +150,7 @@ const AddNewRoom = ({ onAddSuccess }:any) => {
               <option value="pear">Close</option>
             </select>
           </Form.Item>
-          <p>Upload Meeting Room Image</p>
+          <p className="upload-text">Upload Meeting Room Image</p>
           <Dragger {...props}>
             <img src="/public/cloud-upload.svg"></img>
             <p className="ant-upload-text">Drag and drop files here</p>
