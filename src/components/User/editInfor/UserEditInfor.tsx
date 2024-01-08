@@ -3,6 +3,7 @@ import React, {useState, useEffect} from "react";
 import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import styles from 'src/css/UserEditInfor.module.css';
 import api from '@/axiosService';
 import { toast } from 'react-hot-toast';
 import { useLocale, useTranslations } from 'next-intl';
@@ -18,7 +19,7 @@ const UserEditInfor = ({user}: any) => {
         form.setFieldsValue({
             'title': user.title,
             'phone': user.phone,
-            'company': user.company.data.company_name
+            'company': user.company.company_name
         });
     }, [form, user.title, user.phone]);
     const showPopup = () => {
@@ -67,7 +68,7 @@ const UserEditInfor = ({user}: any) => {
                 >
                     <div className={styles.formControl}>
                         <Form.Item
-                            label={<span className={styles.label}>Manager Name*</span>}
+                            label={<span className={styles.label}>Name*</span>}
                             name="manager-name"
                         >
                             <p className={styles.formFields}>{user.name}</p>
@@ -75,21 +76,7 @@ const UserEditInfor = ({user}: any) => {
                     </div>
                     <div className={styles.formControl}>
                         <Form.Item
-                            label={<span className={styles.label}>Company*</span>}
-                            name="company"
-                        >
-                            <p className={styles.formFields}>{user.company.data.company_name}</p>
-                            <Input
-                                className={styles.Input}
-                                type="text"
-                                value={formData.company}
-                                onChange={(e: any) => setFormData({...formData, company: e.target.value})}
-                            />
-                        </Form.Item>
-                    </div>
-                    <div className={styles.formControl}>
-                        <Form.Item
-                            label={<span className={styles.label}>Manager Title*</span>}
+                            label={<span className={styles.label}>Title*</span>}
                             name="title"
                             rules={[
                                 {
@@ -110,6 +97,14 @@ const UserEditInfor = ({user}: any) => {
                             />
                         </Form.Item>
                     </div>
+                    <div className={styles.formControl}>
+                    <Form.Item
+                        label={<span className={styles.label}>Company*</span>}
+                        name="company"
+                    >
+                        <p className={styles.formFields}>{user.company.company_name}</p>
+                       </Form.Item>
+                </div>
                     <div className={styles.formControl}>
                         <Form.Item
                             label={<span className={styles.label}>Email Address*</span>}
