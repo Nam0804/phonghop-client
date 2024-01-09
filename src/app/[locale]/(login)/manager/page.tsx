@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Modal from "@/constants/Modal/ViewModal";
 import { get } from 'lodash';
+import api from '@/axiosService';
 
 const steps = [
     {},
@@ -55,7 +56,7 @@ export default function RegisterNewCompany() {
 
     const processForm: SubmitHandler<Inputs> = data => {
         clearErrors();
-        axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
+        api.post('user/register/company', data).then(response => {
 
             if (response?.data?.errors) {
                 const errorResponse = response?.data?.errors;

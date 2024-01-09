@@ -90,7 +90,7 @@ const LoginPage: React.FC<{}> = () => {
 
         <Button type="button" className={styles.loginbtn} onClick={handleButtonClick} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>LOG IN</Button>        <div className={styles.account}>
           <p>Don't have an account?</p>
-          <Link href="/vn/register" className={styles.customlink}>
+          <Link href={`/${locale}/manager`} className={styles.customlink}>
             Register
           </Link>
         </div>
