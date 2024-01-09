@@ -22,6 +22,7 @@ const UserPage = () => {
     const dispatch = useAppDispatch()
     useEffect(() => {
         const company_id = user.id;
+        console.log(company_id);
         if(company_id) {
             try {
                 dispatch(setLoading(true));

@@ -16,20 +16,25 @@ import { get } from "lodash";
 import toast from "react-hot-toast";
 import EditNewCompany from "@/components/Admin/EditNewCompany";
 import InformationCompany from "@/components/Admin/InfomationCompany";
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from '@/lib/hooks';
+import { setLoading } from '@/lib/features/loadingSlice';
 
 const CompanyPage = () => {
   const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const user = useSelector((state:any) => state.user.value);
+  const dispatch = useAppDispatch()
   
-
   const fetchData = useCallback(async () => {
     try {
-      const data = await api.get('bookings')
+      const user_id = user.id;
+      const data = await api.get(`bookings/history/${user_id}`)
       console.log(data);
     //   const sortedData = res.sort(
     //     (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     //   );      
-      setAllStaffData(data.data.data.data)
+      setAllStaffData(data.data.data)
     } catch (error) {
       console.error(error);
       toast.error('Error');
@@ -169,7 +174,7 @@ const CompanyPage = () => {
       <div className={styles.labelsection}>
         <div className={styles.square}>
         </div>
-        <h1 className={styles.label}>Company List</h1>
+        <h1 className={styles.label}>Booking List</h1>
       </div>
       <div className={styles.companytable}>
         <Table columns={columns} dataSource={allStaffData}

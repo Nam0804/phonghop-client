@@ -24,12 +24,12 @@ const CompanyPage = () => {
   const fetchData = useCallback(async () => {
     try {
       const data = await api.get('index-companies')
-      console.log(data.data.data.data);
-      const res = get(data, 'data.data.data')
-      const sortedData = res.sort(
-        (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );      
-      setAllStaffData(sortedData)
+      console.log(data.data.data);
+      const res = get(data, 'data.data')
+      // const sortedData = res.sort(
+      //   (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      // );      
+      setAllStaffData(res)
     } catch (error) {
       console.error(error);
       toast.error('Error');
@@ -144,7 +144,7 @@ const CompanyPage = () => {
       </div>
       <div className={styles.companytable}>
         <Table columns={columns} dataSource={allStaffData}
-          scroll={{ x: 1000 }} pagination={false}
+          scroll={{ x: 1000 }} pagination={false} rowKey={(record) => record.id}
         />
       </div>
       <div className={styles.addco}>
