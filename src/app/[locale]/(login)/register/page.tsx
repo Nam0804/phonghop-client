@@ -36,7 +36,7 @@ const RegisterPage = () => {
           password: input5,
           confirmPassword: input6,
           company_id:1,
-          type:3
+          type:2
         };
         try {
           dispatch(setLoading(true));
