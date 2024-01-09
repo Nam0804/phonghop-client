@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/loadingSlice';
 import { useLocale, useTranslations } from 'next-intl';
-
 const Sidebar = () => {
   const user = useSelector((state: any) => state.user.value);
   const usertype = user.type;
@@ -33,7 +32,6 @@ const Sidebar = () => {
   const togglePopup = () => {
     setIsProfileOpen(!isProfileOpen);
   };
-
   return (
     <aside className={styles.sidebar}>
       <ul className={styles.listsidebar}>
@@ -80,7 +78,7 @@ const Sidebar = () => {
             <Link href={`/${locale}/booking`} className={styles.customlink}>
               <li className={styles.sidebarItem}>
                 <Image src="/booking.svg" alt="Booking logo" width={'32'} height={'32'} />
-                <span className={styles.sidebarText}>Users</span>  
+                <span className={styles.sidebarText}>Booking</span>  
               </li>
             </Link>
           </>

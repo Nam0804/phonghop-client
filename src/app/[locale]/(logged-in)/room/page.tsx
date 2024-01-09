@@ -22,7 +22,7 @@ const CompanyList = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const data = await api.get('meeting-rooms')
+      const data = await api.get('meeting-rooms/listing')
       console.log(data.data.data.data);
       const res = get(data, 'data.data.data')  
       setAllRoomData(res)
@@ -52,7 +52,7 @@ const CompanyList = () => {
         console.log(date, dateString);
       };
       interface DataType {
-        id:number
+        id:number;
         key: string;
         no: number;
         roomname: string;

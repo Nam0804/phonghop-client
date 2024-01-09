@@ -9,6 +9,7 @@ import { toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux'
 import { useLocale, useTranslations } from 'next-intl';
 import { get } from 'lodash';
+import { log } from 'console';
 
 const AddUser = () => {
     const [visible, setVisible] = useState(false);
@@ -16,7 +17,7 @@ const AddUser = () => {
     const [users, setUsers] = useState([]);
     const t = useTranslations('Add');
     const locale = useLocale();
-    const user = useSelector((state) => state.user.value);
+    const user = useSelector((state:any) => state.user.value);
     const showPopup = () => {
         setVisible(true);
     };
@@ -34,11 +35,11 @@ const AddUser = () => {
                 ...form.getFieldsValue(),
                 password: password,
                 password_confirmation: password,
-                company_id: user.id,
+                company_id: user.company_id,
                 type: 2
             };
             const response = await api.post(`store-user`, values);
-            if (response.ok) {
+            if (response.status == 200) {
                 toast.success(t('success'));
                 form.resetFields();
             }

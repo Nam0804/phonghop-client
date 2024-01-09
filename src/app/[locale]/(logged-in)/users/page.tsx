@@ -26,8 +26,10 @@ const UserPage = () => {
         try {
             dispatch(setLoading(true));
             const data = await api.get(`users/company/${company_id}`);
+            const users = get(data, 'data.data.data') || [];
+            const filteredUsers = users.filter((user: any) => user.type !== 0);
             const res = get(data, 'data.data.data');
-            setAllStaffData(res);
+            setAllStaffData(filteredUsers);
         } catch (error) {
             console.error("Error", error);
             toast.error('Error');

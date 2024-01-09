@@ -39,7 +39,7 @@ const AddNewRoom = ({ onAddSuccess }:any) => {
     form.validateFields()
         .then(async (values) => {
             try {
-                const data = await api.post(`meeting-rooms`,values)
+                const data = await api.post(`store-meeting-room`,values)
                 if (data.status == 200) {
                     message.success('Room created successfully');
                     form.resetFields();
