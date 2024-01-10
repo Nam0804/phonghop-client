@@ -9,7 +9,6 @@ import { toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux'
 import { useLocale, useTranslations } from 'next-intl';
 import { get } from 'lodash';
-import { log } from 'console';
 
 const AddUser = () => {
     const [visible, setVisible] = useState(false);

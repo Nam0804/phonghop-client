@@ -25,10 +25,8 @@ const CompanyPage = () => {
     try {
       const data = await api.get('index-companies')
       const res = get(data, 'data.data')
-      // const sortedData = res.sort(
-      //   (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      // );      
-      setAllStaffData(res)
+      const sortedData = res.sort((a: DataType, b: DataType) => b.id - a.id);
+      setAllStaffData(sortedData)
     } catch (error) {
       console.error(error);
       toast.error('Error');

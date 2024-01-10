@@ -91,7 +91,7 @@ const LoginPage: React.FC<{}> = () => {
         </div>
         <div className={styles.forgot}>
           <Checkbox onChange={onChange}>Remember me</Checkbox>
-          <Link href="/other-page" className={styles.customlink}>
+          <Link href={`/${locale}/forgotpassword`} className={styles.customlink}>
             Forgot password?
           </Link>
         </div>
