@@ -30,11 +30,10 @@ const CompanyPage = () => {
     try {
       const user_id = user.id;
       const data = await api.get(`bookings/history/${user_id}`)
-      console.log(data);
-    //   const sortedData = res.sort(
-    //     (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    //   );      
-      setAllStaffData(data.data.data)
+      const res = get(data, 'data.data')
+      const sortedData = res.sort((a: DataType, b: DataType) => b.id - a.id);
+      setAllStaffData(sortedData)
+      
     } catch (error) {
       console.error(error);
       toast.error('Error');

@@ -67,10 +67,7 @@
     line-height: normal;
     text-transform: uppercase;
 }
-/* .ant-table-tbody tr.ant-table-row td.ant-table-cell:nth-child(7),.ant-table-tbody tr.ant-table-row td.ant-table-cell:nth-child(6){
-    display: flex;
-    justify-content: center;
-} */
+
 .ant-table-cell .ant-space{
     display: flex;
     justify-content: center;
