@@ -91,14 +91,15 @@ const LoginPage: React.FC<{}> = () => {
         </div>
         <div className={styles.forgot}>
           <Checkbox onChange={onChange}>Remember me</Checkbox>
-          <Link href="/other-page" className={styles.customlink}>
+          <Link href={`/${locale}/forgotpassword`} className={styles.customlink}>
             Forgot password?
           </Link>
         </div>
 
-        <Button type="button" className={styles.loginbtn} onClick={handleButtonClick} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>LOG IN</Button>        <div className={styles.account}>
+        <Button type="button" className={styles.loginbtn} onClick={handleButtonClick} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>LOG IN</Button>        
+        <div className={styles.account}>
           <p>Don't have an account?</p>
-          <Link href="/vn/register" className={styles.customlink}>
+          <Link href={`/${locale}/manager`} className={styles.customlink} passHref>
             Register
           </Link>
         </div>

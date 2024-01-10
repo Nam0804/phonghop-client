@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 export default async function middleware(request: NextRequest) {
   const [, locale, ...segments] = request.nextUrl.pathname.split('/');
 
-  const authRoutes = ["/login", "register", "forgot-password", "reset-password"];
+  const authRoutes = ["/login", "register", "forgotpassword", "resetpassword", "manager"];
 
   const token = request.cookies.get("token")?.value;
 
