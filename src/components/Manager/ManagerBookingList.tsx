@@ -69,25 +69,27 @@ const ManagerBookingList = () => {
             }
         }
     }
-    const handletestButtonClick = async (id, status) => {
-        try {
-            let updatedStaffData = allStaffData.map((staff) => {
-                if (staff.id === id) {
-                    staff.register_status = staff.register_status === status ? 0 : status;
-                }
-
-            });
-            const response = await api.patch(`bookings/${id}`, updatedStaffData);
-            console.log(updatedStaffData)
-            setAllStaffData([...updatedStaffData]);
-
-            if (response.status === 200) {
-                console.log("Updated successfully");
+    const handletestButtonClick = async (id: number, status: any) => {
+        let dat: any = allStaffData.find((staff) => {
+            return staff.id === id
+        });
+        if (dat) {
+            if (dat.register_status == status) {
+                dat.register_status = 0;
+            } else {
+                dat.register_status = status;
             }
-        } catch (error) {
-            console.error("Error updating staff data:", error);
         }
-    };
+        console.log(typeof dat)
+        try {
+            const response = await api.put(`bookings/${dat.id}`, dat)
+            console.log(response);
+        }catch (error) {
+            console.log(error)
+        }
+
+        setAllStaffData([...allStaffData])
+    }
 
     interface DataType {
         id: number;
