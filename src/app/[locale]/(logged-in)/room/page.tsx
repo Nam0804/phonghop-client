@@ -15,23 +15,26 @@ import { get } from "lodash";
 import toast from "react-hot-toast";
 import DeleteMeeting from '@/components/DeleteMeeting/DeleteMeeting';
 import EditRoom from '@/components/Room/EditMeetingRoomModal';
+import { useSelector } from 'react-redux';
 
 const CompanyList = () => {      
   const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const user = useSelector((state: any) => state.user.value);
+  const usertype = user.type;
 
   const fetchData = useCallback(async () => {
     try {
       const data = await api.get('meeting-rooms/listing')
-      console.log(data.data.data.data);
-      const res = get(data, 'data.data.data')  
+      console.log(data.data);
+      const res = get(data, 'data.data')     
       setAllRoomData(res)
-      } catch (error) {
-        console.error(error);
-        toast.error('Error');
+    } catch (error) {
+      console.error(error);
+      toast.error('Error');
 
-      }
-    }, [])
+    }
+  }, [])
     useEffect(() => {
       fetchData()
     }, []);
@@ -55,15 +58,17 @@ const CompanyList = () => {
         id:number;
         key: string;
         no: number;
-        roomname: string;
+        name: string;
         location: string;
         capacity:number;
         equipment:string;
         availabilitys: boolean;
         book:string;
       }
-      const columns: ColumnsType<DataType> = [
-        {
+      let columns: ColumnsType<DataType> = [];
+      {if (usertype === 1) {
+        columns = [
+          {
           title: 'No',
           dataIndex: 'id',
           key: 'id',
@@ -76,7 +81,7 @@ const CompanyList = () => {
           title: 'Room Name',
           dataIndex: 'name',
           key: 'name',
-          sorter:(a,b) => a.roomname.localeCompare(b.roomname),
+          sorter:(a,b) => a.name.localeCompare(b.name),
           fixed:'left',
           width:175,
         },
@@ -141,6 +146,77 @@ const CompanyList = () => {
           width: 137,
         },
       ];
+    }}
+
+    
+    {if (usertype === 2) {
+      columns = [
+        {
+          title: 'No',
+          dataIndex: 'id',
+          key: 'id',
+          render: (number) => <a>{number}</a>,
+          sorter: (a, b) => a.no - b.no,
+          width:73,
+          fixed:'left',
+        },
+        {
+          title: 'Room Name',
+          dataIndex: 'name',
+          key: 'name',
+          sorter:(a,b) => a.name.localeCompare(b.name),
+          fixed:'left',
+          width:175,
+        },
+        {
+          title: 'Location',
+          dataIndex: 'location',
+          key: 'location',
+          sorter:(a,b) => a.location.localeCompare(b.location),
+          width: 165,
+        },
+        {
+            title: 'Capacity',
+            dataIndex: 'capacity',
+            key: 'capacity',
+            sorter:(a,b) => a.capacity-b.capacity,
+            width:159
+        },
+        {
+            title: 'Equipment',
+            dataIndex: 'equipment',
+            key: 'equipment',
+            width: 251,
+        },
+        {
+            title: 'Room Availability',
+            key: 'availabilitys',
+            dataIndex: 'availabilitys',
+            render: (_, { availabilitys }) => {
+                let color = availabilitys ? '#E56353' : '#388697';
+                return (
+                    <Tag color={color} className="">
+                        {availabilitys ? 'Unavailable' : 'Available'}
+                    </Tag>
+                );
+            },
+            width: 183,
+          },
+        {
+            title: 'View Room Detail',
+            key: 'book',
+            dataIndex: 'book',
+            render: (_, { availabilitys }) => {
+               const color = availabilitys ? '#8B8B8B' : '#388697';
+               return (
+                  <Tag color={color} key={_}>
+                     Book
+                  </Tag>
+               );
+            },
+            width: 154,
+        },
+      ];}}
     return(
             <div className={styles.container}>
                 <div className={styles.labelsection}>
@@ -167,7 +243,7 @@ const CompanyList = () => {
                     <div className={customstyle.roomPicker}>
                         <p>Choose a room</p>
                         <select >
-                            <option value="apple">Quả táo</option>
+                            <option value="apple">All Rooms</option>
                             <option value="pear">Quả lê</option>
                             <option value="peach">Quả đào</option>
                         </select>
@@ -179,9 +255,11 @@ const CompanyList = () => {
                     scroll={{x:1000}} className={customstyle.customtable}
                     />
                 </div>
-                <div className={styles.addco}>
-                    <AddNewRoom onAddSuccess={handleAddSuccess}>ADD NEW ROOM</AddNewRoom>
-                </div>
+                {usertype === 1 && (
+                  <div className={styles.addco}>
+                      <AddNewRoom onAddSuccess={handleAddSuccess}>ADD NEW ROOM</AddNewRoom>
+                  </div>
+                )}
             </div>
     );
 }

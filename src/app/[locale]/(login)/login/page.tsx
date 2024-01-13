@@ -16,7 +16,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/loadingSlice';
 import { initializeUser } from '@/lib/features/user/userSlice';
-import { useSelector } from 'react-redux';
 
 const LoginPage: React.FC<{}> = () => {
 
@@ -27,29 +26,29 @@ const LoginPage: React.FC<{}> = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isNewAccount, setIsNewAccount] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
   const isFormValid = email !== '' && password !== '';
-
-
   const handleLogin = async () => {
-    const postData = { 
+    const postData = {
       email: email,
-      password: password
+      password: password,
     };
 
     try {
       dispatch(setLoading(true));
-      const res = await api.post('auth/login', postData)
+      const res = await api.post('auth/login', postData);
       toast.success(t('success'));
       Cookies.set('token', res.data.data.token);
 
       const user = res.data.data.user;
       dispatch(initializeUser(user));
-      const usertype = user.type;
-      if (usertype === 1 || usertype === 2 || usertype === 3) {
-        router.push(`/${locale}/room`);
-      }
-      if(usertype === 0){
-      router.push(`/${locale}/company`)
+
+      if (res.data.data.isNewAccount) {
+        setIsNewAccount(true);
+        openModal();
+      } else {
+        router.push(`/${locale}/company`);
       }
     } catch (error) {
       console.log(error);
@@ -58,6 +57,7 @@ const LoginPage: React.FC<{}> = () => {
       dispatch(setLoading(false));
     }
   };
+
 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,9 +70,24 @@ const LoginPage: React.FC<{}> = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const handleButtonClick = () => {
-    handleLogin();
-    openModal();
+  const handleButtonClick = async () => {
+    if (isNewAccount) {
+      try {
+        const res = await api.post('auth/reset-password', {
+          email: email,
+          newPassword: newPassword,
+        });
+
+        toast.success(t('passwordChanged'));
+        closeModal();
+        setIsNewAccount(false);
+      } catch (error) {
+        console.error(error);
+        toast.error(t('passwordChangeError'));
+      }
+    } else {
+      handleLogin();
+    }
   };
   const [passwordVisible, setpasswordVisible] = useState(false);
   const onChange = (e: CheckboxChangeEvent) => {
@@ -110,17 +125,17 @@ const LoginPage: React.FC<{}> = () => {
                   <div className={styles.inputgroup}>
                     <div className={styles.inputform1}>
                       <img src="/pass.svg" alt="" className={styles.icon1} />
-                      <input type={passwordVisible ? 'text' : 'password'} name="password" className={styles.inputsection} placeholder="Password*" />
+                      <input type={passwordVisible ? 'text' : 'password'} name="password" className={styles.inputsection} placeholder="Password*" onChange={(e: any) => setNewPassword(e.target.value)} />
                       <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide2} onClick={() => setpasswordVisible(!passwordVisible)} />
                     </div>
                     <div className={styles.inputform1}>
                       <img src="/pass.svg" alt="" className={styles.icon1} />
-                      <input type={passwordVisible ? 'text' : 'password'} name="password" className={styles.inputsection} placeholder="Confirm Password*" />
+                      <input type={passwordVisible ? 'text' : 'password'} name="password" className={styles.inputsection} placeholder="Confirm Password*" onChange={(e: any) => setNewPassword(e.target.value)}/>
                       <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide2} onClick={() => setpasswordVisible(!passwordVisible)} />
                     </div>
                   </div>
                   <div className={styles.btngroup}>
-                    <Button className={styles.passbtn} onClick={closeModal}>CHANGE PASSWORD</Button>
+                    <Button className={styles.passbtn} onClick={handleButtonClick}>CHANGE PASSWORD</Button>
                   </div>
 
                 </>
