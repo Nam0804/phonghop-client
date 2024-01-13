@@ -8,7 +8,7 @@ import { Table, Tag } from 'antd';
 import { DatePicker, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from "react";
-import './customantd.css';
+import './customantd.css'
 import moment from 'moment';
 import DeleteCompany from "@/components/DeleteCompany/DeleteCompany";
 import api from "@/axiosService";
@@ -117,7 +117,7 @@ const CompanyPage = () => {
       title: 'Meeting Topic',
       dataIndex: 'topic',
       key: 'topic',
-      width: 162,
+      width: 161,
     },
     {
       title: 'Status',

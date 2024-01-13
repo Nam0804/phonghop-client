@@ -11,13 +11,18 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/loadingSlice';
 import { useLocale, useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation'
+import { get } from "lodash";
 const Sidebar = () => {
+
   const user = useSelector((state: any) => state.user.value);
-  const usertype = user.type;
-  const dispatch = useAppDispatch();
+  var usertype = get(user, 'type', null);
+  const pathname = usePathname()
+
+  if (pathname === '/vn/guest') {
+    usertype = 3;
+  }
   const locale = useLocale();
-
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -62,7 +67,7 @@ const Sidebar = () => {
             <Link href={`/${locale}/users`} className={styles.customlink}>
               <li className={styles.sidebarItem}>
                 <Image src="/user.svg" alt="User logo" width={'32'} height={'32'} />
-                <span className={styles.sidebarText}>Users</span>            
+                <span className={styles.sidebarText}>Users</span>
               </li>
             </Link>
           </>
@@ -72,23 +77,23 @@ const Sidebar = () => {
             <Link href={`/${locale}/room`} className={styles.customlink}>
               <li className={styles.sidebarItem}>
                 <Image src="/room.svg" alt="Room logo" width={'32'} height={'32'} />
-                <span className={styles.sidebarText}>Room</span>                
+                <span className={styles.sidebarText}>Room</span>
               </li>
             </Link>
             <Link href={`/${locale}/booking`} className={styles.customlink}>
               <li className={styles.sidebarItem}>
                 <Image src="/booking.svg" alt="Booking logo" width={'32'} height={'32'} />
-                <span className={styles.sidebarText}>Booking</span>  
+                <span className={styles.sidebarText}>Booking</span>
               </li>
             </Link>
           </>
         )}
         {usertype === 3 && (
           <>
-            <Link href={`/${locale}/room`} className={styles.customlink}>
+            <Link href={`/${locale}/guest`} className={styles.customlink}>
               <li className={styles.sidebarItem}>
                 <Image src="/room.svg" alt="Room logo" width={'32'} height={'32'} />
-                <span className={styles.sidebarText}>Room</span>                
+                <span className={styles.sidebarText}>Room</span>
               </li>
             </Link>
           </>
@@ -97,7 +102,13 @@ const Sidebar = () => {
       <div>
         <div className={styles.sidebarItem2}>
           <Image src="/book.png" alt="Book logo" width={'32'} height={'32'} />
-          <a className={styles.sidebarText} onClick={() => togglePopup()}>Username</a>
+          {usertype === 3 ? (
+            <a className={styles.sidebarText}>Guest</a>
+          ) : (
+            <a className={styles.sidebarText} onClick={() => togglePopup()}>
+              Username
+            </a>
+          )}
         </div>
         {isProfileOpen && <Profile togglePopup={() => togglePopup()} />}
       </div>

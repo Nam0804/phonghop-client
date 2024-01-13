@@ -31,8 +31,8 @@
     line-height: normal;
 }
 .ant-table-tbody tr.ant-table-row td.ant-table-cell:nth-child(6) span  {
-    width: 121px;
-    height: 36px;
+    /* width: 121px;
+    height: 36px; */
     padding: 10px;
     justify-content: center;
     align-items: center;
@@ -50,8 +50,8 @@
 }
 .ant-table-tbody tr.ant-table-row td.ant-table-cell:nth-child(7) span{
     display: flex;
-    width: 69px;
-    height: 36px;
+    /* width: 69px;
+    height: 36px; */
     padding: 10px;
     justify-content: center;
     align-items: center;
