@@ -31,7 +31,6 @@ const UserPage = () => {
             try {
                 const response = await api.get(`users/company/${company_id}`)
                 const res = get(response, 'data.data.data', []);
-                console.log(response)
                 const sortedData = res.sort(
                     (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
                 );
