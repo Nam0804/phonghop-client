@@ -22,7 +22,7 @@ const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
     const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
 
-    const user = useSelector((state) => state.user.value);
+    const user = useSelector((state:any) => state.user.value);
     const dispatch = useAppDispatch()
 
     const fetchData = useCallback(async () => {
@@ -31,9 +31,7 @@ const UserPage = () => {
             try {
                 const response = await api.get(`users/company/${company_id}`)
                 const res = get(response, 'data.data.data', []);
-                const sortedData = res.sort(
-                    (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-                );
+                const sortedData = res.sort((a: DataType, b: DataType) => b.id - a.id);
                 setAllStaffData(sortedData)
             } catch (error) {
                 console.error(error);
@@ -58,6 +56,7 @@ const UserPage = () => {
         fetchData();
     };
     interface DataType {
+        id:number;
         key: string;
         no: number;
         name: string;

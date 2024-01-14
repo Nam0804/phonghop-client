@@ -103,7 +103,7 @@ const ManagerBookingList = () => {
         from_time: string;
         to_time: string;
         topic: string;
-        status: number;
+        register_status: number;
         meeting_note: boolean;
     }
 
