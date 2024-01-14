@@ -105,7 +105,7 @@ const AddNewRoom = ({ onAddSuccess }:any) => {
                 try {
                     values = {
                         ...form.getFieldsValue(),
-                        company_id: user.id,   
+                        company_id: user.company_id,   
                     }
                     if (values.upload) {
                         const imagePath = await processImage(values.upload.file);
