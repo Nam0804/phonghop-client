@@ -16,6 +16,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/loadingSlice';
 import { initializeUser } from '@/lib/features/user/userSlice';
+import { useSelector } from 'react-redux';
 
 const LoginPage: React.FC<{}> = () => {
 
@@ -27,6 +28,8 @@ const LoginPage: React.FC<{}> = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const isFormValid = email !== '' && password !== '';
+
+
   const handleLogin = async () => {
     const postData = { 
       email: email,
@@ -41,8 +44,13 @@ const LoginPage: React.FC<{}> = () => {
 
       const user = res.data.data.user;
       dispatch(initializeUser(user));
+      const usertype = user.type;
+      if (usertype === 1 || usertype === 2 || usertype === 3) {
+        router.push(`/${locale}/room`);
+      }
+      if(usertype === 0){
       router.push(`/${locale}/company`)
-
+      }
     } catch (error) {
       console.log(error);
       toast.error(t('error'));
@@ -83,14 +91,15 @@ const LoginPage: React.FC<{}> = () => {
         </div>
         <div className={styles.forgot}>
           <Checkbox onChange={onChange}>Remember me</Checkbox>
-          <Link href="/other-page" className={styles.customlink}>
+          <Link href={`/${locale}/forgotpassword`} className={styles.customlink}>
             Forgot password?
           </Link>
         </div>
 
-        <Button type="button" className={styles.loginbtn} onClick={handleButtonClick} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>LOG IN</Button>        <div className={styles.account}>
+        <Button type="button" className={styles.loginbtn} onClick={handleButtonClick} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>LOG IN</Button>        
+        <div className={styles.account}>
           <p>Don't have an account?</p>
-          <Link href="/vn/register" className={styles.customlink}>
+          <Link href={`/${locale}/manager`} className={styles.customlink} passHref>
             Register
           </Link>
         </div>

@@ -16,7 +16,7 @@ const AddUser = ({onAddSuccess}: any) => {
     const [users, setUsers] = useState([]);
     const t = useTranslations('Add');
     const locale = useLocale();
-    const user = useSelector((state) => state.user.value);
+    const user = useSelector((state:any) => state.user.value);
     const showPopup = () => {
         setVisible(true);
     };
