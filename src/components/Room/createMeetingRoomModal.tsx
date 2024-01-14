@@ -7,7 +7,7 @@ import api from '@/axiosService';
 import customstyle from '@/css/CompanyList.module.css'
 import {Form as Form2} from 'antd'
 import { Select, Space } from 'antd';
-import { RcFile } from 'antd/lib/upload/interface';
+import { useSelector } from 'react-redux';
 
 const AddNewRoom = ({ onAddSuccess }:any) => {
     const [visible, setVisible] = useState(false);
@@ -18,25 +18,51 @@ const AddNewRoom = ({ onAddSuccess }:any) => {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [showDragDrop, setShowDragDrop] = useState(true);
 
+    const user = useSelector((state: any) => state.user.value);
   
-    const handleDrag = function(e: React.DragEvent<HTMLDivElement>) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.type === "dragenter" || e.type === "dragover") {
-          setDragActive(true);
-        } else if (e.type === "dragleave") {
-          setDragActive(false);
-        }
-      };
+     const handleDrag = function(e: React.DragEvent<HTMLDivElement>) {
+         e.preventDefault();
+         e.stopPropagation();
+         if (e.type === "dragenter" || e.type === "dragover") {
+           setDragActive(true);
+         } else if (e.type === "dragleave") {
+           setDragActive(false);
+         }
+       };
+ 
+     const handleDrop = function(e: React.DragEvent<HTMLDivElement>) {
+         e.preventDefault();
+         e.stopPropagation();
+         setDragActive(false);
+         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            const file = e.dataTransfer.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                if (event.target) {
+                  setImagePreview(event.target.result as string);
+                }
+                setShowDragDrop(false);
+              };
+
+            reader.readAsDataURL(file);
+         }
+
+       };
+       useEffect(() => {
+        const preventDefault = (e: Event) => {
+          e.preventDefault();
+        };
       
-    const handleDrop = function(e: React.DragEvent<HTMLDivElement>) {
-        e.preventDefault();
-        e.stopPropagation();
-        setDragActive(false);
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        }
-      };
-  
+        window.addEventListener("dragenter", preventDefault);
+        window.addEventListener("dragover", preventDefault);
+      
+        return () => {
+          window.removeEventListener("dragenter", preventDefault);
+          window.removeEventListener("dragover", preventDefault);
+        };
+      }, []);
+
     const handleSelect = function(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault();
         if (e.target.files && e.target.files[0]) {
@@ -78,11 +104,12 @@ const AddNewRoom = ({ onAddSuccess }:any) => {
             .then(async (values) => {
                 try {
                     values = {
-                        ...form.getFieldsValue(),    
+                        ...form.getFieldsValue(),
+                        company_id: user.id,   
                     }
                     if (values.upload) {
-                        const base64Image = await convertImageToBase64(values.upload.file);
-                        values.image = base64Image;
+                        const imagePath = await processImage(values.upload.file);
+                        values.image = imagePath;
                     }
                     const data = await api.post(`store-meeting-room`,values)
                     if (data.status == 200) {
@@ -110,15 +137,9 @@ const AddNewRoom = ({ onAddSuccess }:any) => {
                 console.log(errorInfo);
             });
     }
-    async function convertImageToBase64(file: RcFile): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                resolve(reader.result?.toString().split(',')[1] || ''); // Get the base64 part of the result
-            };
-            reader.onerror = (error) => reject(error);
-            reader.readAsDataURL(file);
-        });
+    async function processImage(file:File) {
+        const imagePath = '/path/to/your/image.jpg';
+        return imagePath;
     }
 
     return (
@@ -249,7 +270,7 @@ const AddNewRoom = ({ onAddSuccess }:any) => {
 
                     </Form2.Item>
                     <div className={styles.formControl}>
-                            <form id="form-file-upload" className={styles.formupload} onDragEnter={handleDrag} onSubmit={(e) => e.preventDefault()}>
+                            <div id="form-file-upload" className={styles.formupload} onDragOver={handleDrag} onDragEnter={handleDrag} onDragLeave={handleDrag} onDrop={handleDrop}>
                                 <input ref={inputRef} type="file" className={styles.inputfileupload} id="input-file-upload" multiple={true} onChange={handleSelect} />
                                 {showDragDrop && (
                                 <label id="label-file-upload" htmlFor="input-file-upload" className={`${styles.fileupload} ${dragActive ? "drag-active" : ""}`}>
@@ -271,8 +292,7 @@ const AddNewRoom = ({ onAddSuccess }:any) => {
                                         <button className={styles.deleteimg} onClick={handleRemoveImage}><img src="/delete.svg"></img></button>
                                     </div>
                                 )}  
-                                { dragActive && <div id="drag-file-element" onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></div> }
-                            </form>
+                            </div>
                     </div>
                     <Form2.Item>
                         <div className={styles.buttonContainer}>
