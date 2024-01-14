@@ -9,7 +9,7 @@ import api from '@/axiosService';
 import { toast } from 'react-hot-toast';
 import { useLocale, useTranslations } from 'next-intl';
 
-const ManagerEditInfor = ({user}: any) => {
+const ManagerEditInfor = ({user, onEditSuccess}: any) => {
     const [form] = Form.useForm();
     const [formData, setFormData] = useState({...user});
     const [visible, setVisible] = useState(false);
@@ -41,6 +41,7 @@ const ManagerEditInfor = ({user}: any) => {
             );
 
             if (response.status === 200) {
+                onEditSuccess();
                 toast.success(t('success'));
             }
             setVisible(false);

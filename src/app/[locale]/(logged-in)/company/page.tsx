@@ -69,7 +69,7 @@ const CompanyPage = () => {
       key: 'id',
       render: (number) => <a>{number}</a>,
       sorter: (a, b) => a.no - b.no,
-      width: 73,
+      width: 60,
       fixed: 'left',
     },
     {
@@ -78,7 +78,6 @@ const CompanyPage = () => {
       key: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
       fixed: 'left',
-      width: 146,
     },
     {
       title: 'Company Domain',
@@ -109,7 +108,6 @@ const CompanyPage = () => {
       title: 'Email',
       dataIndex: ['manager', 'manager_email'],
       key: 'manager[manager_email]',
-      width: 162,
     },
     {
       title: 'Manager Phone Number',
@@ -141,7 +139,7 @@ const CompanyPage = () => {
       </div>
       <div className={styles.companytable}>
         <Table columns={columns} dataSource={allStaffData}
-          scroll={{ x: 1000 }} pagination={false} rowKey={(record) => record.id}
+          scroll={{ x: 1300 }} pagination={false} rowKey={(record) => record.id}
         />
       </div>
       <div className={styles.addco}>

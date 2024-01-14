@@ -7,7 +7,7 @@ import api from '@/axiosService';
 import { toast } from 'react-hot-toast';
 import { useLocale, useTranslations } from 'next-intl';
 
-const DeleteUser = ({user_id}: any) => {
+const DeleteUser = ({user_id, onDeleteSuccess}: any) => {
     const [visible, setVisible] = useState(false);
     const t = useTranslations('Delete');
     const locale = useLocale();
@@ -22,6 +22,7 @@ const DeleteUser = ({user_id}: any) => {
     const confirmDeleteAction = async () => {
         try {
             const response = await api.delete(`delete-users/${user_id}`);
+            onDeleteSuccess();
             toast.success(t('success'));
         } catch (error) {
             console.log(error);

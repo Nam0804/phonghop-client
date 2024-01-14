@@ -9,39 +9,54 @@ import {useEffect, useState} from "react";
 import {get} from 'lodash';
 import './customantd.css'
 import api from '@/axiosService';
-import toast from "react-hot-toast";
 import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
 import DeleteUser from '@/components/User/deleteUser/deleteUser';
 import AddUser from '@/components/User/addUser/addUser';
-import {useSelector} from 'react-redux';
+import {useSelector} from 'react-redux'
 import {useAppDispatch} from '@/lib/hooks';
 import {setLoading} from '@/lib/features/loadingSlice';
+import toast from "react-hot-toast";
+
 
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
+    const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+
     const user = useSelector((state:any) => state.user.value);
     const dispatch = useAppDispatch()
-    const company_id = user.company_id;
+
     const fetchData = useCallback(async () => {
-        try {
-            dispatch(setLoading(true));
-            const data = await api.get(`users/company/${company_id}`);
-            const users = get(data, 'data.data.data') || [];
-            const filteredUsers = users.filter((user: any) => user.type !== 0);
-            const res = get(data, 'data.data.data');
-            setAllStaffData(filteredUsers);
-        } catch (error) {
-            console.error("Error", error);
-            toast.error('Error');
-        } finally {
-            dispatch(setLoading(false));
+        const company_id = user.company_id;
+        if (company_id) {
+            try {
+                const response = await api.get(`users/company/${company_id}`)
+                const res = get(response, 'data.data.data', []);
+                const sortedData = res.sort((a: DataType, b: DataType) => b.id - a.id);
+                setAllStaffData(sortedData)
+            } catch (error) {
+                console.error(error);
+                toast.error('Error');
+            } finally {
+                dispatch(setLoading(false));
+            }
         }
-    }, []);
+    }, [])
     useEffect(() => {
         fetchData()
     }, []);
 
+    const handleDeleteSuccess = () => {
+        setDeleteConfirmationVisible(false);
+        fetchData();
+    };
+    const handleAddSuccess = () => {
+        fetchData();
+    };
+    const handleEditSuccess = () => {
+        fetchData();
+    };
     interface DataType {
+        id:number;
         key: string;
         no: number;
         name: string;
@@ -93,8 +108,8 @@ const UserPage = () => {
             render: (_, record: any) => (
                 <Space size="middle">
                     <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
-                    <ManagerEditInfor user={record}/>
-                    <DeleteUser user_id={record.id}/>
+                    <ManagerEditInfor user={record} onEditSuccess={handleEditSuccess}/>
+                    <DeleteUser user_id={record.id} onDeleteSuccess={handleDeleteSuccess}/>
                 </Space>
             ),
             fixed: 'right',
@@ -114,7 +129,7 @@ const UserPage = () => {
                 />
             </div>
             <div className={styles.addco}>
-                <AddUser/>
+                <AddUser onAddSuccess={handleAddSuccess}/>
             </div>
         </div>
     );

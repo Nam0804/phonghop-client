@@ -8,7 +8,7 @@ import {Form as Form3} from 'antd'
 const InfomationCompany = ({rec}:any) => {
     const [visible, setVisible] = useState(false);
     const [form3] = Form3.useForm();
-
+    console.log(rec)
     const showPopup = () => {
         setVisible(true);
     };

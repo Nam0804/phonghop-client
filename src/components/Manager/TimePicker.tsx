@@ -9,7 +9,7 @@ const CustomTimePicker = ({ onChange }: any) => {
     const timeList = [];
     for (let hour = startHour; hour <= endHour; hour++) {
       for (let minute = 0; minute < 60; minute += intervalMinutes) {
-        const formattedHour = hour % 12 || 12; // Định dạng giờ 12 giờ
+        const formattedHour = hour.toString().padStart(2, '0');
         const formattedMinute = minute.toString().padStart(2, '0');
         const period = hour < 12 ? 'AM' : 'PM';
         timeList.push(`${formattedHour}:${formattedMinute} ${period}`);
