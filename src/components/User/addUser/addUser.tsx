@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux'
 import { useLocale, useTranslations } from 'next-intl';
 import { get } from 'lodash';
 
-const AddUser = () => {
+const AddUser = ({onAddSuccess}: any) => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [users, setUsers] = useState([]);
@@ -38,7 +38,8 @@ const AddUser = () => {
                 type: 2
             };
             const response = await api.post(`store-user`, values);
-            if (response.status == 200) {
+            if (response.status === 200) {
+                onAddSuccess();
                 toast.success(t('success'));
                 form.resetFields();
             }
@@ -46,6 +47,8 @@ const AddUser = () => {
         } catch (error) {
             console.log(error);
             toast.error(t('error'));
+        }finally {
+            setVisible(false);
         }
     };
 
