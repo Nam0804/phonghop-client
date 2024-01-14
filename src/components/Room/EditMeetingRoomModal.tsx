@@ -1,164 +1,281 @@
-import React, { useState, useEffect } from "react";
-import { Button, Modal, Form } from "antd";
-import "@/css/AddNewRoom.css";
-import { InboxOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
-import { message, Upload } from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Modal, message} from 'antd';
+import Input from "@/constants/Form/Input";
+import Button from "@/constants/Form/Button";
+import styles from '@/css/AddNewRoom.module.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '@/axiosService';
-import styles from '@/css/CompanyList.module.css'
+import customstyle from '@/css/CompanyList.module.css'
+import {Form as Form} from 'antd'
+import { Select, Space } from 'antd';
 
-// import Title from "antd/es/skeleton/Title";
-
-const EditRoom = ({rec,onEditSuccess}:any) => {
-  const [visible, setVisible] = useState(false);
-  const [form] = Form.useForm();
-  const [formCompleted, setFormCompleted] = useState(false)
-
-  const { Dragger } = Upload;
-
-  const props: UploadProps = {
-    name: 'file',
-    multiple: true,
-    action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-    onChange(info) {
-      const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-    onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
-    },
-  };
-  useEffect(() => {
-    form.setFieldsValue({
-        room_name: rec.name,
-        location: rec.location,
-        floor: rec.floor,
-        capacity: rec.capacity,
-        equipmentame: rec.equipment,
-    });
-}, [rec]);
-function handleSubmit() {
-  form.validateFields()
-      .then(async (values) => {
-          try {
-              console.log(values)
-              const data = await api.put(`update-meeting-room/${rec.id}`,values)
-              if (data.status == 200) {
-                  message.success('Room update successfully');
-                  setVisible(false);
-                  if (onEditSuccess) {
-                      onEditSuccess();
-                  }
-              } else {
-                  message.error('Failed to create room');
-              }
-          } catch (e) {
-              console.error('Error creating room:', e);
-              message.error('Failed to create room');
-              console.log(values)
-          }
-      })
-      .catch((errorInfo) => {
-          console.log(errorInfo);
-      });
-    }
-
-  const showModal = () => {
-    setVisible(true);;
-  };
+const EditNewCompany = ({rec,onEditSuccess}:any) => {
+    const [visible, setVisible] = useState(false);
+    const [form1] = Form.useForm();
+    const [dragActive, setDragActive] = React.useState(false);
+    const inputRef = React.useRef<HTMLInputElement | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [showDragDrop, setShowDragDrop] = useState(true);
+    const [apiImagePreview, setApiImagePreview] = useState<string | null>(null);
 
   
-  const handleCancel = () => {
-    form.resetFields();
-    setVisible(false);
+    const handleDrag = function(e: React.DragEvent<HTMLDivElement>) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+          setDragActive(true);
+        } else if (e.type === "dragleave") {
+          setDragActive(false);
+        }
+      };
+      
+    const handleDrop = function(e: React.DragEvent<HTMLDivElement>) {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        }
+      };
+  
+    const handleSelect = function(e: React.ChangeEvent<HTMLInputElement>) {
+        e.preventDefault();
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+                setShowDragDrop(false);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+  
+    const handleRemoveImage = () => {
+        setImagePreview(null);
+        setShowDragDrop(true);
+        if (inputRef.current) {
+            inputRef.current.value = '';
+        }
+    };
 
-  };
+  
 
-  return (
-    <>
-      <button key="edit" className={styles.custombutton} onClick={showModal}><img src="/edit.svg"></img></button>
-      <Modal
-        open={visible}
-        closable={false}
-        title
-        centered
-        footer={(_) => (
-          <>
-            <div className="btn">
-              <Button className="AddNew" htmlType="submit" onClick={handleSubmit}>
-                Save
-              </Button>
-              <Button className="Cancel" onClick={handleCancel}>
-                CANCEL
-              </Button>
-            </div>
-          </>
-        )}
-      >
-        <h3>Add New Meeting Room</h3>
+    const showPopup = () => {
+        setVisible(true);
+    };
 
-        <Form
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 16 }}
-          layout="horizontal"
-          style={{ maxWidth: 700 }}
-          requiredMark={false}
-        >
+    const handleCancel = () => {
+        setVisible(false);
+    };
 
-          <Form.Item
-            label="Room Name*"
-            labelAlign="left"
-            name="room_name"
-            required
-            rules={[
-              {
-                  required: true,
-                  message: (
-                      <span className="errorMessage">
-                          This field is required!
-                      </span>
-                  ),
-              },
-          ]}
+    const handleChange = (value: string) => {
+      console.log(`selected ${value}`);
+    };
 
-            className="right-asterisk"
-          >
-            <input type="input"  />
-          </Form.Item>
-          <Form.Item label="Location*" name="location" labelAlign="left" rules={[{ required: true, message: (<span className="errorMessage">This field is required!</span> ), }, ]}>
-            <input type="input" />
-          </Form.Item>
-          <Form.Item label="Floor" name="floor" labelAlign="left">
-            <input type="input"  />
-          </Form.Item>
-          <Form.Item label="Capacity*" name="capacity" labelAlign="left" rules={[{ required: true, message: (<span className="errorMessage">This field is required!</span> ), }, ]}>
-            <input type="input" />
-          </Form.Item>
-          <Form.Item label="Equipment" name="equipment" labelAlign="left">
-            <input type="input" />
-          </Form.Item>
-          <Form.Item label="Availability" labelAlign="left">
-            <select >
-              <option value="apple">Open</option>
-              <option value="pear">Close</option>
-            </select>
-          </Form.Item>
-          <p className="upload-text">Upload Meeting Room Image</p>
-          <Dragger {...props}>
-            <img src="/public/cloud-upload.svg"></img>
-            <p className="ant-upload-text">Drag and drop files here</p>
-          </Dragger>
-        </Form>
-      </Modal>
-    </>
-  );
+    useEffect(() => {
+        form1.setFieldsValue({
+            room_name: rec.name,
+            location: rec.location,
+            capacity: rec.capacity,
+            equipment: rec.equipment,
+            availabilitys: rec.availabilitys,
+        });
+        if (rec.apiImageUrl) {
+          setApiImagePreview(rec.apiImageUrl);
+          setShowDragDrop(false);
+      }
+  }, [rec]);
+
+    function handleSubmit() {
+        form1.validateFields()
+            .then(async (values) => {
+                try {
+                    console.log(values)
+                    const data = await api.put(`update-meeting-room/${rec.id}`,values)
+                    if (data.status == 200) {
+                        message.success('Room update successfully');
+                        setVisible(false);
+                        if (onEditSuccess) {
+                            onEditSuccess();
+                        }
+                    } else {
+                        message.error('Failed to create Room');
+                    }
+                } catch (e) {
+                    console.error('Error creating Room:', e);
+                    message.error('Failed to create Room');
+                    console.log(values)
+                }
+            })
+            .catch((errorInfo) => {
+                console.log(errorInfo);
+            });
+    }
+
+    return (
+        <>
+            <button key="edit" className={customstyle.custombutton} onClick={showPopup}><img src="/edit.svg"></img></button>
+            <Modal
+                title={
+                    <div className={styles.formTitle}>Edit Meeting Room</div>
+                }
+                open={visible}
+                onCancel={handleCancel}
+                footer={null}
+                closable={false}
+                width={973}
+            >
+                <Form
+                    form={form1}
+                    name="Edit New Room"
+                    requiredMark={false}
+                >
+                    <div className={styles.formControl}>
+                        <Form.Item
+                            label={<span className={styles.label}>Room Name*</span>}
+                            name="room_name"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            This field is required!
+                                        </span>
+                                    ),
+                                },
+                            ]}
+                            style={{width: '100%'}}
+                        >
+                            <input className={styles.Input}/>
+                        </Form.Item>
+
+                    </div>
+                    <div className={styles.formControl}>
+                        <Form.Item
+                            label={<span className={styles.label}>Location*</span>}
+                            name="location"
+                            style={{width: '100%'}}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            This field is required!
+                                        </span>
+                                    ),
+                                },
+                            ]}
+                        >
+                            <input className={styles.Input}/>
+                        </Form.Item>
+
+                    </div>
+                    <div className={styles.formControl}>
+                        <Form.Item
+                            label={<span className={styles.label}>Floor</span>}
+                            name="floor"
+                            style={{width: '100%'}}
+                        >
+                            <input className={styles.Input} />
+                        </Form.Item>
+
+                    </div>
+                    <div className={styles.formControl}>
+                        <Form.Item
+                            label={<span className={styles.label}>Capacity*</span>}
+                            name="capacity"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        <span className={styles.errorMessage}>
+                                            This field is required!
+                                        </span>
+                                    ),
+                                },
+                            ]}
+                            style={{width: '100%'}}
+                        >
+                            <input className={styles.Input}/>
+                        </Form.Item>
+
+                    </div>
+                    <div className={styles.formControl}>
+                        <Form.Item
+                            label={<span className={styles.label}>Equipment</span>}
+                            name="equipment"
+                            style={{width: '100%'}}
+                        >
+                            <input className={styles.Input}/>
+                        </Form.Item>
+
+                    </div>
+                    <div className={styles.formControl}>
+                        <Form.Item
+                            label={<span className={styles.label}>Availability</span>}
+                            name="availability"
+                            style={{width: '100%'}}
+                        >
+                            <Select
+                              defaultValue="Open"
+                              style={{ width: 329, height:44, left:'42%' }}
+                              onChange={handleChange}
+                              options={[
+                                { value: 'Open', label: 'Open' },
+                                { value: 'Close', label: 'Close' },
+                              ]}
+                            />
+                        </Form.Item>
+
+                    </div>
+                    <Form.Item
+                            label={<span className={styles.label}>Upload Meeting Room Image</span>}
+                            name="upload"
+                            style={{width: '100%'}}
+                        >              
+
+                    </Form.Item>
+                    <div className={styles.formControl}>
+                            <form id="form-file-upload" className={styles.formupload} onDragEnter={handleDrag} onSubmit={(e) => e.preventDefault()}>
+                                <input ref={inputRef} type="file" className={styles.inputfileupload} id="input-file-upload" multiple={true} onChange={handleSelect} />
+                                {showDragDrop && (
+                                <label id="label-file-upload" htmlFor="input-file-upload" className={`${styles.fileupload} ${dragActive ? "drag-active" : ""}`}>
+                                    <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="58" height="50" viewBox="0 0 58 50" fill="none" style={{ marginLeft:'38%', marginBottom:'10px' }}>
+                                    <path d="M28.9999 37.011H14.7519C7.89325 37.0003 2.33325 31.6483 2.33325 25.0457C2.33325 18.4457 7.89325 13.0937 14.7519 13.0937C15.7999 8.39501 19.5359 4.56034 24.5519 3.03234C29.5652 1.50701 35.1012 2.51768 39.0692 5.69901C43.0372 8.87234 44.8346 13.7177 43.7892 18.4163H46.4292C50.1092 18.4163 53.2826 20.579 54.7706 23.7123M47.6666 47.667V31.667M47.6666 31.667L55.6666 39.667M47.6666 31.667L39.6666 39.667" stroke="#225560" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <p>Drag and drop files here</p>
+                                    </div>
+                                </label>
+                                )}
+                                {apiImagePreview && (
+                                    <div>
+                                        <img
+                                            src={apiImagePreview}
+                                            alt="Meeting Room Preview"
+                                            style={{ width: '500px', height: '225px', marginTop:'10px', marginBottom:'10px', marginLeft:'100px' }}
+                                        />
+                                        <button className={styles.deleteimg} onClick={handleRemoveImage}><img src="/delete.svg"></img></button>
+                                    </div>
+                                )}
+                                { dragActive && <div id="drag-file-element" onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></div> }
+                            </form>
+                    </div>
+                    <Form.Item>
+                        <div className={styles.buttonContainer}>
+                            <div>
+                                <Button className={`${styles.buttonAdd} ${styles.formCompleted}`} htmlType="submit" onClick={handleSubmit}
+                                        label='SAVE'/>
+                            </div>
+                            <div>
+                                <Button className={styles.buttonCancel} onClick={handleCancel} label='CANCEL'/>
+                            </div>
+                        </div>
+                    </Form.Item>
+                </Form>
+            </Modal>
+        </>
+    );
 };
 
-export default EditRoom;
+export default EditNewCompany

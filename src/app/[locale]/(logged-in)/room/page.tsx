@@ -27,6 +27,7 @@ const CompanyList = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const user = useSelector((state:any) => state.user.value);
   const company_id = user.company_id;
+  const usertype = user.type;
 
   const fetchData = useCallback(async () => {
     try {
@@ -95,8 +96,10 @@ const CompanyList = () => {
         availabilitys: boolean;
         book:string;
       }
-      const columns: ColumnsType<DataType> = [
-        {
+      let columns: ColumnsType<DataType> = [];
+      {if (usertype === 1) {
+        columns = [
+          {
           title: 'No',
           dataIndex: 'id',
           key: 'id',
@@ -174,6 +177,77 @@ const CompanyList = () => {
           width: 137,
         },
       ];
+    }}
+
+    
+    {if (usertype === 2) {
+      columns = [
+        {
+          title: 'No',
+          dataIndex: 'id',
+          key: 'id',
+          render: (number) => <a>{number}</a>,
+          sorter: (a, b) => a.no - b.no,
+          width:73,
+          fixed:'left',
+        },
+        {
+          title: 'Room Name',
+          dataIndex: 'name',
+          key: 'name',
+          sorter:(a,b) => a.name.localeCompare(b.name),
+          fixed:'left',
+          width:175,
+        },
+        {
+          title: 'Location',
+          dataIndex: 'location',
+          key: 'location',
+          sorter:(a,b) => a.location.localeCompare(b.location),
+          width: 165,
+        },
+        {
+            title: 'Capacity',
+            dataIndex: 'capacity',
+            key: 'capacity',
+            sorter:(a,b) => a.capacity-b.capacity,
+            width:159
+        },
+        {
+            title: 'Equipment',
+            dataIndex: 'equipment',
+            key: 'equipment',
+            width: 251,
+        },
+        {
+            title: 'Room Availability',
+            key: 'availabilitys',
+            dataIndex: 'availabilitys',
+            render: (_, { availabilitys }) => {
+                let color = availabilitys ? '#E56353' : '#388697';
+                return (
+                    <Tag color={color} className="">
+                        {availabilitys ? 'Unavailable' : 'Available'}
+                    </Tag>
+                );
+            },
+            width: 183,
+          },
+        {
+            title: 'View Room Detail',
+            key: 'book',
+            dataIndex: 'book',
+            render: (_, { availabilitys }) => {
+               const color = availabilitys ? '#8B8B8B' : '#388697';
+               return (
+                  <Tag color={color} key={_}>
+                     Book
+                  </Tag>
+               );
+            },
+            width: 154,
+        },
+      ];}}
     return(
             <div className={styles.container}>
                 <div className={styles.labelsection}>
@@ -216,9 +290,11 @@ const CompanyList = () => {
                     scroll={{x:1000}} className={customstyle.customtable}
                     />
                 </div>
-                <div className={styles.addco}>
-                    <AddNewRoom onAddSuccess={handleAddSuccess}>ADD NEW ROOM</AddNewRoom>
-                </div>
+                {usertype === 1 && (
+                  <div className={styles.addco}>
+                      <AddNewRoom onAddSuccess={handleAddSuccess}>ADD NEW ROOM</AddNewRoom>
+                  </div>
+                )}
             </div>
     );
 }
