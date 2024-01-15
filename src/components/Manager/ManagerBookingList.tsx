@@ -16,7 +16,7 @@ import {get} from "lodash";
 import toast from "react-hot-toast";
 import EditNewCompany from "@/components/Admin/EditNewCompany";
 import InformationCompany from "@/components/Admin/InfomationCompany";
-import BookingDetail from "../Booking/BookingDetail";
+import BookingDetail from "./Booking/BookingDetail";
 
 const ManagerBookingList = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);

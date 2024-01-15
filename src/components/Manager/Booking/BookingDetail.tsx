@@ -23,41 +23,37 @@ import Meta from "antd/es/card/Meta";
 import { listenerCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
 import TextArea from "antd/es/input/TextArea";
 import "@/css/BookingDetail.css";
-import { log } from "console";
 
-interface DataType {
-  gender?: string;
-  name: {
-    title?: string;
-    first?: string;
-    last?: string;
-  };
-  email?: string;
-  picture: {
-    large?: string;
-    medium?: string;
-    thumbnail?: string;
-  };
-  nat?: string;
-  loading: boolean;
-}
 const BookingDetail = ({ rec }: any) => {
   const [visible, setVisible] = useState(false);
-  const [form] = Form2.useForm();
+  const [formBookingDetail] = Form.useForm();
   console.log(rec);
-  
-  const [data, setData] = useState<DataType[]>([]);
-  const [list, setList] = useState<DataType[]>([]);
+
   const showPopup = () => {
     setVisible(true);
-    form.resetFields();
+    formBookingDetail.resetFields();
   };
 
   const handleCancel = () => {
-    form.resetFields();
+    formBookingDetail.resetFields();
     setVisible(false);
-    form.resetFields();
+    formBookingDetail.resetFields();
   };
+
+  useEffect(() => {
+    formBookingDetail.setFieldsValue({
+      topic: rec.topic,
+      type: rec.type_of_booking,
+      room: rec.room,
+      date: rec.date,
+      time: rec.time,
+      guest: rec.guest,
+      agenda: rec.agenda,
+      objective: rec.objective,
+      materials: rec.materials,
+      meeting_room: rec.meeting_room,
+    });
+  }, [rec, formBookingDetail]);
 
   return (
     <>
@@ -74,7 +70,7 @@ const BookingDetail = ({ rec }: any) => {
       >
         <Form
           labelAlign="left"
-          form={form}
+          form={formBookingDetail}
           labelCol={{ flex: "200px" }}
           name="BookingDetail"
           requiredMark={false}
@@ -117,22 +113,26 @@ const BookingDetail = ({ rec }: any) => {
                       />
                     }
                   >
-                    <Meta title="Room 12A-4" />
+                    <Meta title={rec.meeting_room.name} />
                     <div className="inforRoom">
                       <span>
-                        <strong>Capacity: </strong>7 people
+                        <strong>Capacity: </strong>
+                        {rec.meeting_room.capacity}
                       </span>
                       <br />
                       <span>
-                        <strong>Location: </strong>7 people
+                        <strong>Location: </strong>
+                        {rec.meeting_room.location}
                       </span>
                       <br />
                       <span>
-                        <strong>Floor: </strong>7 people
+                        <strong>Floor: </strong>
+                        {rec.meeting_room.floor}
                       </span>
                       <br />
                       <span>
-                        <strong>Equipment: </strong>7 people
+                        <strong>Equipment: </strong>
+                        {rec.meeting_room.equipment}
                       </span>
                     </div>
                   </Card>
@@ -170,11 +170,13 @@ const BookingDetail = ({ rec }: any) => {
                   <Input
                     style={{ width: 140, height: 44, borderRadius: 8 }}
                     disabled
+                    value={rec.from_time}
                   />
                   <p style={{ margin: 0 }}>TO</p>
                   <Input
                     style={{ width: 140, height: 44, borderRadius: 8 }}
                     disabled
+                    value={rec.to_time}
                   />
                 </div>
               </Form.Item>
@@ -243,6 +245,7 @@ const BookingDetail = ({ rec }: any) => {
                   // onChange={(e) => setValue(e.target.value)}
                   placeholder="Enter agenda"
                   autoSize={{ minRows: 3, maxRows: 5 }}
+                  disabled
                 />
               </Form.Item>
               <Form.Item label="Objective" name="objective">
@@ -251,6 +254,7 @@ const BookingDetail = ({ rec }: any) => {
                   // onChange={(e) => setValue(e.target.value)}
                   placeholder="Enter objective"
                   autoSize={{ minRows: 3, maxRows: 5 }}
+                  disabled
                 />
               </Form.Item>
               <Form.Item label="Materials" name="materials">
