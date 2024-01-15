@@ -6,9 +6,15 @@ import { selectApiProfileData } from "@/lib/slices/profileSlice";
 import Modal from "@/constants/Modal/ProfileModal";
 import Button from "@/constants/Form/Button";
 import styles from "@/constants/Sidebar/Sidebar.module.css";
+import api from "@/axiosService";
+import toast from "react-hot-toast";
+import { initializeUser } from '@/lib/features/user/userSlice';
+import { useAppDispatch } from '@/lib/hooks';
 
 export default function Profile({ togglePopup }: { togglePopup: any }) {
+  const dispatch = useAppDispatch()
   const [show, setShow] = useState(false);
+  const [editing, setEditing] = useState(false);
   const handleClose = () => {
     togglePopup();
     setShow(false);
@@ -16,7 +22,6 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
   const handleShow = () => setShow(true);
   var apiSliceProfile = useSelector((state: any) => state.user.value);
   var usertype= apiSliceProfile.type;
-  console.log(apiSliceProfile);
   const [userData, setUserData] = useState({
     name: '',
     title: '',
@@ -24,6 +29,30 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
     email: '',
     phone: '',
   })
+  const handleEditClick = () => {
+
+    setEditing(true);
+  }
+  const handleSaveClick = async () => {
+    try{
+      const res = await api.put(`update-user/${apiSliceProfile.id}`,userData)
+      const user = res.data.data;
+      dispatch(initializeUser(user));
+    }catch (error) {
+      console.error(error);
+      toast.error('Error');
+    }
+    setEditing(false);
+  };
+  const handleChangePassword = () => {
+      console.log('Ok')
+  };
+  const handleChange = ({field, value}:any) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
   useEffect(() => {
     if (apiSliceProfile && usertype == 0) {
       const initialData = {
@@ -34,6 +63,16 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
       setUserData(initialData);
     }
     if (apiSliceProfile && usertype == 1) {
+      const initialData = {
+        name: apiSliceProfile.name,
+        title: apiSliceProfile.title,
+        email: apiSliceProfile.email,
+        phone: apiSliceProfile.phone,
+        company: apiSliceProfile.company.company_name,
+      };
+      setUserData(initialData);
+    }
+    if (apiSliceProfile && usertype == 2) {
       const initialData = {
         name: apiSliceProfile.name,
         title: apiSliceProfile.title,
@@ -73,7 +112,7 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
         </div>
           </Modal>
       </>)}
-      {usertype === 1 && (
+      {usertype === 1  && (
       <>
         <Modal title="Personal Information" onClose={handleClose}><div className={styles.inputform}>
           <label htmlFor="name">Manager Name*</label>
@@ -105,7 +144,43 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
           </Button>
         </div>
           </Modal>
-      </>)}
+      </>
+      )}
+      {usertype === 2  && (
+      <>
+        <Modal title="Personal Information" onClose={handleClose}><div className={styles.inputform}>
+          <label htmlFor="name">Name*</label>
+          <input type="text" id="name" value={userData.name} readOnly/>
+        </div>
+          <div className={styles.inputform}>
+            <label htmlFor="title">Title*</label>
+            <input type="text" id="title" value={userData.title} readOnly={!editing} onChange={(e:any) => handleChange({ field: 'title', value: e.target.value })} style={{ backgroundColor: editing ? '#FFF' : '#EAEEF6' }}/>
+          </div>
+          <div className={styles.inputform}>
+            <label htmlFor="company">Company*</label>
+            <input type="text" id="company" value={userData.company} readOnly/>
+          </div>
+          <div className={styles.inputform}>
+            <label htmlFor="email">Email Address*</label>
+            <input type="email" id="email" value={userData.email} readOnly/>
+          </div>
+          <div className={styles.inputform}>
+            <label htmlFor="phone">Phone Number*</label>
+            <input type="text" id="phone" value={userData.phone} readOnly={!editing}  onChange={(e:any) => handleChange({ field: 'phone', value: e.target.value })} style={{ backgroundColor: editing ? '#FFF' : '#EAEEF6' }}/>
+          </div>
+          <div className={styles.editsection}>
+          <button className={styles.editbtn} onClick={handleEditClick}>EDIT INFORMATION</button>
+        </div>
+        <div className={styles.btngroup}>
+          <Button className={styles.passbtn} onClick={editing ? handleSaveClick : handleChangePassword}>
+            {editing ? 'SAVE' : 'CHANGE PASSWORD'}</Button>
+          <Button color="#FFF" className={styles.closebtn} onClick={handleClose}>
+            CLOSE
+          </Button>
+        </div>
+          </Modal>
+      </>
+      )}
     </>
 
   )
