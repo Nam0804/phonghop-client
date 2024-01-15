@@ -189,3 +189,12 @@
 .formCompleted {
     background-color: #225560;
 }
+
+.ant-form-item .ant-form-item-label>label {
+    font-family: Be Vietnam Pro;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: #383838;
+}
