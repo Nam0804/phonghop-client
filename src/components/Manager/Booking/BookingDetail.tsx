@@ -84,7 +84,7 @@ const BookingDetail = ({ rec }: any) => {
                 <Input disabled />
               </Form.Item>
               <Form.Item label="Room" name="room">
-                <Input disabled />
+                <Input disabled value={rec.meeting_room.name}/>
                 <Layout
                   style={{
                     backgroundColor: "#EAEEF6",
