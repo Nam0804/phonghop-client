@@ -72,12 +72,6 @@ select {
 .ant-modal .ant-modal-content{
     width: 974px;
     height: 897px;
-    right: 40%;
-}
-.ant-row{
-    margin-left: 125px;
-    justify-content: space-between;
-    width: 694px;
 }
 .ant-form-item .ant-form-item-label >label {
     font-family: Be Vietnam Pro;
@@ -128,3 +122,4 @@ select {
     font-weight: 400;
     line-height: normal;
 }
+

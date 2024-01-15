@@ -12,6 +12,9 @@ import api from '@/axiosService';
 import {useSelector} from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown} from 'react-bootstrap';
+import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { get } from "lodash";
 
 const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,8 +37,16 @@ const Header = () => {
   const locale = useLocale();
   const loading = useAppSelector((state) => state.loading)
   const user = useSelector((state:any) => state.user.value);
+  const router = useRouter()
 
-  const username = user.name;
+  var username = get(user,'name',null);
+  const pathname = usePathname()
+  const handleSignin = () => {
+    router.push(`/${locale}/login`)
+  }
+  if (pathname === `/${locale}/guest`) {
+    username = 'Guest';
+  }
   const dispatch = useAppDispatch()
   const handleLogout = async () => {
     try {
@@ -51,7 +62,7 @@ const Header = () => {
 
       if (response.status === 200) {
         Cookies.remove('token');
-        window.location.href = `/${locale}/login`;
+        window.location.href = `/${locale}/guest`;
       } else {
         console.error('Logout failed');
       }
@@ -71,37 +82,14 @@ const Header = () => {
           <h2 className={styles.text}>Hello, {username}!</h2>
         </div>
         <div className={styles.btn}>
-        {/* <Dropdown>
-          <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-            Chọn ngôn ngữ
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item className={`${styles.lang} ${styles.customlang}`} onClick={handleEnglish}>
-              <Image src="/england.svg" alt="England" width={24} height={24} />
-              {' '}English
-            </Dropdown.Item>
-
-            <Dropdown.Item className={`${styles.lang} ${styles.customlang}`} onClick={handleVietNam}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 683" width="24" height="24">
-            <g fill="#DA251D">
-              <rect width="1024" height="683"/>
-              <path d="M1024 0v136.6L887.4 0H1024zM1024 273.4V410L887.4 273.4H1024zM1024 547v136.6L887.4 547H1024z"/>
-            </g>
-            <g fill="#FFD100">
-              <path d="M0 0h1024v182.4L832.4 0H0zM0 273.4h1024v136.6H0zM0 547h1024v136.6H0z"/>
-            </g>
-            <g fill="#464646">
-              <path d="M0 182.4V273.4L364.6 0H0zM364.6 683l251-136.6V410H364.6zM364.6 410l-54 30-54-30V273.4L364.6 410zM364.6 682.8L0 409.6v-91.2L364.6 546.8V682.8zM314.6 410l-54 30-54-30V273.4L314.6 410zM314.6 682.8L250 648V547l64.6 35.2V682.8zM417.6 410l-54 30-54-30V273.4L417.6 410zM417.6 682.8L353 648V547l64.6 35.2V682.8zM520.6 410l-54 30-54-30V273.4L520.6 410zM520.6 682.8L456 648V547l64.6 35.2V682.8zM623.6 410l-54 30-54-30V273.4L623.6 410zM623.6 682.8L559 648V547l64.6 35.2V682.8zM726.6 410l-54 30-54-30V273.4L726.6 410zM726.6 682.8L662 648V547l64.6 35.2V682.8zM829.6 410l-54 30-54-30V273.4L829.6 410zM829.6 682.8L765 648V547l64.6 35.2V682.8zM932.6 410l-54 30-54-30V273.4L932.6 410zM932.6 682.8L868 648V547l64.6 35.2V682.8z"/>
-            </g>
-          </svg>
-              {' '}Tiếng Việt
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown> */}
           <Button className={`${styles.lang} ${styles.customlang}`} label="English">
             <Image src="/england.svg" alt="England" width={24} height={24} />
           </Button>
-          <Button className={`${styles.lang} ${styles.customlogout}`} onClick={openModal} label="Logout" />
+          {pathname === `/${locale}/guest` ? (
+            <Button className={`${styles.lang} ${styles.customlogout}`} onClick={handleSignin} label="Sign in" />
+          ) : (
+            <Button className={`${styles.lang} ${styles.customlogout}`} onClick={openModal} label="Logout" />
+          )}
         </div>
 
         

@@ -15,26 +15,44 @@ import { get } from "lodash";
 import toast from "react-hot-toast";
 import DeleteMeeting from '@/components/DeleteMeeting/DeleteMeeting';
 import EditRoom from '@/components/Room/EditMeetingRoomModal';
+import {useSelector} from 'react-redux';
+import moment from 'moment';
 
-const CompanyList = () => {      
+const CompanyList = () => {
   const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
+  const [selectedTimeStartValue, setSelectedTimeStartValue] = useState('');
+  const [selectedTimeEndValue, setSelectedTimeEndValue] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
+  const user = useSelector((state:any) => state.user.value);
+  const company_id = user.company_id;
+  const usertype = user.type;
 
   const fetchData = useCallback(async () => {
     try {
-      const data = await api.get('meeting-rooms/listing')
-      console.log(data.data.data.data);
-      const res = get(data, 'data.data.data')  
-      setAllRoomData(res)
+      const url =window.location.href;
+      const registerurl = `${url}/${company_id}`;
+      const formattedStartTime = moment(selectedTimeStartValue, 'hh:mm A').format('HH:mm:ss');
+      const formattedEndTime = moment(selectedTimeEndValue, 'hh:mm A').format('HH:mm:ss');
+      const data = await api.get(`allroom/${company_id}`, {
+        params: {
+          starttime: `${selectedDate} ${formattedStartTime}`,
+          endtime: `${selectedDate} ${formattedEndTime}`
+        }
+      });
+      
+      setAllRoomData(data.data.data)
+      setFilteredRooms(data.data.data);
       } catch (error) {
         console.error(error);
         toast.error('Error');
 
       }
-    }, [])
+    }, [selectedDate, selectedTimeStartValue, selectedTimeEndValue])
     useEffect(() => {
       fetchData()
-    }, []);
+    }, [fetchData]);
 
     const handleDeleteSuccess = () => {
       setDeleteConfirmationVisible(false);
@@ -46,24 +64,42 @@ const CompanyList = () => {
     const handleEditSuccess = () => {
       fetchData();
     };
-  
-
+    const handleSelectChange = (event:any) => {
+      const selectedRoomName = event.target.value;
+      if (selectedRoomName === "all") {
+        setFilteredRooms(allRoomsData);
+      } else {
+        const filteredRooms = allRoomsData.filter((room) => room.name === selectedRoomName);
+        setFilteredRooms(filteredRooms);
+      }
+   };
+   const handleTimeStartChange = (newTimeStart:any) => {
+    setSelectedTimeStartValue(newTimeStart);
+    fetchData();
+  };
+  const handleTimeEndChange = (newTimeEnd:any) => {
+    setSelectedTimeEndValue(newTimeEnd);
+    fetchData();
+  };
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        console.log(date, dateString);
+        console.log(dateString);
+        setSelectedDate(dateString);
       };
       interface DataType {
         id:number;
         key: string;
         no: number;
-        roomname: string;
+        name: string;
         location: string;
         capacity:number;
         equipment:string;
         availabilitys: boolean;
         book:string;
       }
-      const columns: ColumnsType<DataType> = [
-        {
+      let columns: ColumnsType<DataType> = [];
+      {if (usertype === 1) {
+        columns = [
+          {
           title: 'No',
           dataIndex: 'id',
           key: 'id',
@@ -76,7 +112,7 @@ const CompanyList = () => {
           title: 'Room Name',
           dataIndex: 'name',
           key: 'name',
-          sorter:(a,b) => a.roomname.localeCompare(b.roomname),
+          sorter:(a,b) => a.name.localeCompare(b.name),
           fixed:'left',
           width:175,
         },
@@ -141,12 +177,84 @@ const CompanyList = () => {
           width: 137,
         },
       ];
+    }}
+
+    
+    {if (usertype === 2) {
+      columns = [
+        {
+          title: 'No',
+          dataIndex: 'id',
+          key: 'id',
+          render: (number) => <a>{number}</a>,
+          sorter: (a, b) => a.no - b.no,
+          width:73,
+          fixed:'left',
+        },
+        {
+          title: 'Room Name',
+          dataIndex: 'name',
+          key: 'name',
+          sorter:(a,b) => a.name.localeCompare(b.name),
+          fixed:'left',
+          width:175,
+        },
+        {
+          title: 'Location',
+          dataIndex: 'location',
+          key: 'location',
+          sorter:(a,b) => a.location.localeCompare(b.location),
+          width: 165,
+        },
+        {
+            title: 'Capacity',
+            dataIndex: 'capacity',
+            key: 'capacity',
+            sorter:(a,b) => a.capacity-b.capacity,
+            width:159
+        },
+        {
+            title: 'Equipment',
+            dataIndex: 'equipment',
+            key: 'equipment',
+            width: 251,
+        },
+        {
+            title: 'Room Availability',
+            key: 'availabilitys',
+            dataIndex: 'availabilitys',
+            render: (_, { availabilitys }) => {
+                let color = availabilitys ? '#E56353' : '#388697';
+                return (
+                    <Tag color={color} className="">
+                        {availabilitys ? 'Unavailable' : 'Available'}
+                    </Tag>
+                );
+            },
+            width: 183,
+          },
+        {
+            title: 'View Room Detail',
+            key: 'book',
+            dataIndex: 'book',
+            render: (_, { availabilitys }) => {
+               const color = availabilitys ? '#8B8B8B' : '#388697';
+               return (
+                  <Tag color={color} key={_}>
+                     Book
+                  </Tag>
+               );
+            },
+            width: 154,
+        },
+      ];}}
     return(
             <div className={styles.container}>
                 <div className={styles.labelsection}>
                     <div className={styles.square}>
                     </div>
                     <h1 className={styles.label}>Meeting Room List</h1>
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></span>
                 </div>
                 <p className={customstyle.text}>View By:</p>
                 <div className={customstyle.selectsection}>
@@ -159,30 +267,36 @@ const CompanyList = () => {
                         </div>
                         <div className={customstyle.time}>
                             <p>Time:</p>
-                            <CustomTimePicker></CustomTimePicker>
+                            <CustomTimePicker onChange={handleTimeStartChange}></CustomTimePicker>
                             <p>To:</p>
-                            <CustomTimePicker></CustomTimePicker>
+                            <CustomTimePicker onChange={handleTimeEndChange}></CustomTimePicker>
                         </div>
                     </div>
                     <div className={customstyle.roomPicker}>
                         <p>Choose a room</p>
-                        <select >
-                            <option value="apple">Quả táo</option>
-                            <option value="pear">Quả lê</option>
-                            <option value="peach">Quả đào</option>
+                        <select onChange={(e) => handleSelectChange(e)}>
+                        <option value="all">All Rooms</option>
+                          {allRoomsData.map((room) => (
+                            <option key={room.id} value={room.name}>
+                              {room.name}
+                            </option>
+                          ))}
                         </select>
                     </div>
                 </div>
                 <div className={styles.companytable}>
 
-                    <Table columns={columns} dataSource={allRoomsData} 
+                    <Table columns={columns} dataSource={filteredRooms} 
                     scroll={{x:1000}} className={customstyle.customtable}
                     />
                 </div>
-                <div className={styles.addco}>
-                    <AddNewRoom onAddSuccess={handleAddSuccess}>ADD NEW ROOM</AddNewRoom>
-                </div>
+                {usertype === 1 && (
+                  <div className={styles.addco}>
+                      <AddNewRoom onAddSuccess={handleAddSuccess}>ADD NEW ROOM</AddNewRoom>
+                  </div>
+                )}
             </div>
     );
 }
 export default CompanyList
+

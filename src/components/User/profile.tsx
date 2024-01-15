@@ -14,61 +14,55 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
     setShow(false);
   };
   const handleShow = () => setShow(true);
-  // const tokenLoggedInCookie = Cookies.get('loggedToken');
-  const tokenLoggedInCookie = '1|fuRzoN8I21qKIBQD7PErHHTXe5F5q1rkFix0wWN23778516e'
-  var { data: apiProfileToken, isLoading, isError } = useGetApiProfileQuery(tokenLoggedInCookie || '');
-  var apiSliceProfile = useSelector(selectApiProfileData);
+  var apiSliceProfile = useSelector((state: any) => state.user.value);
+  var usertype= apiSliceProfile.type;
+  console.log(apiSliceProfile);
   const [userData, setUserData] = useState({
     name: '',
     title: '',
     company: '',
     email: '',
     phone: '',
-    type: 0,
   })
-
   useEffect(() => {
-    if (apiSliceProfile) {
+    if (apiSliceProfile && usertype == 0) {
       const initialData = {
-        name: apiSliceProfile.data.data.attributes.name,
-        title: apiSliceProfile.data.data.attributes.title,
-        company: apiSliceProfile.data.data.relationships.company.data.company_name,
-        email: apiSliceProfile.data.data.attributes.email,
-        phone: apiSliceProfile.data.data.attributes.phone,
-        type: apiSliceProfile.data.data.attributes.type,
+        name: apiSliceProfile.name,
+        email: apiSliceProfile.email,
+        phone: apiSliceProfile.phone,
       };
-
-      // Update the state with the initial data
+      setUserData(initialData);
+    }
+    if (apiSliceProfile && usertype == 1) {
+      const initialData = {
+        name: apiSliceProfile.name,
+        title: apiSliceProfile.title,
+        email: apiSliceProfile.email,
+        phone: apiSliceProfile.phone,
+        company: apiSliceProfile.company.company_name,
+      };
       setUserData(initialData);
     }
   }, [apiSliceProfile]);
-  const dispatch = useDispatch();
 
 
   return (
     <>
-      {userData.type === 2 ? (<>
-        <Modal title="Personal Information" width={1000} height={1000} onClose={handleClose}><div className={styles.inputform}>
+    {usertype === 0 && (<>
+        <Modal title="Personal Information" width={1000} height={1000} onClose={handleClose}>
+        <div className={styles.inputform}>
           <label htmlFor="name">Name*</label>
-          <input type="text" id="name" value={userData.name}/>
+          <input type="text" id="name" value={userData.name} disabled/>
         </div>
-          <div className={styles.inputform}>
-            <label htmlFor="title">Title*</label>
-            <input type="text" id="title" value={userData.title}/>
-          </div>
-          <div className={styles.inputform}>
-            <label htmlFor="company">Company*</label>
-            <input type="text" id="company"value={userData.company} />
-          </div>
-          <div className={styles.inputform}>
-            <label htmlFor="email">Email Address*</label>
-            <input type="email" id="email" value={userData.email}/>
-          </div>
-          <div className={styles.inputform}>
-            <label htmlFor="phone">Phone Number*</label>
-            <input type="text" id="phone" value={userData.phone}/>
-          </div>
-          <div className={styles.editsection}>
+        <div className={styles.inputform}>
+          <label htmlFor="email">Email Address*</label>
+          <input type="email" id="email" value={userData.email} disabled/>
+        </div>
+        <div className={styles.inputform}>
+          <label htmlFor="phone">Phone Number*</label>
+          <input type="text" id="phone" value={userData.phone} disabled/>
+        </div>
+        <div className={styles.editsection}>
           <button className={styles.editbtn}>EDIT INFORMATION</button>
         </div>
         <div className={styles.btngroup}>
@@ -78,7 +72,9 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
           </Button>
         </div>
           </Modal>
-      </>) : (<>
+      </>)}
+      {usertype === 1 && (
+      <>
         <Modal title="Personal Information" onClose={handleClose}><div className={styles.inputform}>
           <label htmlFor="name">Manager Name*</label>
           <input type="text" id="name" value={userData.name} />

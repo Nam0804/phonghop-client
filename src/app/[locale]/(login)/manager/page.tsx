@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Modal from "@/constants/Modal/ViewModal";
 import { get } from 'lodash';
+import api from '@/axiosService';
 
 const steps = [
     {},
@@ -55,7 +56,7 @@ export default function RegisterNewCompany() {
 
     const processForm: SubmitHandler<Inputs> = data => {
         clearErrors();
-        axios.post('http://localhost:8000/api/user/register/company', data).then(response => {
+        api.post('user/register/company', data).then(response => {
 
             if (response?.data?.errors) {
                 const errorResponse = response?.data?.errors;
@@ -135,7 +136,9 @@ export default function RegisterNewCompany() {
                         <h3>Register New Account</h3>
                         <p className={styles.subContent}>Please input your information</p>
                         <div className={styles.input}>
-                            <img src="/company.svg" alt="" className={styles.icon} />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 28 24" fill="none" className={styles.icon}>
+                            <path d="M22 16H19.3333V18.6667H22M22 10.6667H19.3333V13.3333H22M24.6667 21.3333H14V18.6667H16.6667V16H14V13.3333H16.6667V10.6667H14V8H24.6667M11.3333 5.33333H8.66667V2.66667H11.3333M11.3333 10.6667H8.66667V8H11.3333M11.3333 16H8.66667V13.3333H11.3333M11.3333 21.3333H8.66667V18.6667H11.3333M6 5.33333H3.33334V2.66667H6M6 10.6667H3.33334V8H6M6 16H3.33334V13.3333H6M6 21.3333H3.33334V18.6667H6M14 5.33333V0H0.666672V24H27.3333V5.33333H14Z" fill="#5D5D5D"/>
+                        </svg>
                             <input type="text" placeholder="Company Name*" {...register('company_name')} className={styles.inputsection} />
                         </div>
                         {errors.company_name && (

@@ -24,12 +24,9 @@ const CompanyPage = () => {
   const fetchData = useCallback(async () => {
     try {
       const data = await api.get('index-companies')
-      console.log(data.data);
       const res = get(data, 'data.data')
-      // const sortedData = res.sort(
-      //   (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      // );      
-      setAllStaffData(res)
+      const sortedData = res.sort((a: DataType, b: DataType) => b.id - a.id);
+      setAllStaffData(sortedData)
     } catch (error) {
       console.error(error);
       toast.error('Error');
@@ -72,7 +69,7 @@ const CompanyPage = () => {
       key: 'id',
       render: (number) => <a>{number}</a>,
       sorter: (a, b) => a.no - b.no,
-      width: 73,
+      width: 60,
       fixed: 'left',
     },
     {
@@ -81,7 +78,6 @@ const CompanyPage = () => {
       key: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
       fixed: 'left',
-      width: 146,
     },
     {
       title: 'Company Domain',
@@ -112,7 +108,6 @@ const CompanyPage = () => {
       title: 'Email',
       dataIndex: ['manager', 'manager_email'],
       key: 'manager[manager_email]',
-      width: 162,
     },
     {
       title: 'Manager Phone Number',
@@ -144,7 +139,7 @@ const CompanyPage = () => {
       </div>
       <div className={styles.companytable}>
         <Table columns={columns} dataSource={allStaffData}
-          scroll={{ x: 1000 }} pagination={false}
+          scroll={{ x: 1300 }} pagination={false} rowKey={(record) => record.id}
         />
       </div>
       <div className={styles.addco}>

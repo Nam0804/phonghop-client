@@ -23,6 +23,7 @@ import Meta from "antd/es/card/Meta";
 import { listenerCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
 import TextArea from "antd/es/input/TextArea";
 import "@/css/BookingDetail.css";
+import { log } from "console";
 
 interface DataType {
   gender?: string;
@@ -40,10 +41,11 @@ interface DataType {
   nat?: string;
   loading: boolean;
 }
-const BookingDetail = ({ onAddSuccess }: any) => {
+const BookingDetail = ({ rec }: any) => {
   const [visible, setVisible] = useState(false);
   const [form] = Form2.useForm();
-
+  console.log(rec);
+  
   const [data, setData] = useState<DataType[]>([]);
   const [list, setList] = useState<DataType[]>([]);
   const showPopup = () => {
@@ -59,8 +61,8 @@ const BookingDetail = ({ onAddSuccess }: any) => {
 
   return (
     <>
-      <button key="add" className={customstyle.addbtn} onClick={showPopup}>
-        Booking Detail
+      <button key="view" className={styles.custombutton} onClick={showPopup}>
+        <img src="/eye.svg"></img>
       </button>
       <Modal
         title={<div className={styles.formTitle}>Booking Detail</div>}
@@ -91,7 +93,7 @@ const BookingDetail = ({ onAddSuccess }: any) => {
                   style={{
                     backgroundColor: "#EAEEF6",
                     width: 370,
-                    
+
                     borderRadius: 8,
                     marginTop: 8,
                     padding: 8,
