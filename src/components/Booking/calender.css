@@ -1,0 +1,47 @@
+.fc{
+    height: 600px;
+}
+
+.fc .fc-timegrid-slot {
+     border-bottom: 0px;
+     height: 21px;
+ }
+
+.fc .fc-timegrid-slot-minor {
+    border-top-style: none;
+}
+
+.fc-direction-ltr .fc-timegrid-slot-label-frame {
+    text-align: center;
+}
+.fc .fc-timegrid-axis-cushion, .fc .fc-timegrid-slot-label-cushion {
+     padding: 0px 4px;
+}
+
+ .fc .fc-timegrid-slot-label-cushion {
+      display: inline-block;
+      white-space: nowrap;
+     font-family: Be Vietnam Pro;
+     font-size: 14px;
+     font-style: normal;
+     font-weight: 400;
+     line-height: normal;
+     color: #323232;
+ }
+.fc-axis, .fc-time {
+    display:none;
+}
+
+.fc-divider,
+.fc-col-header-cell-cushion {
+    border-style: none !important;
+}
+
+.ant-picker .ant-picker-input >input {
+    color: #323232;
+    font-family: Be Vietnam Pro;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
