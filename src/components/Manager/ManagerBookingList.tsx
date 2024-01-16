@@ -3,7 +3,7 @@ import React, {useCallback} from "react";
 import styles from '@/css/CompanyList.module.css'
 import Button from "@/constants/Form/Button";
 import Modal from "@/constants/Modal/ChangePasswordModal";
-import AddNewCompany from "@/components/Admin/AddNewCompany";
+import BookRoom from "@/components/Booking/BookRoom";
 import {Table, Tag} from 'antd';
 import {DatePicker, Space} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
@@ -303,7 +303,7 @@ const ManagerBookingList = () => {
             </div>
             <div className={styles.addco}>
                 {/* <Button className={styles.addbtn}>ADD NEW COMPANY</Button> */}
-                <AddNewCompany onAddSuccess={handleAddSuccess}></AddNewCompany>
+                <BookRoom onAddSuccess={handleAddSuccess}></BookRoom>
             </div>
         </div>
     );

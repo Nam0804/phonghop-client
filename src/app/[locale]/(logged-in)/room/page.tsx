@@ -1,6 +1,6 @@
 'use client'
 import styles from '@/css/CompanyList.module.css'
-import {Table, Tag } from 'antd';
+import {Table, Tag, Pagination } from 'antd';
 import Button from "@/constants/Form/Button";
 import type { DatePickerProps } from 'antd';
 import { DatePicker, Space } from 'antd';
@@ -287,7 +287,7 @@ const CompanyList = () => {
                 <div className={styles.companytable}>
 
                     <Table columns={columns} dataSource={filteredRooms} 
-                    scroll={{x:1000}} className={customstyle.customtable}
+                    scroll={{x:1000}} className={customstyle.customtable} pagination={{ pageSize:5 }}
                     />
                 </div>
                 {usertype === 1 && (
