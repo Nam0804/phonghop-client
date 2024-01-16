@@ -66,17 +66,11 @@ const UserPage = () => {
     }
 
     const columns: ColumnsType<DataType> = [
+
         {
-            title: 'No',
-            dataIndex: 'id',
-            key: 'id',
-            render: (number) => <a>{number}</a>,
-            sorter: (a, b) => a.no - b.no,
-            width: 73,
-            fixed: 'left',
-        },
-        {
-            title: 'Name',
+            title: () => {
+                return <div className={styles.headerTitle}>Name</div>;
+            },
             dataIndex: ['name'],
             key: 'attributes[name]',
             sorter: (a, b) => a.name.localeCompare(b.name),
@@ -84,26 +78,34 @@ const UserPage = () => {
             width: 272,
         },
         {
-            title: 'Role',
+            title: () => {
+                return <div className={styles.headerTitle}>Role</div>;
+            },
             dataIndex: ['title'],
             key: 'attributes[type]',
             sorter: (a, b) => a.title.localeCompare(b.title),
             width: 273,
         },
         {
-            title: 'Email',
+            title: () => {
+                return <div className={styles.headerTitle}>Email</div>;
+            },
             dataIndex: ['email'],
             key: 'attributes[email]',
             width: 262
         },
         {
-            title: 'Phone Number',
+            title: () => {
+                return <div className={styles.headerTitle}>Phone Number</div>;
+            },
             dataIndex: ['phone'],
             key: 'attributes[phone]',
             width: 251,
         },
         {
-            title: 'Action',
+            title: () => {
+                return <div className={styles.headerTitle}>Action</div>;
+            },
             key: 'action',
             render: (_, record: any) => (
                 <Space size="middle">
@@ -126,17 +128,32 @@ const UserPage = () => {
             <div className={styles.companytable}>
                 <Table columns={columns} dataSource={allStaffData}
                        scroll={{x: 1000}}
+                       bordered={true}
                        components={{
                            header: {
                                cell: (props) => (
                                    <th style={{
                                        background: '#255D6A',
                                        color: '#fff',
-                                       borderRight: '1px solid #fff',
+                                       borderRight: '1px solid #ffffff',
                                    }}>
                                        {props.children}
                                    </th>
                                ),
+                           },
+                           body: {
+                               cell: (props) => {
+                                   const isEvenRow = props.index % 2 === 0;
+                                   console.log(isEvenRow)
+
+                                   return (
+                                       <td
+                                           className={styles.customTable}
+                                       >
+                                           {props.children}
+                                       </td>
+                                   );
+                               },
                            },
                        }}
                 />
