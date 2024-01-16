@@ -23,6 +23,7 @@ import Meta from "antd/es/card/Meta";
 import { listenerCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
 import TextArea from "antd/es/input/TextArea";
 import "@/css/BookingDetail.css";
+import momment from "moment";
 
 const BookingDetail = ({ rec }: any) => {
   const [visible, setVisible] = useState(false);
@@ -55,6 +56,14 @@ const BookingDetail = ({ rec }: any) => {
     });
   }, [rec, formBookingDetail]);
 
+console.log(rec.to_time);
+
+  const timeString = momment(rec.from_time).format("HH:mm A");
+  const timeString2 = momment(rec.to_time).format("HH:mm A");
+  const dateString = momment(rec.from_time).format("DD MMM YYYY");
+  const dateString2 = momment(rec.to_time).format("ddd");
+  console.log(dateString);
+  
   return (
     <>
       <button key="view" className={styles.custombutton} onClick={showPopup}>
@@ -72,19 +81,18 @@ const BookingDetail = ({ rec }: any) => {
           labelAlign="left"
           form={formBookingDetail}
           labelCol={{ flex: "200px" }}
-          name="BookingDetail"
           requiredMark={false}
         >
           <Row>
             <Col span={12}>
-              <Form.Item label="Meeting topic" name="topic">
-                <Input disabled />
+              <Form.Item label="Meeting topic">
+                <Input disabled value={rec.topic} />
               </Form.Item>
-              <Form.Item label="Type of booking" name="type">
-                <Input disabled />
+              <Form.Item label="Type of booking">
+                <Input disabled value={rec.type_of_booking} />
               </Form.Item>
               <Form.Item label="Room" name="room">
-                <Input disabled value={rec.meeting_room.name}/>
+                <Input disabled value={rec.meeting_room.name} />
                 <Layout
                   style={{
                     backgroundColor: "#EAEEF6",
@@ -144,12 +152,14 @@ const BookingDetail = ({ rec }: any) => {
                     <Input
                       style={{ width: 181, height: 44, borderRadius: 8 }}
                       disabled
+                      value={dateString}
                     />
                   </Col>
                   <Col className="gutter-row" span={12}>
                     <Input
                       style={{ width: 181, height: 44, borderRadius: 8 }}
                       disabled
+                      value={dateString2}
                     />
                   </Col>
                 </Row>
@@ -170,13 +180,13 @@ const BookingDetail = ({ rec }: any) => {
                   <Input
                     style={{ width: 140, height: 44, borderRadius: 8 }}
                     disabled
-                    value={rec.from_time}
+                    value={timeString}
                   />
                   <p style={{ margin: 0 }}>TO</p>
                   <Input
                     style={{ width: 140, height: 44, borderRadius: 8 }}
                     disabled
-                    value={rec.to_time}
+                    value={timeString2}
                   />
                 </div>
               </Form.Item>
@@ -239,9 +249,9 @@ const BookingDetail = ({ rec }: any) => {
                   )}
                 />
               </Form.Item>
-              <Form.Item label="Agenda" name="agenda">
+              <Form.Item label="Agenda">
                 <TextArea
-                  value={""}
+                  value={rec.agenda}
                   // onChange={(e) => setValue(e.target.value)}
                   placeholder="Enter agenda"
                   autoSize={{ minRows: 3, maxRows: 5 }}
@@ -259,6 +269,45 @@ const BookingDetail = ({ rec }: any) => {
               </Form.Item>
               <Form.Item label="Materials" name="materials">
                 {/* <div>Button</div> */}
+                <List
+                  style={{
+                    backgroundColor: "#EAEEF6",
+                    borderRadius: 8,
+                    width: 370,
+                    marginTop: 8,
+                  }}
+                  className="demo-loadmore-list"
+                  itemLayout="horizontal"
+                  // dataSource={list}
+                  renderItem={(item) => (
+                    <List.Item
+                      actions={[
+                        <a key="list-loadmore-edit">edit</a>,
+                        <a key="list-loadmore-more">more</a>,
+                      ]}
+                    >
+                      <Skeleton
+                        avatar
+                        title={true}
+                        // loading={item.loading}
+                        active
+                      >
+                        <List.Item.Meta
+                          avatar={
+                            <Avatar
+                              src={
+                                "https://sm.ign.com/t/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.300.jpg"
+                              }
+                            />
+                          }
+                          title={<p>Vitex Name</p>}
+                          // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                        />
+                        <div>content</div>
+                      </Skeleton>
+                    </List.Item>
+                  )}
+                />
               </Form.Item>
             </Col>
           </Row>
