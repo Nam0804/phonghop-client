@@ -28,12 +28,12 @@ import momment from "moment";
 const BookingDetail = ({ rec }: any) => {
   const [visible, setVisible] = useState(false);
   const [formBookingDetail] = Form.useForm();
-  console.log(rec);
 
   const showPopup = () => {
     setVisible(true);
     formBookingDetail.resetFields();
   };
+console.log(rec);
 
   const handleCancel = () => {
     formBookingDetail.resetFields();
@@ -56,13 +56,13 @@ const BookingDetail = ({ rec }: any) => {
     });
   }, [rec, formBookingDetail]);
 
-console.log(rec.to_time);
+
 
   const timeString = momment(rec.from_time).format("HH:mm A");
   const timeString2 = momment(rec.to_time).format("HH:mm A");
   const dateString = momment(rec.from_time).format("DD MMM YYYY");
   const dateString2 = momment(rec.to_time).format("ddd");
-  console.log(dateString);
+
   
   return (
     <>
@@ -86,13 +86,27 @@ console.log(rec.to_time);
           <Row>
             <Col span={12}>
               <Form.Item label="Meeting topic">
-                <Input disabled value={rec.topic} />
+                <Input className="bookingInput" disabled value={rec.topic} />
               </Form.Item>
               <Form.Item label="Type of booking">
-                <Input disabled value={rec.type_of_booking} />
+                <Input
+                  className="bookingInput"
+                  disabled
+                  value={
+                    rec.type_of_booking == 1
+                      ? "Meeting"
+                      : rec.type_of_booking == 2
+                      ? "Personal use"
+                      : "Unavailable"
+                  }
+                />
               </Form.Item>
               <Form.Item label="Room" name="room">
-                <Input disabled value={rec.meeting_room.name} />
+                <Input
+                  className="bookingInput"
+                  disabled
+                  value={rec.meeting_room.name}
+                />
                 <Layout
                   style={{
                     backgroundColor: "#EAEEF6",
@@ -218,7 +232,7 @@ console.log(rec.to_time);
                   }}
                   className="demo-loadmore-list"
                   itemLayout="horizontal"
-                  // dataSource={list}
+                  // dataSource={rec}
                   renderItem={(item) => (
                     <List.Item
                       actions={[
@@ -240,7 +254,8 @@ console.log(rec.to_time);
                               }
                             />
                           }
-                          title={<p>Vitex Name</p>}
+                          title={<p>{rec.booking_email}</p>}
+                          
                           // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                         />
                         <div>content</div>
@@ -251,6 +266,7 @@ console.log(rec.to_time);
               </Form.Item>
               <Form.Item label="Agenda">
                 <TextArea
+                  className="bookingTextArea"
                   value={rec.agenda}
                   // onChange={(e) => setValue(e.target.value)}
                   placeholder="Enter agenda"
@@ -260,6 +276,7 @@ console.log(rec.to_time);
               </Form.Item>
               <Form.Item label="Objective" name="objective">
                 <TextArea
+                  className="bookingTextArea"
                   value={""}
                   // onChange={(e) => setValue(e.target.value)}
                   placeholder="Enter objective"

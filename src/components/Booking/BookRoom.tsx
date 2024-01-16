@@ -10,7 +10,6 @@ import CustomTimePicker from "./TimePickerBook";
 import axios from 'axios';
 import type { DatePickerProps } from 'antd';
 import { DatePicker, Space } from 'antd';
-import 'rc-time-picker/assets/index.css';
 import { Button, message, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';

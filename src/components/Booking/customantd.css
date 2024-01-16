@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro&display=swap');
 .ant-btn-default{
     width: 181px;
     height: 44px;
@@ -16,11 +16,11 @@
     z-index: 500000;
 }
 .ant-input{
-    width: 370px !important;
-    height: 123px !important;
+    width: 370px ;
+    height: 123px ;
     border-radius: 8px;
     border: 2px solid #EAEEF6;
-    max-width: 105% !important;
+    max-width: 105% ;
     padding: 10px 24px;
 }
 .ant-form-item .ant-form-item-label{
@@ -34,4 +34,4 @@
 }
 .ant-form label {
     font-size: 17px;
-}
+} */
