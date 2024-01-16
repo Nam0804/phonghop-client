@@ -213,7 +213,7 @@ const EditNewCompany = ({rec,onEditSuccess}:any) => {
                     <div className={styles.formControl}>
                         <Form.Item
                             label={<span className={styles.label}>Availability</span>}
-                            name="availability"
+                            name="availabilitys"
                             style={{width: '100%'}}
                         >
                             <Select
