@@ -35,8 +35,14 @@
 .fc-divider,
 .fc-col-header-cell-cushion {
     border-style: none !important;
+    color: #ffffff;
+    text-decoration: none;
 }
-
+.fc-scrollgrid-sync-inner {
+    background-color: #20505B;
+    color: #ffffff;
+    text-decoration: none;
+}
 .ant-picker .ant-picker-input >input {
     color: #323232;
     font-family: Be Vietnam Pro;
@@ -44,4 +50,8 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+}
+input[type="checkbox"]#myMeeting:checked {
+    background-color:#225560
+;
 }
