@@ -147,7 +147,7 @@ const UserEditInfor = ({user}: any) => {
                         <div className={styles.buttonContainer}>
                             <div>
                                 <Button className={styles.buttonEdit} htmlType="submit" onClick={handleEdit}
-                                        label='SAVE' style={formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}}/>
+                                        label='SAVE' style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}}/>
                             </div>
                             <div>
                                 <Button className={styles.buttonCancel} onClick={handleCancel} label='CANCEL'/>

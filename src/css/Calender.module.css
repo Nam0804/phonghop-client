@@ -24,7 +24,7 @@
 }
 .calendarContainer{
     width: 1328px;
-    height: 920px;
+    height: 120%;
     padding: 0px;
     flex-shrink: 0;
     border-radius: 16px;
