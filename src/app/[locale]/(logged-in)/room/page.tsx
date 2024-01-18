@@ -1,6 +1,6 @@
 'use client'
 import styles from '@/css/CompanyList.module.css'
-import {Table, Tag } from 'antd';
+import {Table, Tag, Pagination } from 'antd';
 import Button from "@/constants/Form/Button";
 import type { DatePickerProps } from 'antd';
 import { DatePicker, Space } from 'antd';
@@ -104,7 +104,7 @@ const CompanyList = () => {
           key: 'id',
           render: (number) => <a>{number}</a>,
           sorter: (a, b) => a.no - b.no,
-          width:73,
+          width:40,
           fixed:'left',
         },
         {
@@ -142,9 +142,11 @@ const CompanyList = () => {
             render: (_, { availabilitys }) => {
                 let color = availabilitys ? '#E56353' : '#388697';
                 return (
-                    <Tag color={color} className="">
+                  <div >
+                    <Tag color={color} key={_}>
                         {availabilitys ? 'Unavailable' : 'Available'}
                     </Tag>
+                  </div>
                 );
             },
             width: 183,
@@ -286,7 +288,7 @@ const CompanyList = () => {
                 <div className={styles.companytable}>
 
                     <Table columns={columns} dataSource={filteredRooms} 
-                    scroll={{x:1000}} className={customstyle.customtable}
+                    scroll={{x:1000}} className={customstyle.customtable} pagination={{ pageSize:5 }}
                     />
                 </div>
                 {usertype === 1 && (
