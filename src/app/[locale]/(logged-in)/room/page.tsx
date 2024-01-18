@@ -157,9 +157,9 @@ const CompanyList = () => {
             render: (_, { availabilitys }) => {
                const color = availabilitys ? '#8B8B8B' : '#388697';
                return (
-                  <Tag color={color} key={_}>
+                  <Button style={{backgroundColor: color}} key={_}>
                      Book
-                  </Tag>
+                  </Button>
                );
             },
             width: 154,
