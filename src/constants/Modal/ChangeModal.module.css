@@ -43,3 +43,15 @@
 .modalcontent {
   padding: 44px 125px 44px;
 }
+.inputsection{
+    background-color: #fff!important;
+}
+
+.icon{
+    position: absolute;
+    left: 318px;
+}
+.showhide{
+  position: absolute;
+  right:8px;
+}
