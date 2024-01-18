@@ -15,23 +15,11 @@
 .ant-picker-dropdown{
     z-index: 500000;
 }
-.ant-input{
-    width: 370px !important;
-    height: 123px !important;
-    border-radius: 8px;
-    border: 2px solid #EAEEF6;
-    max-width: 105% !important;
-    padding: 10px 24px;
-}
-.ant-form-item .ant-form-item-label{
-    width: 155px;
-}
+
 .ant-form-item .ant-form-item-label >label::after {
     display: none;
 }
-.ant-form-item .ant-form-item-control-input {
-    width: 370px;
-}
+
 .ant-form label {
     font-size: 17px;
 }
