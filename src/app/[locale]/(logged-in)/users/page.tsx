@@ -126,6 +126,19 @@ const UserPage = () => {
             <div className={styles.companytable}>
                 <Table columns={columns} dataSource={allStaffData}
                        scroll={{x: 1000}}
+                       components={{
+                           header: {
+                               cell: (props) => (
+                                   <th style={{
+                                       background: '#255D6A',
+                                       color: '#fff',
+                                       borderRight: '1px solid #fff',
+                                   }}>
+                                       {props.children}
+                                   </th>
+                               ),
+                           },
+                       }}
                 />
             </div>
             <div className={styles.addco}>

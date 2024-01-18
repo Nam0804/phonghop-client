@@ -12,6 +12,7 @@ import {
   Skeleton,
   Avatar,
   Select,
+  Flex,
 } from "antd";
 import Button from "@/constants/Form/Button";
 import styles from "/src/css/BookingDetail.module.css";
@@ -58,10 +59,11 @@ console.log(rec);
 
 
 
+
   const timeString = momment(rec.from_time).format("HH:mm A");
   const timeString2 = momment(rec.to_time).format("HH:mm A");
   const dateString = momment(rec.from_time).format("DD MMM YYYY");
-  const dateString2 = momment(rec.to_time).format("ddd");
+  const dateString2 = momment(rec.to_time).format("dddd");
 
   
   return (
@@ -223,30 +225,33 @@ console.log(rec);
                     label: d.text,
                   }))}
                 /> */}
+                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                  <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                  <h6>{rec.booking_name} (Booking Owner)</h6>
+                </div>
+
                 <List
                   style={{
-                    backgroundColor: "#EAEEF6",
+                    backgroundColor: "none",
                     borderRadius: 8,
                     width: 370,
-                    marginTop: 8,
+                    padding: 0,
                   }}
+                  split={false}
                   className="demo-loadmore-list"
                   itemLayout="horizontal"
-                  // dataSource={rec}
+                  dataSource={rec.booking_email.split(",")}
                   renderItem={(item) => (
-                    <List.Item
-                      actions={[
-                        <a key="list-loadmore-edit">edit</a>,
-                        <a key="list-loadmore-more">more</a>,
-                      ]}
-                    >
+                    <List.Item>
                       <Skeleton
+                        style={{ padding: 0 }}
                         avatar
                         title={true}
-                        // loading={item.loading}
+                        loading={(item as { loading: boolean }).loading}
                         active
                       >
                         <List.Item.Meta
+                          style={{ padding: 0 }}
                           avatar={
                             <Avatar
                               src={
@@ -254,11 +259,10 @@ console.log(rec);
                               }
                             />
                           }
-                          title={<p>{rec.booking_email}</p>}
-                          
+                          title={<p>{item}</p>}
+
                           // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                         />
-                        <div>content</div>
                       </Skeleton>
                     </List.Item>
                   )}
@@ -295,14 +299,9 @@ console.log(rec);
                   }}
                   className="demo-loadmore-list"
                   itemLayout="horizontal"
-                  // dataSource={list}
+                  // dataSource={rec.booking_email}
                   renderItem={(item) => (
-                    <List.Item
-                      actions={[
-                        <a key="list-loadmore-edit">edit</a>,
-                        <a key="list-loadmore-more">more</a>,
-                      ]}
-                    >
+                    <List.Item actions={[<a key="list-loadmore-edit">edit</a>]}>
                       <Skeleton
                         avatar
                         title={true}
@@ -317,10 +316,9 @@ console.log(rec);
                               }
                             />
                           }
-                          title={<p>Vitex Name</p>}
+                          title={<p>{"item"}</p>}
                           // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                         />
-                        <div>content</div>
                       </Skeleton>
                     </List.Item>
                   )}
