@@ -42,7 +42,7 @@ const DayView = () => {
   const handleCheckboxChange = (id: any) => {
     setSelectedCheckbox(id);
   };
-  
+
   const handleCb = async () => {
     try {
       await fetchData();
@@ -54,7 +54,7 @@ const DayView = () => {
   const fetchData = async () => {
     if (selectedCheckbox === "myMeeting") {
       const myBookings = await fetchMyBookingHistory();
-      const eventMyBooking = myBookings.data.map((booking) => ({
+      const eventMyBooking = myBookings.data.map((booking: any) => ({
         title: booking.topic,
         start: booking.from_time,
         end: booking.to_time,
@@ -65,7 +65,7 @@ const DayView = () => {
       setEvents(eventMyBooking);
     } else {
       const allBookings = await fetchAllBookingHistory();
-      const eventAllBooking = allBookings.map((booking) => ({
+      const eventAllBooking = allBookings.map((booking: any) => ({
         title: booking.topic,
         start: booking.from_time,
         end: booking.to_time,
@@ -168,7 +168,7 @@ const DayView = () => {
       };
   };
 
-  const renderEventContent = (eventInfo) => {
+  const renderEventContent = (eventInfo: any) => {
     return (
       <>
         <p>
@@ -181,155 +181,260 @@ const DayView = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.labelsection}>
-        <div className={styles.square}></div>
-        <h1 className={styles.label}>Meeting Room Detail (DayView)</h1>
-        <span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-          </svg>
-        </span>
-      </div>
-      <p className={customstyle.text}>View By:</p>
-      <div className={customstyle.selectsection}>
-        <div className={customstyle.dateTimePicker}>
-          <div className={customstyle.date}>
-            <p>Date:</p>
-            <Space direction="vertical">
-              <DatePicker
-                style={{ width: "221px", height: "36px" }}
-                // onChange={onChange}
-                showToday={false}
-              />
-            </Space>
-          </div>
-          <div className={customstyle.time}>
-            <p>Time:</p>
-            <CustomTimePicker
-              onChange={"handleTimeStartChange"}
-            ></CustomTimePicker>
-            <p>To:</p>
-            <CustomTimePicker
-              onChange={"handleTimeEndChange"}
-            ></CustomTimePicker>
-          </div>
-        </div>
-        <div className={customstyle.roomPicker}>
-          <p>Choose a room</p>
-          <select>
-            <option value="all">All Rooms</option>
-
-            <option>abc</option>
-          </select>
-        </div>
-      </div>
+    <>
       <div>
-        <Row>
-          <Col span={6}>
-            <Layout
-              style={{
-                backgroundColor: "#EAEEF6",
-                width: 370,
-
-                borderRadius: 8,
-                marginTop: 8,
-                padding: 8,
-              }}
-              content="center"
-            >
-              <Card
-                bordered={false}
-                style={{
-                  backgroundColor: "#EAEEF6",
-                  padding: 0,
-                  boxShadow: "none",
-                }}
-                cover={
-                  <Image
-                    alt="example"
-                    src="https://explore.zoom.us/media/what-are-zoom-rooms.jpg"
-                    width={354}
-                    height={197}
-                    preview={true}
-                  />
-                }
-              >
-                <Meta title={"rec.meeting_room.name"} />
-                <div className="inforRoom">
-                  <span>
-                    <strong>Capacity: </strong>
-                    {"rec.meeting_room.capacity"}
-                  </span>
-                  <br />
-                  <span>
-                    <strong>Location: </strong>
-                    {"rec.meeting_room.location"}
-                  </span>
-                  <br />
-                  <span>
-                    <strong>Floor: </strong>
-                    {"rec.meeting_room.floor"}
-                  </span>
-                  <br />
-                  <span>
-                    <strong>Equipment: </strong>
-                    {"rec.meeting_room.equipment"}
-                  </span>
-                </div>
-              </Card>
-            </Layout>
-          </Col>
-          <Col span={18}>
-            <div className={styles.calender}>
-              <FullCalendar
-                ref={calendarRef}
-                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                headerToolbar={false}
-                initialView={"timeGridDay"}
-                allDaySlot={true}
-                editable={false}
-                selectable
-                selectOverlap={false}
-                eventOverlap={false}
-                expandThrough={false}
-                events={events}
-                dayPropGetter={calendarStyle}
-                expandRows={true}
-                slotMinTime={"08:00:00"}
-                slotMaxTime={"19:00:00"}
-                slotDuration={"01:00:00"}
-                slotLabelInterval={{ hours: 1 }}
-                slotLabelFormat={{
-                  hour: "numeric",
-                  minute: "2-digit",
-                  hour12: true,
-                }}
-                dayHeaderContent={(args: any) => (
-                  <div>
-                    <div>{moment(args.date).format("dddd, DD/MM/YYYY")}</div>
-                    {/* <div>{moment(args.date).format("DD/MM/YYYY")}</div> */}
-                  </div>
-                )}
-                contentHeight={786}
-                eventContent={renderEventContent}
-              />
+        <Layout style={{ padding: 20, backgroundColor: "#EAEEF6" }}>
+          <div className={styles.container}>
+            <div className={styles.headerContainer}>
+              <div className={styles.square}></div>
+              <h1 className={styles.labelsection}>Room Detail</h1>
             </div>
-          </Col>
-        </Row>
+            <div className={styles.textContainer}>
+              <div
+                className={styles.childTextContainer}
+                style={{ paddingLeft: "32px" }}
+              >
+                <p className={styles.text}>Date:</p>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <button
+                    onClick={() => prevHandle()}
+                    style={{
+                      borderRadius: "100px",
+                      width: "24px",
+                      height: "24px",
+                      backgroundColor: "#388697",
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      style={{ padding: "5px" }}
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M8.29303 12.7073C8.10556 12.5198 8.00024 12.2655 8.00024 12.0003C8.00024 11.7352 8.10556 11.4809 8.29303 11.2933L13.95 5.63634C14.0423 5.54083 14.1526 5.46465 14.2746 5.41224C14.3966 5.35983 14.5279 5.33225 14.6606 5.33109C14.7934 5.32994 14.9251 5.35524 15.048 5.40552C15.1709 5.4558 15.2825 5.53006 15.3764 5.62395C15.4703 5.71784 15.5446 5.82949 15.5949 5.95239C15.6451 6.07529 15.6704 6.20696 15.6693 6.33974C15.6681 6.47252 15.6405 6.60374 15.5881 6.72575C15.5357 6.84775 15.4595 6.9581 15.364 7.05034L10.414 12.0003L15.364 16.9503C15.5462 17.1389 15.647 17.3915 15.6447 17.6537C15.6424 17.9159 15.5373 18.1668 15.3518 18.3522C15.1664 18.5376 14.9156 18.6427 14.6534 18.645C14.3912 18.6473 14.1386 18.5465 13.95 18.3643L8.29303 12.7073Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </button>
+                  <DatePicker
+                    defaultValue={dayjs("Monday 15/01/2024", dateFormat)}
+                    format={customFormat}
+                    onClick={() => todayHandle()}
+                  />
+                  <button
+                    onClick={() => nextHandle()}
+                    style={{
+                      borderRadius: "100px",
+                      width: "24px",
+                      height: "24px",
+                      backgroundColor: "#388697",
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M15.7071 11.2932C15.8946 11.4807 15.9999 11.735 15.9999 12.0002C15.9999 12.2653 15.8946 12.5197 15.7071 12.7072L10.0501 18.3642C9.95785 18.4597 9.84751 18.5359 9.7255 18.5883C9.6035 18.6407 9.47228 18.6683 9.3395 18.6694C9.20672 18.6706 9.07504 18.6453 8.95215 18.595C8.82925 18.5447 8.7176 18.4705 8.6237 18.3766C8.52981 18.2827 8.45556 18.171 8.40528 18.0481C8.355 17.9252 8.32969 17.7936 8.33085 17.6608C8.332 17.528 8.35959 17.3968 8.412 17.2748C8.46441 17.1528 8.54059 17.0424 8.6361 16.9502L13.5861 12.0002L8.6361 7.05018C8.45394 6.86158 8.35315 6.60898 8.35542 6.34678C8.3577 6.08458 8.46287 5.83377 8.64828 5.64836C8.83369 5.46295 9.0845 5.35778 9.3467 5.35551C9.60889 5.35323 9.8615 5.45402 10.0501 5.63618L15.7071 11.2932Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div className={styles.childTextContainer}>
+                <p className={styles.text}>View As:</p>
+                <select
+                  className={styles.roomPicker}
+                  value={selectedRoom}
+                  onChange={handleRoomChange}
+                >
+                  <option value="" disabled>
+                    Select a room
+                  </option>
+                  {roomList.map((room) => (
+                    <option key={room.id} value={room.id}>
+                      {room.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.childTextContainer}>
+                <p className={styles.text}>View:</p>
+                <select className={styles.weekPicker}>
+                  <option value="Week">Week</option>
+                  <option value="Day">Day</option>
+                </select>
+              </div>
+              <div
+                className={styles.childTextContainer}
+                style={{ marginLeft: "84px" }}
+              >
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    type="checkbox"
+                    id="myMeeting"
+                    checked={selectedCheckbox === "myMeeting"}
+                    onClick={() => handleCheckboxChange("myMeeting")}
+                    style={{
+                      marginRight: "3px",
+                      backgroundColor:
+                        selectedCheckbox === "myMeeting" ? "#225560" : "#fff",
+                      color:
+                        selectedCheckbox === "myMeeting" ? "#225560" : "#fff",
+                    }}
+                  />
+                  <label htmlFor="myMeeting" className={styles.checkboxLabel}>
+                    My meeting
+                  </label>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    type="checkbox"
+                    id="allMeetings"
+                    checked={selectedCheckbox === "allMeetings"}
+                    onClick={() => handleCheckboxChange("allMeetings")}
+                    style={{
+                      marginRight: "3px",
+                      backgroundColor:
+                        selectedCheckbox === "allMeetings" ? "#225560" : "#fff",
+                      color:
+                        selectedCheckbox === "allMeetings" ? "#225560" : "#fff",
+                    }}
+                  />
+                  <label htmlFor="allMeetings" className={styles.checkboxLabel}>
+                    All meetings
+                  </label>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingLeft: "15px",
+                }}
+              >
+                <button className={styles.bookingButton}>Book Now</button>
+              </div>
+            </div>
+            <div>
+              <Row>
+                <Col span={6}>
+                  <Layout
+                    style={{
+                      backgroundColor: "#EAEEF6",
+                      width: 370,
+
+                      borderRadius: 8,
+                      marginTop: 8,
+                      padding: 8,
+                    }}
+                    content="center"
+                  >
+                    <Card
+                      bordered={false}
+                      style={{
+                        backgroundColor: "#EAEEF6",
+                        padding: 0,
+                        boxShadow: "none",
+                      }}
+                      cover={
+                        <Image
+                          alt="example"
+                          src="https://explore.zoom.us/media/what-are-zoom-rooms.jpg"
+                          width={354}
+                          height={197}
+                          preview={true}
+                        />
+                      }
+                    >
+                      <Meta title={"rec.meeting_room.name"} />
+                      <div className="inforRoom">
+                        <span>
+                          <strong>Capacity: </strong>
+                          {"rec.meeting_room.capacity"}
+                        </span>
+                        <br />
+                        <span>
+                          <strong>Location: </strong>
+                          {"rec.meeting_room.location"}
+                        </span>
+                        <br />
+                        <span>
+                          <strong>Floor: </strong>
+                          {"rec.meeting_room.floor"}
+                        </span>
+                        <br />
+                        <span>
+                          <strong>Equipment: </strong>
+                          {"rec.meeting_room.equipment"}
+                        </span>
+                      </div>
+                    </Card>
+                  </Layout>
+                </Col>
+                <Col span={14}>
+                  <div className={styles.calender}>
+                    <FullCalendar
+                      ref={calendarRef}
+                      plugins={[
+                        dayGridPlugin,
+                        timeGridPlugin,
+                        interactionPlugin,
+                      ]}
+                      headerToolbar={false}
+                      initialView={"timeGridDay"}
+                      allDaySlot={true}
+                      editable={false}
+                      selectable
+                      selectOverlap={false}
+                      eventOverlap={false}
+                      expandThrough={false}
+                      events={events}
+                      dayPropGetter={calendarStyle}
+                      expandRows={true}
+                      slotMinTime={"08:00:00"}
+                      slotMaxTime={"19:00:00"}
+                      slotDuration={"01:00:00"}
+                      slotLabelInterval={{ hours: 1 }}
+                      slotLabelFormat={{
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true,
+                      }}
+                      dayHeaderContent={(args: any) => (
+                        <div>
+                          <div>
+                            {moment(args.date).format("dddd, DD/MM/YYYY")}
+                          </div>
+                          {/* <div>{moment(args.date).format("DD/MM/YYYY")}</div> */}
+                        </div>
+                      )}
+                      contentHeight={786}
+                      eventContent={renderEventContent}
+                    />
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          </div>
+        </Layout>
       </div>
-    </div>
+    </>
   );
 };
 export default DayView;
