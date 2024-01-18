@@ -100,48 +100,56 @@ const AddNewRoom = ({ onAddSuccess }:any) => {
     };
 
     function handleSubmit() {
-        form.validateFields()
-            .then(async (values) => {
-                try {
-                    values = {
-                        ...form.getFieldsValue(),
-                        company_id: user.company_id,   
-                    }
-                    if (values.upload) {
-                        const imagePath = await processImage(values.upload.file);
-                        values.image = imagePath;
-                    }
-                    const data = await api.post(`store-meeting-room`,values)
-                    if (data.status == 200) {
-                        message.success('Room created successfully');
-                        form.resetFields();
-                        setVisible(false);
-                        if (onAddSuccess) {
-                            onAddSuccess();
-                        }
-                    } else {
-                        message.error('Failed to create Room');
-                        form.resetFields();
-                        setVisible(false);
-                        if (onAddSuccess) {
-                            onAddSuccess();
-                        }
-                    }
-                } catch (e) {
-                    console.error('Error creating Room:', e);
-                    message.error('Failed to create Room');
-                    console.log(values)
+        form
+          .validateFields()
+          .then(async (values) => {
+            try {
+              const inputImage = form.getFieldValue('image');
+              const imageFile = new File([inputImage], 'meeting-room-image.png', {
+                type: 'image/png/jpeg/jpg',
+              });
+      
+              const formData = new FormData();
+              formData.append('name', values.name);
+              formData.append('location', values.location);
+              formData.append('floor', values.floor);
+              formData.append('capacity', values.capacity);
+              formData.append('equipment', values.equipment);
+              formData.append('availability', values.availability);
+              formData.append('company_id', user.company_id);
+              formData.append('image', imageFile);
+      
+              const data = await api.post('store-meeting-room', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              });
+      
+              if (data.status === 200) {
+                message.success('Room created successfully');
+                form.resetFields();
+                setVisible(false);
+                if (onAddSuccess) {
+                  onAddSuccess();
                 }
-            })
-            .catch((errorInfo) => {
-                console.log(errorInfo);
-            });
-    }
-    async function processImage(file:File) {
-        const imagePath = '/path/to/your/image.jpg';
-        return imagePath;
-    }
-
+              } else {
+                message.error('Failed to create Room');
+                form.resetFields();
+                setVisible(false);
+                if (onAddSuccess) {
+                  onAddSuccess();
+                }
+              }
+            } catch (e) {
+              console.error('Error creating Room:', e);
+              message.error('Failed to create Room');
+              console.log(values);
+            }
+          })
+          .catch((errorInfo) => {
+            console.log(errorInfo);
+          });
+      }
     return (
         <>
             <button key="add" className={customstyle.addbtn} onClick={showPopup}>ADD NEW ROOM</button>
