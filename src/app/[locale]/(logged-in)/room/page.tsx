@@ -9,7 +9,6 @@ import CustomTimePicker from "@/components/Manager/TimePicker";
 import type { ColumnsType } from 'antd/es/table';
 import api from '@/axiosService';
 import { useEffect, useState, useCallback } from "react";
-import "./customantd.css";
 import AddNewRoom from '@/components/Room/createMeetingRoomModal';
 import { get } from "lodash";
 import toast from "react-hot-toast";

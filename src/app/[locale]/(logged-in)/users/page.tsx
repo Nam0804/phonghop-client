@@ -7,7 +7,6 @@ import {DatePicker, Space} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import {useEffect, useState} from "react";
 import {get} from 'lodash';
-import './customantd.css'
 import api from '@/axiosService';
 import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
 import DeleteUser from '@/components/User/deleteUser/deleteUser';

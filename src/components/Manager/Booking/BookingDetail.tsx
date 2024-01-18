@@ -23,7 +23,6 @@ import Meta from "antd/es/card/Meta";
 import { listenerCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
 import TextArea from "antd/es/input/TextArea";
 import "@/css/BookingDetail.css";
-import { log } from "console";
 
 interface DataType {
   gender?: string;
@@ -44,7 +43,6 @@ interface DataType {
 const BookingDetail = ({ rec }: any) => {
   const [visible, setVisible] = useState(false);
   const [form] = Form2.useForm();
-  console.log(rec);
   
   const [data, setData] = useState<DataType[]>([]);
   const [list, setList] = useState<DataType[]>([]);
