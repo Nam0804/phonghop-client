@@ -1,5 +1,5 @@
 "use strict";
-import RoomDetailWeekly from 'src/components/Booking/RoomDetailWeekly';
+import RoomDetailWeekly from '@/components/Booking/RoomDetailWeekly';
 const Index = () => {
     return (
         <>

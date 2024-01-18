@@ -66,7 +66,17 @@ const UserPage = () => {
     }
 
     const columns: ColumnsType<DataType> = [
-
+        {
+            title: () => {
+                return <div className={styles.headerTitle}>No</div>;
+            },
+            dataIndex: 'id',
+            key: 'id',
+            render: (number) => <a>{number}</a>,
+            sorter: (a, b) => a.no - b.no,
+            fixed: 'left',
+            width: 272,
+        },
         {
             title: () => {
                 return <div className={styles.headerTitle}>Name</div>;
@@ -108,7 +118,7 @@ const UserPage = () => {
             },
             key: 'action',
             render: (_, record: any) => (
-                <Space size="middle">
+                <Space size="middle" style={{alignItems:'center'}}>
                     <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
                     <ManagerEditInfor user={record} onEditSuccess={handleEditSuccess}/>
                     <DeleteUser user_id={record.id} onDeleteSuccess={handleDeleteSuccess}/>
@@ -131,7 +141,7 @@ const UserPage = () => {
                        bordered={true}
                        components={{
                            header: {
-                               cell: (props) => (
+                               cell: (props: any) => (
                                    <th style={{
                                        background: '#255D6A',
                                        color: '#fff',
@@ -142,7 +152,7 @@ const UserPage = () => {
                                ),
                            },
                            body: {
-                               cell: (props) => {
+                               cell: (props: any) => {
                                    const isEvenRow = props.index % 2 === 0;
                                    console.log(isEvenRow)
 
