@@ -8,7 +8,7 @@ import customstyle from '@/css/MeetingRoomList.module.css';
 import CustomTimePicker from "@/components/Manager/TimePicker";
 import type { ColumnsType } from 'antd/es/table';
 import api from '@/axiosService';
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, use } from "react";
 import "./customantd.css";
 import AddNewRoom from '@/components/Room/createMeetingRoomModal';
 import { get } from "lodash";
@@ -17,8 +17,11 @@ import DeleteMeeting from '@/components/DeleteMeeting/DeleteMeeting';
 import EditRoom from '@/components/Room/EditMeetingRoomModal';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
 
 const CompanyList = () => {
+  const locale = useLocale();
   const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
@@ -32,7 +35,6 @@ const CompanyList = () => {
   const fetchData = useCallback(async () => {
     try {
       const url =window.location.href;
-      const registerurl = `${url}/${company_id}`;
       const formattedStartTime = moment(selectedTimeStartValue, 'hh:mm A').format('HH:mm:ss');
       const formattedEndTime = moment(selectedTimeEndValue, 'hh:mm A').format('HH:mm:ss');
       const data = await api.get(`allroom/${company_id}`, {
@@ -41,8 +43,11 @@ const CompanyList = () => {
           endtime: `${selectedDate} ${formattedEndTime}`
         }
       });
-      
+      console.log("record", user);
+
       setAllRoomData(data.data.data)
+      
+      
       setFilteredRooms(data.data.data);
       } catch (error) {
         console.error(error);
@@ -142,6 +147,8 @@ const CompanyList = () => {
             dataIndex: 'availabilitys',
             render: (_, { availabilitys }) => {
                 let color = availabilitys ? '#E56353' : '#388697';
+                
+                
                 return (
                     <Tag color={color} className="">
                         {availabilitys ? 'Unavailable' : 'Available'}
@@ -157,9 +164,11 @@ const CompanyList = () => {
             render: (_, { availabilitys }) => {
                const color = availabilitys ? '#8B8B8B' : '#388697';
                return (
-                  <Tag color={color} key={_}>
+                 <Tag>
+                   <Link href={`/${locale}/roomDetail`} color={color} key={_}>
                      Book
-                  </Tag>
+                   </Link>
+                 </Tag>
                );
             },
             width: 154,

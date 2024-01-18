@@ -34,7 +34,6 @@ const BookingDetail = ({ rec }: any) => {
     setVisible(true);
     formBookingDetail.resetFields();
   };
-console.log(rec);
 
   const handleCancel = () => {
     formBookingDetail.resetFields();
