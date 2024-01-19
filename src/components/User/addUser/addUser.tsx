@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Modal, Form, message} from 'antd';
+import {Modal, Form as Form1, message} from 'antd';
 import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import styles from '/src/css/AddUser.module.css';
@@ -12,15 +12,15 @@ import { get } from 'lodash';
 
 const AddUser = ({onAddSuccess}: any) => {
     const [visible, setVisible] = useState(false);
-    const [form] = Form.useForm();
+    const [form] = Form1.useForm();
     const [users, setUsers] = useState([]);
+    const [formCompleted, setFormCompleted] = useState(false)
     const t = useTranslations('Add');
     const locale = useLocale();
     const user = useSelector((state:any) => state.user.value);
     const showPopup = () => {
         setVisible(true);
     };
-
     const handleCancel = () => {
         form.resetFields();
         setVisible(false);
@@ -66,13 +66,17 @@ const AddUser = ({onAddSuccess}: any) => {
                 width={973}
                 centered
             >
-                <Form
+                <Form1
                     form={form}
                     name="Add new staff"
                     requiredMark={false}
+                    onValuesChange={(changedValues, allValues) => {
+                        const isFormCompleted = Object.values(allValues).every(value => value !== undefined && value !== '');
+                        setFormCompleted(isFormCompleted);
+                    }}
                 >
                     <div className={styles.formControl}>
-                        <Form.Item
+                        <Form1.Item
                             label={<span className={styles.label}>Name*</span>}
                             name="name"
                             rules={[
@@ -88,21 +92,21 @@ const AddUser = ({onAddSuccess}: any) => {
                             style={{width: '100%'}}
                         >
                             <Input className={styles.Input}/>
-                        </Form.Item>
+                        </Form1.Item>
 
                     </div>
                     <div className={styles.formControl}>
-                        <Form.Item
+                        <Form1.Item
                             label={<span className={styles.label}>Title</span>}
                             name="title"
                             style={{width: '100%'}}
                         >
                             <Input className={styles.Input}/>
-                        </Form.Item>
+                        </Form1.Item>
 
                     </div>
                     <div className={styles.formControl}>
-                        <Form.Item
+                        <Form1.Item
                             label={<span className={styles.label}>Email*</span>}
                             name="email"
                             rules={[
@@ -126,10 +130,10 @@ const AddUser = ({onAddSuccess}: any) => {
                             style={{width: '100%'}}
                         >
                             <Input className={styles.Input}/>
-                        </Form.Item>
+                        </Form1.Item>
                     </div>
                     <div className={styles.formControl}>
-                        <Form.Item
+                        <Form1.Item
                             label={<span className={styles.label}>Phone Number</span>}
                             name="phone"
                             style={{width: '100%'}}
@@ -139,21 +143,21 @@ const AddUser = ({onAddSuccess}: any) => {
                             ]}
                         >
                             <Input className={styles.Input}/>
-                        </Form.Item>
+                        </Form1.Item>
 
                     </div>
-                    <Form.Item>
+                    <Form1.Item>
                         <div className={styles.buttonContainer}>
                             <div>
                                 <Button className={styles.buttonAdd} htmlType="submit" onClick={handleSubmit}
-                                        label='ADD NEW USER'/>
+                                        label='ADD NEW USER' style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}} />
                             </div>
                             <div>
                                 <Button className={styles.buttonCancel} onClick={handleCancel} label='CANCEL'/>
                             </div>
                         </div>
-                    </Form.Item>
-                </Form>
+                    </Form1.Item>
+                </Form1>
             </Modal>
         </>
     );

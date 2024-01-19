@@ -1,24 +1,26 @@
-'use client'
-import styles from '@/css/CompanyList.module.css'
-import {Table, Tag, Pagination } from 'antd';
+"use client";
+import styles from "@/css/CompanyList.module.css";
+import { Table, Tag, Pagination } from "antd";
 import Button from "@/constants/Form/Button";
-import type { DatePickerProps } from 'antd';
-import { DatePicker, Space } from 'antd';
-import customstyle from '@/css/MeetingRoomList.module.css';
+import type { DatePickerProps } from "antd";
+import { DatePicker, Space } from "antd";
+import customstyle from "@/css/MeetingRoomList.module.css";
 import CustomTimePicker from "@/components/Manager/TimePicker";
 import type { ColumnsType } from 'antd/es/table';
 import api from '@/axiosService';
 import { useEffect, useState, useCallback } from "react";
-import "./customantd.css";
 import AddNewRoom from '@/components/Room/createMeetingRoomModal';
 import { get } from "lodash";
 import toast from "react-hot-toast";
-import DeleteMeeting from '@/components/DeleteMeeting/DeleteMeeting';
-import EditRoom from '@/components/Room/EditMeetingRoomModal';
-import {useSelector} from 'react-redux';
-import moment from 'moment';
+import DeleteMeeting from "@/components/DeleteMeeting/DeleteMeeting";
+import EditRoom from "@/components/Room/EditMeetingRoomModal";
+import { useSelector } from "react-redux";
+import moment from "moment";
+import Link from "next/link";
+import { useLocale } from "next-intl";
 
 const CompanyList = () => {
+  const locale = useLocale();
   const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
@@ -157,9 +159,9 @@ const CompanyList = () => {
             render: (_, { availabilitys }) => {
                const color = availabilitys ? '#8B8B8B' : '#388697';
                return (
-                  <Tag color={color} key={_}>
+                  <Button style={{backgroundColor: color}} key={_}>
                      Book
-                  </Tag>
+                  </Button>
                );
             },
             width: 154,

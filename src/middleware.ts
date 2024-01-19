@@ -12,8 +12,12 @@ export default async function middleware(request: NextRequest) {
     "manager",
     "guest",
   ];
+  const adminRoutes = [
+
+  ]
 
   const token = request.cookies.get("token")?.value;
+  const type = request.cookies.get("type")?.value
 
   const handleI18nRouting = createIntlMiddleware({
     locales: ["en", "vn"],

@@ -16,6 +16,7 @@ import {useSelector} from 'react-redux'
 import {useAppDispatch} from '@/lib/hooks';
 import {setLoading} from '@/lib/features/loadingSlice';
 import toast from "react-hot-toast";
+import StaffInfomation from "@/components/User/InforUser/UserInfor";
 
 
 const UserPage = () => {
@@ -67,16 +68,20 @@ const UserPage = () => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: 'No',
+            title: () => {
+                return <div className={styles.headerTitle}>No</div>;
+            },
             dataIndex: 'id',
             key: 'id',
             render: (number) => <a>{number}</a>,
             sorter: (a, b) => a.no - b.no,
-            width: 73,
             fixed: 'left',
+            width: 272,
         },
         {
-            title: 'Name',
+            title: () => {
+                return <div className={styles.headerTitle}>Name</div>;
+            },
             dataIndex: ['name'],
             key: 'attributes[name]',
             sorter: (a, b) => a.name.localeCompare(b.name),
@@ -84,30 +89,38 @@ const UserPage = () => {
             width: 272,
         },
         {
-            title: 'Role',
+            title: () => {
+                return <div className={styles.headerTitle}>Role</div>;
+            },
             dataIndex: ['title'],
             key: 'attributes[type]',
             sorter: (a, b) => a.title.localeCompare(b.title),
             width: 273,
         },
         {
-            title: 'Email',
+            title: () => {
+                return <div className={styles.headerTitle}>Email</div>;
+            },
             dataIndex: ['email'],
             key: 'attributes[email]',
             width: 262
         },
         {
-            title: 'Phone Number',
+            title: () => {
+                return <div className={styles.headerTitle}>Phone Number</div>;
+            },
             dataIndex: ['phone'],
             key: 'attributes[phone]',
             width: 251,
         },
         {
-            title: 'Action',
+            title: () => {
+                return <div className={styles.headerTitle}>Action</div>;
+            },
             key: 'action',
             render: (_, record: any) => (
-                <Space size="middle">
-                    <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
+                <Space size="middle" style={{alignItems:'center'}}>
+                    <StaffInfomation rec={record} ></StaffInfomation>
                     <ManagerEditInfor user={record} onEditSuccess={handleEditSuccess}/>
                     <DeleteUser user_id={record.id} onDeleteSuccess={handleDeleteSuccess}/>
                 </Space>
@@ -126,6 +139,34 @@ const UserPage = () => {
             <div className={styles.companytable}>
                 <Table columns={columns} dataSource={allStaffData}
                        scroll={{x: 1000}}
+                       bordered={true}
+                       components={{
+                           header: {
+                               cell: (props: any) => (
+                                   <th style={{
+                                       background: '#255D6A',
+                                       color: '#fff',
+                                       borderRight: '1px solid #ffffff',
+                                   }}>
+                                       {props.children}
+                                   </th>
+                               ),
+                           },
+                           body: {
+                               cell: (props: any) => {
+                                   const isEvenRow = props.index % 2 === 0;
+                                   console.log(isEvenRow)
+
+                                   return (
+                                       <td
+                                           className={styles.customTable}
+                                       >
+                                           {props.children}
+                                       </td>
+                                   );
+                               },
+                           },
+                       }}
                 />
             </div>
             <div className={styles.addco}>
