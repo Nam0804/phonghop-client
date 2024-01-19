@@ -16,6 +16,7 @@ import {useSelector} from 'react-redux'
 import {useAppDispatch} from '@/lib/hooks';
 import {setLoading} from '@/lib/features/loadingSlice';
 import toast from "react-hot-toast";
+import StaffInfomation from "@/components/User/InforUser/UserInfor";
 
 
 const UserPage = () => {
@@ -118,6 +119,8 @@ const UserPage = () => {
             },
             key: 'action',
             render: (_, record: any) => (
+                <Space size="middle">
+                    <StaffInfomation rec={record} ></StaffInfomation>
                 <Space size="middle" style={{alignItems:'center'}}>
                     <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
                     <ManagerEditInfor user={record} onEditSuccess={handleEditSuccess}/>

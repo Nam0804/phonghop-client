@@ -4,15 +4,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Input from '@/constants/Form/Input';
 import styles from '@/css/Booking.module.css';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
-import Link from 'next/link';
+import { useSelector } from 'react-redux'
 import { useState, useEffect } from 'react';
 import CustomTimePicker from "./TimePickerBook";    
 import axios from 'axios';
 import type { DatePickerProps } from 'antd';
 import { DatePicker, Space } from 'antd';
-// import 'rc-time-picker/assets/index.css';
+import 'rc-time-picker/assets/index.css';
 import { Button, message, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import Select from 'react-select';
 import type { UploadProps } from 'antd';
 import './customantd.css';
 import TextArea from "antd/es/input/TextArea";
@@ -36,11 +36,47 @@ export default function BookRoom({ onAddSuccess }:any) {
     const [form] = Form1.useForm();
     const [formCompleted, setFormCompleted] = useState(false)
     const [visible, setVisible] = useState(false);
-    const [allRoomsData, setAllRoomData] = useState<Room[]>([]);
+    const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
+    const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
+    const [repeatType, setRepeatType] = useState(null);
+    const user = useSelector((state:any) => state.user.value);
 
-    const handleChange = (date: React.SetStateAction<Date>) => {
+
+    const generateRepeatOptions = (date: Date | null) => {
+        const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
+
+        return [
+          { value: 'no-repeat', label: 'Doesn’t repeat' },
+          { value: 'every-weekday', label: 'Every weekday' },
+          {
+            value: 'weekly',
+            label: `Weekly - ${date ? dayOfWeek : '(Select a date)'}`,
+          },
+          {
+            value: 'monthly',
+            label: `Monthly - ${date ? dayOfWeek : '(Select a date)'}`,
+          },
+          {
+            value: 'annually',
+            label: `Annually - ${date ? dayOfWeek : '(Select a date)'}`,
+          },
+        ];
+      };
+
+
+
+    const handleRepeatChange = (selectedOption) => {
+        setRepeatType(selectedOption);
+      };
+
+      const handleDateChange = (date: React.SetStateAction<Date>) => {
         setSelectedDate(date);
-    };
+
+        setRepeatType(null);
+      };
+
+    const repeatOptions = generateRepeatOptions(selectedDate);
+
     const handleStartTimeChange = (value: moment.Moment | undefined) => {
         setStartTime(value);
     };
@@ -48,6 +84,16 @@ export default function BookRoom({ onAddSuccess }:any) {
     const handleEndTimeChange = (value: moment.Moment | undefined) => {
         setEndTime(value);
     };
+
+    const handleSelectChange = (event:any) => {
+        const selectedRoomName = event.target.value;
+        if (selectedRoomName === "all") {
+          setFilteredRooms(allRoomsData);
+        } else {
+          const filteredRooms = allRoomsData.filter((room) => room.name === selectedRoomName);
+          setFilteredRooms(filteredRooms);
+        }
+     };
 
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
         console.log(dateString);
@@ -84,7 +130,14 @@ export default function BookRoom({ onAddSuccess }:any) {
           .validateFields()
           .then(async (values) => {
             try {
-            
+                values = {
+                    ...form.getFieldsValue(),
+                    booking_name: user.name,
+                    booking_email: user.email,
+                    booking_title: user.title,
+                    meeting_room_id: user.room_id,
+                }
+
               const data = await api.post(`bookings`, values);
               if (data.status === 200) {
                 message.success('User created successfully');
@@ -101,6 +154,7 @@ export default function BookRoom({ onAddSuccess }:any) {
                   onAddSuccess();
                 }
               }
+              setFilteredRooms(data.data.data);
             } catch (e) {
               console.error('Error creating user:', e);
               message.error('Failed to create user');
@@ -191,7 +245,7 @@ export default function BookRoom({ onAddSuccess }:any) {
                                             Room*:
                                         </label>
                                         <div className="col-8">
-                                            <select className={`${styles.formSelect}`}>
+                                            <select className={`${styles.formSelect}`} onChange={(e) => handleSelectChange(e)}>
                                             <option value="all">All Rooms</option>
                                                 {allRoomsData.map((room) => (
                                                     <option key={room.id} value={room.name}>
@@ -209,8 +263,11 @@ export default function BookRoom({ onAddSuccess }:any) {
                                             <div className={styles.dateTimePicker}>
                                                 <div className={styles.date}>
                                                         <Space direction="vertical">
-                                                                <DatePicker style={{ width:'181px',height:'44px' }} onChange={onChange} showToday={false}/>
+                                                                <DatePicker selected={selectedDate} onChange={onChange} showToday={false} style={{ width:'181px',height:'44px' }}/>
                                                         </Space>
+                                                </div>
+                                                <div>
+                                                    <Select  options={repeatOptions} onChange={handleRepeatChange} className={ styles.selectedDate } />
                                                 </div>
                                             </div>
                                         </div>
@@ -258,6 +315,7 @@ export default function BookRoom({ onAddSuccess }:any) {
                                         <TextArea
                                             placeholder="Objective"
                                             autoSize={{ minRows: 3, maxRows: 5 }}
+                                            className={`${styles.formControl1}`}
                                         />
                                         </div>
                                     </div>

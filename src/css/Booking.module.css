@@ -25,11 +25,11 @@
 
 }
 .formControl1{
-    width: 370px;
-    height: 123px;
+    width: 370px !important;
+    height: 123px !important;
     border-radius: 8px;
     border: 2px solid #EAEEF6;
-    align-self: flex-start;
+    max-width: 105% !important;
 }
 .formLabel1{
     width: 21px;
@@ -69,6 +69,8 @@
 }
 .dateTimePicker {
     margin-left: 32px;
+    justify-content: space-between;
+    width: 370px;
 }
 .dateTimePicker .date p,.dateTimePicker .time p{
     color:  #323232;
@@ -159,4 +161,8 @@
     font-style: italic;
     font-weight: 400;
     line-height: normal;
+}
+.selectedDate>div{
+    width: 184px;
+    height: 44px;
 }
