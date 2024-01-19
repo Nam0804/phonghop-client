@@ -23,12 +23,6 @@ export default function BookRoom({ onAddSuccess }:any) {
         require("bootstrap/dist/js/bootstrap.min.js");
     }, [])
 
-    interface Room {
-        id: number;
-        name: string;
-        // Add other properties as needed
-    }
-
     const [selectedDate, setSelectedDate] = useState(new Date('2023-01-01'));
     const [startTime, setStartTime] = useState<moment.Moment | undefined>();
     const [endTime, setEndTime] = useState<moment.Moment | undefined>();
@@ -39,10 +33,12 @@ export default function BookRoom({ onAddSuccess }:any) {
     const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
     const [repeatType, setRepeatType] = useState(null);
     const user = useSelector((state:any) => state.user.value);
+    const [meetingRoomId, setMeetingRoomId] = useState()
+   
 
     const generateRepeatOptions = (date: Date | null) => {
         const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
-
+      
         return [
           { value: 'no-repeat', label: 'Doesn’t repeat' },
           { value: 'every-weekday', label: 'Every weekday' },
@@ -60,8 +56,8 @@ export default function BookRoom({ onAddSuccess }:any) {
           },
         ];
       };
-
-
+      
+    
 
     const handleRepeatChange = (selectedOption) => {
         setRepeatType(selectedOption);
@@ -122,40 +118,46 @@ export default function BookRoom({ onAddSuccess }:any) {
           }
         },
       };
-
-      const handleSubmit = () => {
+    const handleSubmit = () => {
         form
           .validateFields()
           .then(async (values) => {
             try {
+              const meetingRoomsResponse = await api.get('meeting-rooms/listing');
+              
+              if (meetingRoomsResponse.status === 200) {
+                const meetingRooms = meetingRoomsResponse.data.data;
+      
+                const selectedMeetingRoomId = meetingRooms.length > 0 ? meetingRooms[0].id : null;
+      
                 values = {
-                    ...form.getFieldsValue(),
-                    booking_name: user.name,
-                    booking_email: user.email,
-                    booking_title: user.title,
-                    meeting_room_id: user.room_id,
-                }
+                  ...form.getFieldsValue(),
+                  booking_name: user.name,
+                  booking_email: user.email,
+                  booking_title: user.title,
+                  meeting_room_id: selectedMeetingRoomId,
+                };
 
-              const data = await api.post(`bookings`, values);
-              if (data.status === 200) {
-                message.success('User created successfully');
-                form.resetFields();
-                setVisible(false);
-                if (onAddSuccess) {
-                  onAddSuccess();
+                const bookingResponse = await api.post('bookings', values);
+      
+                if (bookingResponse.status === 200) {
+                  message.success('Booking created successfully');
+                  form.resetFields();
+                  setVisible(false);
+                  if (onAddSuccess) {
+                    onAddSuccess();
+                  }
+                } else {
+                  message.error('Failed to create booking');
                 }
+                
+                setFilteredRooms(bookingResponse.data.data);
               } else {
-                message.error('Failed to create user');
-                form.resetFields();
-                setVisible(false);
-                if (onAddSuccess) {
-                  onAddSuccess();
-                }
+                message.error('Failed to fetch meeting rooms');
               }
-              setFilteredRooms(data.data.data);
             } catch (e) {
-              console.error('Error creating user:', e);
-              message.error('Failed to create user');
+              console.error('Error creating booking:', e);
+              message.error('Failed to create booking');
               console.log(values);
             }
           })
@@ -164,17 +166,17 @@ export default function BookRoom({ onAddSuccess }:any) {
           });
       };
       
-  
+
     return (
         <>
 
             <button
                 type="button"
-                className={ styles.bookingButton }
+                className={ styles.addbtn }
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
             >
-                Book Now
+                Book A Room
             </button>
             <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true" >
                 <div className="modal-dialog modal-xl">
@@ -254,35 +256,49 @@ export default function BookRoom({ onAddSuccess }:any) {
                                         </div>
                                     </div>
                                     <div className="mb-3 row" >
-                                        <label htmlFor="inputTopic" className={`col-4 ${styles.formLabel}`}>
-                                            Date*:
-                                        </label>
-                                        <div className="col-8 position-relative">
-                                            <div className={styles.dateTimePicker}>
+                                    <Form1.Item
+                                            name="time"
+                                            label={<span className={styles.formLabel}>Date*:</span>}
+                                            >
+                                        <div className={styles.dateTimePicker}>
                                                 <div className={styles.date}>
                                                         <Space direction="vertical">
                                                                 <DatePicker selected={selectedDate} onChange={onChange} showToday={false} style={{ width:'181px',height:'44px' }}/>
                                                         </Space>
                                                 </div>
                                                 <div>
-                                                    <Select  options={repeatOptions} onChange={handleRepeatChange} className={ styles.selectedDate } />
+                                                    <select  options={repeatOptions} onChange={handleRepeatChange} className={ styles.selectedDate } />
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Form1.Item>
                                     </div>
                                     <div className="mb-3 row" style={{ alignItems:'center' }}>
-                                        <label htmlFor="inputTopic" className={`col-4 ${styles.formLabel}`}>
-                                            Time*:
-                                        </label>
-                                        <div className="col-4">
-                                            <div className={styles.dateTimePicker}>
+                                    <Form1.Item
+                                            name="time"
+                                            label={<span className={styles.formLabel}>Time*:</span>}
+                                            rules={[
+                                                {
+                                                required: true,
+                                                message: (
+                                                    <span className={styles.errorMessage}>
+                                                    This field is required!
+                                                    </span>
+                                                ),
+                                                },
+                                            ]}
+                                            >
+                                        <div className={styles.dateTimePicker}>
                                                 <div className={styles.time}>
-                                                    <CustomTimePicker onChange={handleStartTimeChange}></CustomTimePicker>
+                                                    <Form1.Item name="from_time">
+                                                        <CustomTimePicker onChange={handleStartTimeChange}></CustomTimePicker>
+                                                    </Form1.Item>
                                                     <p>To:</p>
-                                                    <CustomTimePicker onChange={handleEndTimeChange}></CustomTimePicker>
+                                                    <Form1.Item name="to_time">
+                                                        <CustomTimePicker onChange={handleEndTimeChange}></CustomTimePicker>
+                                                    </Form1.Item>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Form1.Item>
                                     </div>
                                 </div>
                                 <div className="col-md-6 ml-2">
@@ -302,6 +318,7 @@ export default function BookRoom({ onAddSuccess }:any) {
                                         <TextArea
                                             placeholder="Agenda"
                                             autoSize={{ minRows: 3, maxRows: 5 }}
+                                            className={`${styles.formControl1}`}
                                         />
                                         </div>
                                     </div>

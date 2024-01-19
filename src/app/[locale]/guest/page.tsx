@@ -8,7 +8,6 @@ import CustomTimePicker from "@/components/Manager/TimePicker";
 import type { ColumnsType } from 'antd/es/table';
 import api from '@/axiosService';
 import { useEffect, useState, useCallback } from "react";
-import "@/app/[locale]/(logged-in)/room/customantd.css";
 import { get } from "lodash";
 import toast from "react-hot-toast";
 import {useSelector} from 'react-redux';

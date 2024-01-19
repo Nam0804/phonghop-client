@@ -106,7 +106,7 @@ const Sidebar = () => {
             <a className={styles.sidebarText}>Guest</a>
           ) : (
             <a className={styles.sidebarText} onClick={() => togglePopup()}>
-              Username
+              {user.name}
             </a>
           )}
         </div>

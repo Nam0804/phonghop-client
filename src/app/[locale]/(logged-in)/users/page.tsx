@@ -16,7 +16,7 @@ import {useAppDispatch} from '@/lib/hooks';
 import {setLoading} from '@/lib/features/loadingSlice';
 import toast from "react-hot-toast";
 import StaffInfomation from "@/components/User/InforUser/UserInfor";
-
+import "./customantd.css";
 
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);

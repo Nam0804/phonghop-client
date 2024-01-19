@@ -8,7 +8,6 @@ import {Table, Tag} from 'antd';
 import {DatePicker, Space} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import {useEffect, useState} from "react";
-// import 'src/app/[locale]/(logged-in)/booking/customantd.css';
 import moment from 'moment';
 import DeleteCompany from "@/components/DeleteCompany/DeleteCompany";
 import api from "@/axiosService";
@@ -17,6 +16,7 @@ import toast from "react-hot-toast";
 import EditNewCompany from "@/components/Admin/EditNewCompany";
 import InformationCompany from "@/components/Admin/InfomationCompany";
 import BookingDetail from "./Booking/BookingDetail";
+import BookingEditDetail from "./Booking/BookingEditDetail";
 
 const ManagerBookingList = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
@@ -49,6 +49,7 @@ const ManagerBookingList = () => {
         setDeleteConfirmationVisible(false);
         fetchData();
     };
+
     const handleAddSuccess = () => {
         fetchData();
     };
@@ -107,6 +108,7 @@ const ManagerBookingList = () => {
         from_time: string;
         to_time: string;
         topic: string;
+        objective:string
         register_status: number;
         meeting_note: boolean;
     }
@@ -273,9 +275,7 @@ const ManagerBookingList = () => {
         render: (_, record) => (
           <Space size="middle">
             <BookingDetail rec={record}></BookingDetail>
-            <button key="edit" className={styles.custombutton}>
-              <img src="/edit.svg"></img>
-            </button>
+            <BookingEditDetail rec={record} onEditSuccess={handleEditSuccess} fetchBooking={() => fetchData}></BookingEditDetail>
             <button
               key="delete"
               className={styles.custombutton}
