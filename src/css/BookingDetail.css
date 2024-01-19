@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap');
+
+label {
+    font-family: Be Vietnam Pro;
+    font-size: 20px !important;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: #383838;
+}
+
+.bookingInput {
+    font-size: 16px;
+    font-family: Be Vietnam Pro;
+    font-weight: 400;
+    width: 370px;
+    height: 44px;
+    border-radius: 8px;
+}
+
+.bookingTextArea {
+    font-size: 16px;
+    font-family: Be Vietnam Pro;
+    font-weight: 400;
+    width: 370px;
+    height: 123px;
+    border-radius: 8px;
+}
+
+.ant-input-disabled, .ant-input-disabled::placeholder {
+    color: black !important;
+    /* Replace #yourColor with your desired color */
+}
+
+.ant-select-selector {
+    font-size: 16px !important;
+    font-family: Be Vietnam Pro;
+    font-weight: 400;
+    width: 370px !important;
+    height: 44px !important;
+    border-radius: 8px;
+}
+
+.ant-card .ant-card-body {
+    padding: 8px;
+    font-family: Be Vietnam Pro;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.ant-card .ant-card-meta-title {
+    font-family: Be Vietnam Pro;
+    font-size: 16px !important;
+    font-weight: 600;
+
+}
+
+.ant-card .inforRoom {
+    margin-top: 8px;
+}
+
+.ant-card span {
+    font-weight: 400;
+    font-size: 14px;
+    font-family: Be Vietnam Pro;
+}
