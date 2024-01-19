@@ -119,10 +119,8 @@ const UserPage = () => {
             },
             key: 'action',
             render: (_, record: any) => (
-                <Space size="middle">
-                    <StaffInfomation rec={record} ></StaffInfomation>
                 <Space size="middle" style={{alignItems:'center'}}>
-                    <button key="view" className={styles.custombutton}><img src="/eye.svg"></img></button>
+                    <StaffInfomation rec={record} ></StaffInfomation>
                     <ManagerEditInfor user={record} onEditSuccess={handleEditSuccess}/>
                     <DeleteUser user_id={record.id} onDeleteSuccess={handleDeleteSuccess}/>
                 </Space>

@@ -67,6 +67,7 @@ const UserEditInfor = ({user}: any) => {
                     name="Edit personal information"
                     requiredMark={false}
                     onValuesChange={(changedValues, allValues) => {
+                        console.log(changedValues, allValues);
                         const isFormCompleted = Object.values(allValues).every(value => value !== undefined && value !== '');
                         setFormCompleted(isFormCompleted);
                     }}
