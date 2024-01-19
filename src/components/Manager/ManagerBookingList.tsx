@@ -302,7 +302,6 @@ const ManagerBookingList = () => {
                 />
             </div>
             <div className={styles.addco}>
-                {/* <Button className={styles.addbtn}>ADD NEW COMPANY</Button> */}
                 <BookRoom onAddSuccess={handleAddSuccess}></BookRoom>
             </div>
         </div>
