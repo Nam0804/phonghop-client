@@ -172,11 +172,11 @@ export default function BookRoom({ onAddSuccess }:any) {
 
             <button
                 type="button"
-                className={ styles.addbtn }
+                className={ styles.bookingButton }
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
             >
-                Book A Room
+                Book Now
             </button>
             <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true" >
                 <div className="modal-dialog modal-xl">

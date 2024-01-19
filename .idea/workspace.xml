@@ -4,19 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7760815b-ed84-45f1-8cd2-ec336d1264b0" name="Changes" comment="css header">
+    <list default="true" id="7760815b-ed84-45f1-8cd2-ec336d1264b0" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/calendar/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/calendar/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/room/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/room/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/guest/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/guest/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Booking/BookRoom.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Booking/BookRoom.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Booking/calender.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Booking/calender.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Manager/ManagerEditInfor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Manager/ManagerEditInfor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Room/DayView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Room/DayView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/User/addUser/addUser.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/User/addUser/addUser.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/Booking.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/Booking.module.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,31 +165,7 @@
       <workItem from="1705634250721" duration="956000" />
       <workItem from="1705635221007" duration="8000" />
       <workItem from="1705635239173" duration="7032000" />
-      <workItem from="1705642347426" duration="6216000" />
-    </task>
-    <task id="LOCAL-00013" summary="manager updates infor">
-      <option name="closed" value="true" />
-      <created>1703218036664</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1703218036664</updated>
-    </task>
-    <task id="LOCAL-00014" summary="delete user update">
-      <option name="closed" value="true" />
-      <created>1703228044884</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1703228044884</updated>
-    </task>
-    <task id="LOCAL-00015" summary="delete user update">
-      <option name="closed" value="true" />
-      <created>1703229711625</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1703229711625</updated>
+      <workItem from="1705642347426" duration="8123000" />
     </task>
     <task id="LOCAL-00016" summary="delete user update">
       <option name="closed" value="true" />
@@ -569,7 +535,31 @@
       <option name="project" value="LOCAL" />
       <updated>1705646431472</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="update">
+      <option name="closed" value="true" />
+      <created>1705651427723</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1705651427723</updated>
+    </task>
+    <task id="LOCAL-00063" summary="update">
+      <option name="closed" value="true" />
+      <created>1705651442823</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1705651442823</updated>
+    </task>
+    <task id="LOCAL-00064" summary="update">
+      <option name="closed" value="true" />
+      <created>1705651466632</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1705651466632</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -619,10 +609,10 @@
     <MESSAGE value="update for matching the npm run build" />
     <MESSAGE value="update for change switch to daily or weekly dynamically" />
     <MESSAGE value="delete the custom css directly to the antd lib" />
-    <MESSAGE value="update" />
     <MESSAGE value="remove css lib of fullcalendar" />
     <MESSAGE value="css event" />
     <MESSAGE value="css header" />
-    <option name="LAST_COMMIT_MESSAGE" value="css header" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
 </project>

@@ -34,6 +34,7 @@ export default function RegisterNewCompany() {
     const [isPasswordVisible, setPasswordVisibility] = useState(false);
     const [isRePasswordVisible, setRePasswordVisibility] = useState(false);
     const [apiData, setApiData] = useState(null);
+    const [areAllFieldsValid, setAreAllFieldsValid] = useState(false);
 
 
     const openModal = () => {
@@ -48,15 +49,19 @@ export default function RegisterNewCompany() {
     const toggleRePasswordVisibility = () => {
         setRePasswordVisibility(!isRePasswordVisible);
     };
-    const { register, handleSubmit, watch, reset, trigger, clearErrors, setError, formState: { errors } } = useForm<Inputs>({
-        resolver: zodResolver(FormDataSchema)
+    const { register, handleSubmit, watch, reset, trigger, clearErrors, setError, formState: { errors, isValid } } = useForm<Inputs>({
+        resolver: zodResolver(FormDataSchema),
+        mode: 'onChange', // Trigger validation on every change
     });
 
 
 
-    const processForm: SubmitHandler<Inputs> = data => {
+    const processForm: SubmitHandler<Inputs> = async(data) => {
+        
         clearErrors();
-        api.post('user/register/company', data).then(response => {
+        const isValidForm = await trigger(); // Trigger validation for all fields
+         setAreAllFieldsValid(isValidForm);
+        api.post('user/register/company', data).then(response => {  
 
             if (response?.data?.errors) {
                 const errorResponse = response?.data?.errors;
@@ -186,7 +191,7 @@ export default function RegisterNewCompany() {
                             </p>
                         )}
                         <div className={`text-end pt-5 ${styles.w90}`}>
-                            <button className={`${styles.nextBtn}`} onClick={nextStep}>Next</button>
+                            <button className={`${styles.nextBtn} ${areAllFieldsValid ? styles.greenBtn : ''}`} onClick={nextStep}>Next</button>
                         </div>
 
 
@@ -264,7 +269,7 @@ export default function RegisterNewCompany() {
                             )}
                         </div>
                         <div className=' d-flex justify-content-between pt-5'>
-                            <Button className={styles.createBtn} onClick={nextStep}>CREATE ACCOUNT</Button>
+                            <Button className={`${styles.createBtn} ${areAllFieldsValid ? styles.greenBtn : ''}`} onClick={nextStep} >CREATE ACCOUNT</Button>
                             <Button className={styles.cancelbtn} onClick={prevStep}>CANCEL</Button>
                         </div>
                         <div className={`${styles.progressbar} mb-3`}>
