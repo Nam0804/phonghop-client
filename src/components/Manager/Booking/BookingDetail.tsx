@@ -60,7 +60,7 @@ const BookingDetail = ({ rec }: any) => {
   const timeString2 = momment(rec.to_time).format("HH:mm A");
   const dateString = momment(rec.from_time).format("DD MMM YYYY");
   const dateString2 = momment(rec.to_time).format("dddd");
-  console.log("rec BookingDetail", rec.guests.email);
+  console.log("rec BookingDetail", rec.material);
 
   return (
     <>
@@ -295,13 +295,13 @@ const BookingDetail = ({ rec }: any) => {
                   }}
                   className="demo-loadmore-list"
                   itemLayout="horizontal"
-                  // dataSource={rec.booking_email}
+                  dataSource={rec.material}
                   renderItem={(item) => (
                     <List.Item actions={[<a key="list-loadmore-edit">edit</a>]}>
                       <Skeleton
                         avatar
                         title={true}
-                        // loading={item.loading}
+                        loading={(item as { loading: boolean }).loading}
                         active
                       >
                         <List.Item.Meta
@@ -312,7 +312,7 @@ const BookingDetail = ({ rec }: any) => {
                               }
                             />
                           }
-                          title={<p>{"item"}</p>}
+                          title={<p>{item as string}</p>}
                           // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                         />
                       </Skeleton>
