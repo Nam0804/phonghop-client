@@ -19,6 +19,7 @@ const AddUser = ({onAddSuccess}: any) => {
     const locale = useLocale();
     const user = useSelector((state:any) => state.user.value);
     const showPopup = () => {
+        form.resetFields();
         setVisible(true);
     };
     const handleCancel = () => {

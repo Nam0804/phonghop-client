@@ -49,6 +49,24 @@
     padding-bottom: 20px;
     color: #225560;
 }
+.bookingButton{
+    display: inline-flex;
+    height: 52px;
+    margin-left: 7px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: #225560;
+    color: #FFF;
+    font-family: Be Vietnam Pro;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
 .materialpush{
     display: flex;
     gap: 21%;

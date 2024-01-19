@@ -160,9 +160,9 @@ const CompanyList = () => {
             render: (_, { availabilitys }) => {
                const color = availabilitys ? '#8B8B8B' : '#388697';
                return (
-                  <Button style={{backgroundColor: color}} key={_}>
-                     Book
-                  </Button>
+                   <Tag color={color} key={_}>
+                       <Link href={`/${locale}/calendar`} style={{textDecoration:"none"}}>Book</Link>
+                   </Tag>
                );
             },
             width: 154,

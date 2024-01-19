@@ -150,7 +150,7 @@ const ManagerEditInfor = ({user, onEditSuccess}: any) => {
                             <div>
                                 <Button className={styles.buttonEdit} htmlType="submit" onClick={handleEdit}
                                         label='SAVE'
-                                        style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}}
+                                        style={{backgroundColor:'#225560'}}
                                         disabled={!formCompleted}/>
                             </div>
                             <div>

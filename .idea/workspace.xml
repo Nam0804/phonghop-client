@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7760815b-ed84-45f1-8cd2-ec336d1264b0" name="Changes" comment="update for change switch to daily or weekly dynamically">
+    <list default="true" id="7760815b-ed84-45f1-8cd2-ec336d1264b0" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/booking/customantd.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/bookingWeekly/calender.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/company/customantd.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/room/customantd.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/users/customantd.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/users/customantd.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Booking/BookRoom.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Booking/BookRoom.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,87 +164,8 @@
       <workItem from="1705596418540" duration="3669000" />
       <workItem from="1705634250721" duration="956000" />
       <workItem from="1705635221007" duration="8000" />
-      <workItem from="1705635239173" duration="3176000" />
-    </task>
-    <task id="LOCAL-00006" summary="update dev branch">
-      <option name="closed" value="true" />
-      <created>1703040784392</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1703040784392</updated>
-    </task>
-    <task id="LOCAL-00007" summary="delete meeting room popup">
-      <option name="closed" value="true" />
-      <created>1703044771410</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1703044771410</updated>
-    </task>
-    <task id="LOCAL-00008" summary="delete meeting room popup">
-      <option name="closed" value="true" />
-      <created>1703045131540</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1703045131540</updated>
-    </task>
-    <task id="LOCAL-00009" summary="add user popup update">
-      <option name="closed" value="true" />
-      <created>1703045859225</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1703045859225</updated>
-    </task>
-    <task id="LOCAL-00010" summary="add user popup update">
-      <option name="closed" value="true" />
-      <created>1703046952016</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1703046952016</updated>
-    </task>
-    <task id="LOCAL-00011" summary="update">
-      <option name="closed" value="true" />
-      <created>1703157638387</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1703157638387</updated>
-    </task>
-    <task id="LOCAL-00012" summary="manager updates infor">
-      <option name="closed" value="true" />
-      <created>1703211606007</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1703211606007</updated>
-    </task>
-    <task id="LOCAL-00013" summary="manager updates infor">
-      <option name="closed" value="true" />
-      <created>1703218036664</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1703218036664</updated>
-    </task>
-    <task id="LOCAL-00014" summary="delete user update">
-      <option name="closed" value="true" />
-      <created>1703228044884</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1703228044884</updated>
-    </task>
-    <task id="LOCAL-00015" summary="delete user update">
-      <option name="closed" value="true" />
-      <created>1703229711625</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1703229711625</updated>
+      <workItem from="1705635239173" duration="7032000" />
+      <workItem from="1705642347426" duration="8123000" />
     </task>
     <task id="LOCAL-00016" summary="delete user update">
       <option name="closed" value="true" />
@@ -562,7 +479,87 @@
       <option name="project" value="LOCAL" />
       <updated>1705638085289</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="delete the custom css directly to the antd lib">
+      <option name="closed" value="true" />
+      <created>1705638467162</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1705638467162</updated>
+    </task>
+    <task id="LOCAL-00056" summary="update">
+      <option name="closed" value="true" />
+      <created>1705640864181</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1705640864181</updated>
+    </task>
+    <task id="LOCAL-00057" summary="remove css lib of fullcalendar">
+      <option name="closed" value="true" />
+      <created>1705642168108</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1705642168108</updated>
+    </task>
+    <task id="LOCAL-00058" summary="remove css lib of fullcalendar">
+      <option name="closed" value="true" />
+      <created>1705642274047</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1705642274047</updated>
+    </task>
+    <task id="LOCAL-00059" summary="css event">
+      <option name="closed" value="true" />
+      <created>1705642548645</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1705642548645</updated>
+    </task>
+    <task id="LOCAL-00060" summary="css header">
+      <option name="closed" value="true" />
+      <created>1705643117337</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1705643117337</updated>
+    </task>
+    <task id="LOCAL-00061" summary="css header">
+      <option name="closed" value="true" />
+      <created>1705646431472</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1705646431472</updated>
+    </task>
+    <task id="LOCAL-00062" summary="update">
+      <option name="closed" value="true" />
+      <created>1705651427723</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1705651427723</updated>
+    </task>
+    <task id="LOCAL-00063" summary="update">
+      <option name="closed" value="true" />
+      <created>1705651442823</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1705651442823</updated>
+    </task>
+    <task id="LOCAL-00064" summary="update">
+      <option name="closed" value="true" />
+      <created>1705651466632</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1705651466632</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -610,8 +607,12 @@
     <MESSAGE value="chi tiet phong hop view week" />
     <MESSAGE value="room daily weekly update" />
     <MESSAGE value="update for matching the npm run build" />
-    <MESSAGE value="update" />
     <MESSAGE value="update for change switch to daily or weekly dynamically" />
-    <option name="LAST_COMMIT_MESSAGE" value="update for change switch to daily or weekly dynamically" />
+    <MESSAGE value="delete the custom css directly to the antd lib" />
+    <MESSAGE value="remove css lib of fullcalendar" />
+    <MESSAGE value="css event" />
+    <MESSAGE value="css header" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
 </project>
