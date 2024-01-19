@@ -8,7 +8,7 @@ import { Table, Tag } from 'antd';
 import { DatePicker, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from "react";
-import './customantd.css';
+// import './customantd.css';
 import DeleteCompany from "@/components/DeleteCompany/DeleteCompany";
 import api from "@/axiosService";
 import { get } from "lodash";
