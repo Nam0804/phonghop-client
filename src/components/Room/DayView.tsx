@@ -254,6 +254,7 @@ const DayView = () => {
                       eventOverlap={false}
                       expandThrough={false}
                       events={events}
+                      eventMinHeight={66}
                       dayPropGetter={calendarStyle}
                       expandRows={true}
                       slotMinTime={"08:00:00"}
