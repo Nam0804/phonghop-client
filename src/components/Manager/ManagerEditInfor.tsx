@@ -12,6 +12,7 @@ import { useLocale, useTranslations } from 'next-intl';
 const ManagerEditInfor = ({user, onEditSuccess}: any) => {
     const [form] = Form.useForm();
     const [formData, setFormData] = useState({...user});
+    const [formCompleted, setFormCompleted] = useState(true)
     const [visible, setVisible] = useState(false);
     const t = useTranslations('Edit');
     const locale = useLocale();
@@ -66,6 +67,11 @@ const ManagerEditInfor = ({user, onEditSuccess}: any) => {
                     form={form}
                     name="Edit personal information"
                     requiredMark={false}
+                    onValuesChange={(changedValues, allValues) => {
+                        console.log(changedValues, allValues);
+                        const isFormCompleted = Object.values(allValues).every(value => value !== undefined && value !== '');
+                        setFormCompleted(isFormCompleted);
+                    }}
                 >
                     <div className={styles.formControl}>
                         <Form.Item
@@ -143,7 +149,9 @@ const ManagerEditInfor = ({user, onEditSuccess}: any) => {
                         <div className={styles.buttonContainer}>
                             <div>
                                 <Button className={styles.buttonEdit} htmlType="submit" onClick={handleEdit}
-                                        label='SAVE'/>
+                                        label='SAVE'
+                                        style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}}
+                                        disabled={!formCompleted}/>
                             </div>
                             <div>
                                 <Button className={styles.buttonCancel} onClick={handleCancel} label='CANCEL'/>

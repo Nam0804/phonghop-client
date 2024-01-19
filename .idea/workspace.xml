@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7760815b-ed84-45f1-8cd2-ec336d1264b0" name="Changes" comment=" update" />
+    <list default="true" id="7760815b-ed84-45f1-8cd2-ec336d1264b0" name="Changes" comment="update for change switch to daily or weekly dynamically">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/booking/customantd.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/bookingWeekly/calender.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/company/customantd.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/room/customantd.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/users/customantd.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(logged-in)/users/customantd.css" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,15 +21,15 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="SCSS File" />
-        <option value="CSS File" />
         <option value="TypeScript JSX File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/281_Manager_Sửa_thông_tin_cá_nhân" />
+        <entry key="$PROJECT_DIR$" value="develop" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -30,26 +37,30 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2YWLNEU6OSU7tZXIJwV0W6vjCck" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2023.1.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2023.1.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Trung2407\IdeaProjects\phonghop-vn-nextjs\src\app\[locale]\(logged-in)\user" />
@@ -139,46 +150,25 @@
       <workItem from="1703480938865" duration="4680000" />
       <workItem from="1703524617362" duration="311000" />
       <workItem from="1703556166627" duration="3669000" />
-    </task>
-    <task id="LOCAL-00001" summary="testing">
-      <option name="closed" value="true" />
-      <created>1702825930150</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1702825930150</updated>
-    </task>
-    <task id="LOCAL-00002" summary="add user popup">
-      <option name="closed" value="true" />
-      <created>1702985540587</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1702985540587</updated>
-    </task>
-    <task id="LOCAL-00003" summary="delete user confirmation popup">
-      <option name="closed" value="true" />
-      <created>1702985750659</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1702985750659</updated>
-    </task>
-    <task id="LOCAL-00004" summary="add user popup">
-      <option name="closed" value="true" />
-      <created>1702985804896</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1702985804897</updated>
-    </task>
-    <task id="LOCAL-00005" summary="update dev branch">
-      <option name="closed" value="true" />
-      <created>1703040445073</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1703040445073</updated>
+      <workItem from="1705287950076" duration="416000" />
+      <workItem from="1705288689796" duration="4966000" />
+      <workItem from="1705293702267" duration="16721000" />
+      <workItem from="1705340379383" duration="1784000" />
+      <workItem from="1705371130407" duration="13676000" />
+      <workItem from="1705396497622" duration="6750000" />
+      <workItem from="1705425153311" duration="1280000" />
+      <workItem from="1705461586249" duration="9131000" />
+      <workItem from="1705482429858" duration="3311000" />
+      <workItem from="1705505824444" duration="549000" />
+      <workItem from="1705508708080" duration="4946000" />
+      <workItem from="1705523198590" duration="3567000" />
+      <workItem from="1705547657310" duration="3463000" />
+      <workItem from="1705555124119" duration="13896000" />
+      <workItem from="1705577198323" duration="181000" />
+      <workItem from="1705596418540" duration="3669000" />
+      <workItem from="1705634250721" duration="956000" />
+      <workItem from="1705635221007" duration="8000" />
+      <workItem from="1705635239173" duration="3176000" />
     </task>
     <task id="LOCAL-00006" summary="update dev branch">
       <option name="closed" value="true" />
@@ -484,7 +474,95 @@
       <option name="project" value="LOCAL" />
       <updated>1703559188699</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="chi tiet phong hop view week">
+      <option name="closed" value="true" />
+      <created>1705293652357</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1705293652357</updated>
+    </task>
+    <task id="LOCAL-00045" summary="chi tiet phong hop view week">
+      <option name="closed" value="true" />
+      <created>1705293678437</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1705293678437</updated>
+    </task>
+    <task id="LOCAL-00046" summary="chi tiet phong hop view week">
+      <option name="closed" value="true" />
+      <created>1705376425663</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1705376425663</updated>
+    </task>
+    <task id="LOCAL-00047" summary="update">
+      <option name="closed" value="true" />
+      <created>1705397909336</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1705397909336</updated>
+    </task>
+    <task id="LOCAL-00048" summary="update">
+      <option name="closed" value="true" />
+      <created>1705425213294</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1705425213294</updated>
+    </task>
+    <task id="LOCAL-00049" summary="update">
+      <option name="closed" value="true" />
+      <created>1705474767402</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1705474767402</updated>
+    </task>
+    <task id="LOCAL-00050" summary="update">
+      <option name="closed" value="true" />
+      <created>1705547723777</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1705547723777</updated>
+    </task>
+    <task id="LOCAL-00051" summary="room daily weekly update">
+      <option name="closed" value="true" />
+      <created>1705577266269</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1705577266270</updated>
+    </task>
+    <task id="LOCAL-00052" summary="update for matching the npm run build">
+      <option name="closed" value="true" />
+      <created>1705577319746</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1705577319746</updated>
+    </task>
+    <task id="LOCAL-00053" summary="update">
+      <option name="closed" value="true" />
+      <created>1705600261366</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1705600261366</updated>
+    </task>
+    <task id="LOCAL-00054" summary="update for change switch to daily or weekly dynamically">
+      <option name="closed" value="true" />
+      <created>1705638085289</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1705638085289</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -501,7 +579,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="feature/281_Manager_Sửa_thông_tin_cá_nhân" />
+                        <option value="feature/292_Xem_chi_tiết_Phòng_họp_(Week_View)" />
                       </list>
                     </value>
                   </entry>
@@ -520,7 +598,6 @@
     <MESSAGE value="update dev branch" />
     <MESSAGE value="delete meeting room popup" />
     <MESSAGE value="add user popup update" />
-    <MESSAGE value="update" />
     <MESSAGE value="manager updates infor" />
     <MESSAGE value="add user update" />
     <MESSAGE value="edit user infor update" />
@@ -530,6 +607,11 @@
     <MESSAGE value="delete user update" />
     <MESSAGE value="edit user update" />
     <MESSAGE value=" update" />
-    <option name="LAST_COMMIT_MESSAGE" value=" update" />
+    <MESSAGE value="chi tiet phong hop view week" />
+    <MESSAGE value="room daily weekly update" />
+    <MESSAGE value="update for matching the npm run build" />
+    <MESSAGE value="update" />
+    <MESSAGE value="update for change switch to daily or weekly dynamically" />
+    <option name="LAST_COMMIT_MESSAGE" value="update for change switch to daily or weekly dynamically" />
   </component>
 </project>

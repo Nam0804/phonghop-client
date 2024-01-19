@@ -4,14 +4,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Input from '@/constants/Form/Input';
 import styles from '@/css/Booking.module.css';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
-import Link from 'next/link';
+import { useSelector } from 'react-redux'
 import { useState, useEffect } from 'react';
 import CustomTimePicker from "./TimePickerBook";    
 import axios from 'axios';
 import type { DatePickerProps } from 'antd';
 import { DatePicker, Space } from 'antd';
+import 'rc-time-picker/assets/index.css';
 import { Button, message, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import Select from 'react-select';
 import type { UploadProps } from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import {Form as Form1} from 'antd'
@@ -29,10 +30,47 @@ export default function BookRoom({ onAddSuccess }:any) {
     const [formCompleted, setFormCompleted] = useState(false)
     const [visible, setVisible] = useState(false);
     const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
+    const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
+    const [repeatType, setRepeatType] = useState(null);
+    const user = useSelector((state:any) => state.user.value);
+    const [meetingRoomId, setMeetingRoomId] = useState()
+   
 
-    const handleChange = (date: React.SetStateAction<Date>) => {
+    const generateRepeatOptions = (date: Date | null) => {
+        const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
+      
+        return [
+          { value: 'no-repeat', label: 'Doesn’t repeat' },
+          { value: 'every-weekday', label: 'Every weekday' },
+          {
+            value: 'weekly',
+            label: `Weekly - ${date ? dayOfWeek : '(Select a date)'}`,
+          },
+          {
+            value: 'monthly',
+            label: `Monthly - ${date ? dayOfWeek : '(Select a date)'}`,
+          },
+          {
+            value: 'annually',
+            label: `Annually - ${date ? dayOfWeek : '(Select a date)'}`,
+          },
+        ];
+      };
+      
+    
+
+    const handleRepeatChange = (selectedOption) => {
+        setRepeatType(selectedOption);
+      };
+
+      const handleDateChange = (date: React.SetStateAction<Date>) => {
         setSelectedDate(date);
-    };
+
+        setRepeatType(null);
+      };
+
+    const repeatOptions = generateRepeatOptions(selectedDate);
+
     const handleStartTimeChange = (value: moment.Moment | undefined) => {
         setStartTime(value);
     };
@@ -40,6 +78,16 @@ export default function BookRoom({ onAddSuccess }:any) {
     const handleEndTimeChange = (value: moment.Moment | undefined) => {
         setEndTime(value);
     };
+
+    const handleSelectChange = (event:any) => {
+        const selectedRoomName = event.target.value;
+        if (selectedRoomName === "all") {
+          setFilteredRooms(allRoomsData);
+        } else {
+          const filteredRooms = allRoomsData.filter((room) => room.name === selectedRoomName);
+          setFilteredRooms(filteredRooms);
+        }
+     };
 
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
         console.log(dateString);
@@ -70,32 +118,46 @@ export default function BookRoom({ onAddSuccess }:any) {
           }
         },
       };
-
-      const handleSubmit = () => {
+    const handleSubmit = () => {
         form
           .validateFields()
           .then(async (values) => {
             try {
-            
-              const data = await api.post(`bookings`, values);
-              if (data.status === 200) {
-                message.success('User created successfully');
-                form.resetFields();
-                setVisible(false);
-                if (onAddSuccess) {
-                  onAddSuccess();
+              const meetingRoomsResponse = await api.get('meeting-rooms/listing');
+              
+              if (meetingRoomsResponse.status === 200) {
+                const meetingRooms = meetingRoomsResponse.data.data;
+      
+                const selectedMeetingRoomId = meetingRooms.length > 0 ? meetingRooms[0].id : null;
+      
+                values = {
+                  ...form.getFieldsValue(),
+                  booking_name: user.name,
+                  booking_email: user.email,
+                  booking_title: user.title,
+                  meeting_room_id: selectedMeetingRoomId,
+                };
+
+                const bookingResponse = await api.post('bookings', values);
+      
+                if (bookingResponse.status === 200) {
+                  message.success('Booking created successfully');
+                  form.resetFields();
+                  setVisible(false);
+                  if (onAddSuccess) {
+                    onAddSuccess();
+                  }
+                } else {
+                  message.error('Failed to create booking');
                 }
+                
+                setFilteredRooms(bookingResponse.data.data);
               } else {
-                message.error('Failed to create user');
-                form.resetFields();
-                setVisible(false);
-                if (onAddSuccess) {
-                  onAddSuccess();
-                }
+                message.error('Failed to fetch meeting rooms');
               }
             } catch (e) {
-              console.error('Error creating user:', e);
-              message.error('Failed to create user');
+              console.error('Error creating booking:', e);
+              message.error('Failed to create booking');
               console.log(values);
             }
           })
@@ -104,7 +166,7 @@ export default function BookRoom({ onAddSuccess }:any) {
           });
       };
       
-  
+
     return (
         <>
 
@@ -183,7 +245,7 @@ export default function BookRoom({ onAddSuccess }:any) {
                                             Room*:
                                         </label>
                                         <div className="col-8">
-                                            <select className={`${styles.formSelect}`}>
+                                            <select className={`${styles.formSelect}`} onChange={(e) => handleSelectChange(e)}>
                                             <option value="all">All Rooms</option>
                                                 {allRoomsData.map((room) => (
                                                     <option key={room.id} value={room.name}>
@@ -194,32 +256,49 @@ export default function BookRoom({ onAddSuccess }:any) {
                                         </div>
                                     </div>
                                     <div className="mb-3 row" >
-                                        <label htmlFor="inputTopic" className={`col-4 ${styles.formLabel}`}>
-                                            Date*:
-                                        </label>
-                                        <div className="col-8 position-relative">
-                                            <div className={styles.dateTimePicker}>
+                                    <Form1.Item
+                                            name="time"
+                                            label={<span className={styles.formLabel}>Date*:</span>}
+                                            >
+                                        <div className={styles.dateTimePicker}>
                                                 <div className={styles.date}>
                                                         <Space direction="vertical">
-                                                                <DatePicker style={{ width:'181px',height:'44px' }} onChange={onChange} showToday={false}/>
+                                                                <DatePicker selected={selectedDate} onChange={onChange} showToday={false} style={{ width:'181px',height:'44px' }}/>
                                                         </Space>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row" style={{ alignItems:'center' }}>
-                                        <label htmlFor="inputTopic" className={`col-4 ${styles.formLabel}`}>
-                                            Time*:
-                                        </label>
-                                        <div className="col-4">
-                                            <div className={styles.dateTimePicker}>
-                                                <div className={styles.time}>
-                                                    <CustomTimePicker onChange={handleStartTimeChange}></CustomTimePicker>
-                                                    <p>To:</p>
-                                                    <CustomTimePicker onChange={handleEndTimeChange}></CustomTimePicker>
+                                                <div>
+                                                    <select  options={repeatOptions} onChange={handleRepeatChange} className={ styles.selectedDate } />
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Form1.Item>
+                                    </div>
+                                    <div className="mb-3 row" style={{ alignItems:'center' }}>
+                                    <Form1.Item
+                                            name="time"
+                                            label={<span className={styles.formLabel}>Time*:</span>}
+                                            rules={[
+                                                {
+                                                required: true,
+                                                message: (
+                                                    <span className={styles.errorMessage}>
+                                                    This field is required!
+                                                    </span>
+                                                ),
+                                                },
+                                            ]}
+                                            >
+                                        <div className={styles.dateTimePicker}>
+                                                <div className={styles.time}>
+                                                    <Form1.Item name="from_time">
+                                                        <CustomTimePicker onChange={handleStartTimeChange}></CustomTimePicker>
+                                                    </Form1.Item>
+                                                    <p>To:</p>
+                                                    <Form1.Item name="to_time">
+                                                        <CustomTimePicker onChange={handleEndTimeChange}></CustomTimePicker>
+                                                    </Form1.Item>
+                                                </div>
+                                            </div>
+                                        </Form1.Item>
                                     </div>
                                 </div>
                                 <div className="col-md-6 ml-2">
@@ -239,6 +318,7 @@ export default function BookRoom({ onAddSuccess }:any) {
                                         <TextArea
                                             placeholder="Agenda"
                                             autoSize={{ minRows: 3, maxRows: 5 }}
+                                            className={`${styles.formControl1}`}
                                         />
                                         </div>
                                     </div>
@@ -250,6 +330,7 @@ export default function BookRoom({ onAddSuccess }:any) {
                                         <TextArea
                                             placeholder="Objective"
                                             autoSize={{ minRows: 3, maxRows: 5 }}
+                                            className={`${styles.formControl1}`}
                                         />
                                         </div>
                                     </div>

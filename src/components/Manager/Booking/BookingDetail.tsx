@@ -12,6 +12,7 @@ import {
   Skeleton,
   Avatar,
   Select,
+  Flex,
 } from "antd";
 import Button from "@/constants/Form/Button";
 import styles from "/src/css/BookingDetail.module.css";
@@ -23,39 +24,43 @@ import Meta from "antd/es/card/Meta";
 import { listenerCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
 import TextArea from "antd/es/input/TextArea";
 import "@/css/BookingDetail.css";
+import momment from "moment";
 
-interface DataType {
-  gender?: string;
-  name: {
-    title?: string;
-    first?: string;
-    last?: string;
-  };
-  email?: string;
-  picture: {
-    large?: string;
-    medium?: string;
-    thumbnail?: string;
-  };
-  nat?: string;
-  loading: boolean;
-}
 const BookingDetail = ({ rec }: any) => {
   const [visible, setVisible] = useState(false);
-  const [form] = Form2.useForm();
-  
-  const [data, setData] = useState<DataType[]>([]);
-  const [list, setList] = useState<DataType[]>([]);
+  const [formBookingDetail] = Form.useForm();
+
   const showPopup = () => {
     setVisible(true);
-    form.resetFields();
+    formBookingDetail.resetFields();
   };
 
   const handleCancel = () => {
-    form.resetFields();
+    formBookingDetail.resetFields();
     setVisible(false);
-    form.resetFields();
+    formBookingDetail.resetFields();
   };
+
+  useEffect(() => {
+    formBookingDetail.setFieldsValue({
+      topic: rec.topic,
+      type: rec.type_of_booking,
+      room: rec.room,
+      date: rec.date,
+      time: rec.time,
+      guest: rec.guest,
+      agenda: rec.agenda,
+      objective: rec.objective,
+      materials: rec.materials,
+      meeting_room: rec.meeting_room,
+    });
+  }, [rec, formBookingDetail]);
+
+  const timeString = momment(rec.from_time).format("HH:mm A");
+  const timeString2 = momment(rec.to_time).format("HH:mm A");
+  const dateString = momment(rec.from_time).format("DD MMM YYYY");
+  const dateString2 = momment(rec.to_time).format("dddd");
+  console.log("rec BookingDetail", rec.material);
 
   return (
     <>
@@ -72,21 +77,34 @@ const BookingDetail = ({ rec }: any) => {
       >
         <Form
           labelAlign="left"
-          form={form}
+          form={formBookingDetail}
           labelCol={{ flex: "200px" }}
-          name="BookingDetail"
           requiredMark={false}
         >
           <Row>
             <Col span={12}>
-              <Form.Item label="Meeting topic" name="topic">
-                <Input disabled />
+              <Form.Item label="Meeting topic">
+                <Input className="bookingInput" disabled value={rec.topic} />
               </Form.Item>
-              <Form.Item label="Type of booking" name="type">
-                <Input disabled />
+              <Form.Item label="Type of booking">
+                <Input
+                  className="bookingInput"
+                  disabled
+                  value={
+                    rec.type_of_booking == 1
+                      ? "Meeting"
+                      : rec.type_of_booking == 2
+                      ? "Personal use"
+                      : "Unavailable"
+                  }
+                />
               </Form.Item>
               <Form.Item label="Room" name="room">
-                <Input disabled />
+                <Input
+                  className="bookingInput"
+                  disabled
+                  value={rec.meeting_room.name}
+                />
                 <Layout
                   style={{
                     backgroundColor: "#EAEEF6",
@@ -115,22 +133,26 @@ const BookingDetail = ({ rec }: any) => {
                       />
                     }
                   >
-                    <Meta title="Room 12A-4" />
+                    <Meta title={rec.meeting_room.name} />
                     <div className="inforRoom">
                       <span>
-                        <strong>Capacity: </strong>7 people
+                        <strong>Capacity: </strong>
+                        {rec.meeting_room.capacity}
                       </span>
                       <br />
                       <span>
-                        <strong>Location: </strong>7 people
+                        <strong>Location: </strong>
+                        {rec.meeting_room.location}
                       </span>
                       <br />
                       <span>
-                        <strong>Floor: </strong>7 people
+                        <strong>Floor: </strong>
+                        {rec.meeting_room.floor}
                       </span>
                       <br />
                       <span>
-                        <strong>Equipment: </strong>7 people
+                        <strong>Equipment: </strong>
+                        {rec.meeting_room.equipment}
                       </span>
                     </div>
                   </Card>
@@ -142,12 +164,14 @@ const BookingDetail = ({ rec }: any) => {
                     <Input
                       style={{ width: 181, height: 44, borderRadius: 8 }}
                       disabled
+                      value={dateString}
                     />
                   </Col>
                   <Col className="gutter-row" span={12}>
                     <Input
                       style={{ width: 181, height: 44, borderRadius: 8 }}
                       disabled
+                      value={dateString2}
                     />
                   </Col>
                 </Row>
@@ -168,11 +192,13 @@ const BookingDetail = ({ rec }: any) => {
                   <Input
                     style={{ width: 140, height: 44, borderRadius: 8 }}
                     disabled
+                    value={timeString}
                   />
                   <p style={{ margin: 0 }}>TO</p>
                   <Input
                     style={{ width: 140, height: 44, borderRadius: 8 }}
                     disabled
+                    value={timeString2}
                   />
                 </div>
               </Form.Item>
@@ -195,6 +221,71 @@ const BookingDetail = ({ rec }: any) => {
                     label: d.text,
                   }))}
                 /> */}
+                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                  <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                  <h6>{rec.booking_name} (Booking Owner)</h6>
+                </div>
+
+                <List
+                  style={{
+                    backgroundColor: "none",
+                    borderRadius: 8,
+                    width: 370,
+                    padding: 0,
+                  }}
+                  split={false}
+                  className="demo-loadmore-list"
+                  itemLayout="horizontal"
+                  dataSource={rec.guests}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <Skeleton
+                        style={{ padding: 0 }}
+                        avatar
+                        title={true}
+                        loading={(item as { loading: boolean }).loading}
+                        active
+                      >
+                        <List.Item.Meta
+                          style={{ padding: 0 }}
+                          avatar={
+                            <Avatar
+                              src={
+                                "https://sm.ign.com/t/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.300.jpg"
+                              }
+                            />
+                          }
+                          title={<p>{(item as { email: string }).email}</p>}
+
+                          // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                        />
+                      </Skeleton>
+                    </List.Item>
+                  )}
+                />
+              </Form.Item>
+              <Form.Item label="Agenda">
+                <TextArea
+                  className="bookingTextArea"
+                  value={rec.agenda}
+                  // onChange={(e) => setValue(e.target.value)}
+                  placeholder="Enter agenda"
+                  autoSize={{ minRows: 3, maxRows: 5 }}
+                  disabled
+                />
+              </Form.Item>
+              <Form.Item label="Objective" name="objective">
+                <TextArea
+                  className="bookingTextArea"
+                  value={""}
+                  // onChange={(e) => setValue(e.target.value)}
+                  placeholder="Enter objective"
+                  autoSize={{ minRows: 3, maxRows: 5 }}
+                  disabled
+                />
+              </Form.Item>
+              <Form.Item label="Materials" name="materials">
+                {/* <div>Button</div> */}
                 <List
                   style={{
                     backgroundColor: "#EAEEF6",
@@ -204,18 +295,13 @@ const BookingDetail = ({ rec }: any) => {
                   }}
                   className="demo-loadmore-list"
                   itemLayout="horizontal"
-                  // dataSource={list}
+                  dataSource={rec.material}
                   renderItem={(item) => (
-                    <List.Item
-                      actions={[
-                        <a key="list-loadmore-edit">edit</a>,
-                        <a key="list-loadmore-more">more</a>,
-                      ]}
-                    >
+                    <List.Item actions={[<a key="list-loadmore-edit">edit</a>]}>
                       <Skeleton
                         avatar
                         title={true}
-                        // loading={item.loading}
+                        loading={(item as { loading: boolean }).loading}
                         active
                       >
                         <List.Item.Meta
@@ -226,33 +312,13 @@ const BookingDetail = ({ rec }: any) => {
                               }
                             />
                           }
-                          title={<p>Vitex Name</p>}
+                          title={<p>{item as string}</p>}
                           // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                         />
-                        <div>content</div>
                       </Skeleton>
                     </List.Item>
                   )}
                 />
-              </Form.Item>
-              <Form.Item label="Agenda" name="agenda">
-                <TextArea
-                  value={""}
-                  // onChange={(e) => setValue(e.target.value)}
-                  placeholder="Enter agenda"
-                  autoSize={{ minRows: 3, maxRows: 5 }}
-                />
-              </Form.Item>
-              <Form.Item label="Objective" name="objective">
-                <TextArea
-                  value={""}
-                  // onChange={(e) => setValue(e.target.value)}
-                  placeholder="Enter objective"
-                  autoSize={{ minRows: 3, maxRows: 5 }}
-                />
-              </Form.Item>
-              <Form.Item label="Materials" name="materials">
-                {/* <div>Button</div> */}
               </Form.Item>
             </Col>
           </Row>

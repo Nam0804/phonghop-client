@@ -151,10 +151,10 @@ const BookingEditDetail = ({ rec,onEditSuccess,fetchBooking }: any) => {
           <Row>
             <Col span={12}>
               <Form.Item label="Meeting topic" name="topic">
-                <Input />
+                <Input className="bookingInput"/>
               </Form.Item>
               <Form.Item label="Type of booking" name="type_of_booking" >
-                <Input />
+                <Input className="bookingInput"/>
               </Form.Item>
               <Form.Item label="Room" name="room">
               <Select

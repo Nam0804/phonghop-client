@@ -30,6 +30,7 @@ const ManagerBookingList = () => {
             //   const sortedData = res.sort(
             //     (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
             //   );
+            
             const res = get(data, 'data.data');
             setAllStaffData(res)
         } catch (error) {
@@ -37,6 +38,8 @@ const ManagerBookingList = () => {
             toast.error('Error');
 
         }
+        
+        
     }, [])
     useEffect(() => {
         fetchData()
@@ -299,7 +302,6 @@ const ManagerBookingList = () => {
                 />
             </div>
             <div className={styles.addco}>
-                {/* <Button className={styles.addbtn}>ADD NEW COMPANY</Button> */}
                 <BookRoom onAddSuccess={handleAddSuccess}></BookRoom>
             </div>
         </div>
