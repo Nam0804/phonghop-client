@@ -14,7 +14,6 @@ import 'rc-time-picker/assets/index.css';
 import { Button, message, Upload } from 'antd';
 import Select from 'react-select';
 import type { UploadProps } from 'antd';
-import './customantd.css';
 import TextArea from "antd/es/input/TextArea";
 import {Form as Form1} from 'antd'
 import api from '@/axiosService';
@@ -40,7 +39,6 @@ export default function BookRoom({ onAddSuccess }:any) {
     const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
     const [repeatType, setRepeatType] = useState(null);
     const user = useSelector((state:any) => state.user.value);
-
 
     const generateRepeatOptions = (date: Date | null) => {
         const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
@@ -172,11 +170,11 @@ export default function BookRoom({ onAddSuccess }:any) {
 
             <button
                 type="button"
-                className={ styles.addbtn }
+                className={ styles.bookingButton }
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
             >
-                Book A Room
+                Book Now
             </button>
             <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true" >
                 <div className="modal-dialog modal-xl">

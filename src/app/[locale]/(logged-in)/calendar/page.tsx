@@ -1,5 +1,5 @@
 "use client";
-import React, {useRef, useState, useEffect, useCallback} from "react";
+import React, {useRef, useState, useEffect, useCallback, RefObject} from "react";
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -16,11 +16,18 @@ import {useSelector} from 'react-redux'
 import toast from "react-hot-toast";
 import RoomDetailWeekly from "@/components/Booking/RoomDetailWeekly";
 import DayView from "@/components/Room/DayView";
+import BookRom from "@/components/Booking/BookRoom"
 
 const Index = () => {
     interface Room {
         id: number;
         name: string;
+    }
+    interface DayViewProps {
+        calendarRef: RefObject<FullCalendar>;
+        events: {}[];
+        renderEventContent: (eventInfo: any) => Element;
+        // Other props...
     }
 
     const dateFormatforButtonChangeWeek = moment().format("MMMM DD, YYYY");
@@ -33,7 +40,7 @@ const Index = () => {
     const [initialCheckbox, setInitialCheckbox] = useState("allMeetings");
     const [events, setEvents] = useState([{}]);
     const [selectView, setSelectView] = useState<string>("Day");
-    console.log(selectView);
+
     const fetchRoom = useCallback(async () => {
         try {
             const response = await api.get(`/meeting-rooms/listing`);
@@ -332,7 +339,7 @@ const Index = () => {
                                     paddingLeft: "15px",
                                 }}
                             >
-                                <button className={styles.bookingButton}>Book Now</button>
+                                <BookRom/>
                             </div>
                         </div>
                         {selectView === "Week" ? (
