@@ -1,4 +1,4 @@
-import {Form, message, Modal} from "antd";
+import {Form as Form1, message, Modal} from "antd";
 import React, {useState, useEffect} from "react";
 import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
@@ -9,8 +9,9 @@ import { toast } from 'react-hot-toast';
 import { useLocale, useTranslations } from 'next-intl';
 
 const UserEditInfor = ({user}: any) => {
-    const [form] = Form.useForm();
+    const [form] = Form1.useForm();
     const [formData, setFormData] = useState({...user});
+    const [formCompleted, setFormCompleted] = useState(false)
     const [visible, setVisible] = useState(false);
     const t = useTranslations('Edit');
     const locale = useLocale();
@@ -61,21 +62,25 @@ const UserEditInfor = ({user}: any) => {
                 footer={null}
                 closable={false}
                 width={975}>
-                <Form
+                <Form1
                     form={form}
                     name="Edit personal information"
                     requiredMark={false}
+                    onValuesChange={(changedValues, allValues) => {
+                        const isFormCompleted = Object.values(allValues).every(value => value !== undefined && value !== '');
+                        setFormCompleted(isFormCompleted);
+                    }}
                 >
                     <div className={styles.formControl}>
-                        <Form.Item
+                        <Form1.Item
                             label={<span className={styles.label}>Name*</span>}
                             name="manager-name"
                         >
                             <p className={styles.formFields}>{user.name}</p>
-                        </Form.Item>
+                        </Form1.Item>
                     </div>
                     <div className={styles.formControl}>
-                        <Form.Item
+                        <Form1.Item
                             label={<span className={styles.label}>Title*</span>}
                             name="title"
                             rules={[
@@ -95,26 +100,26 @@ const UserEditInfor = ({user}: any) => {
                                 value={formData.title}
                                 onChange={(e: any) => setFormData({...formData, title: e.target.value})}
                             />
-                        </Form.Item>
+                        </Form1.Item>
                     </div>
                     <div className={styles.formControl}>
-                    <Form.Item
+                    <Form1.Item
                         label={<span className={styles.label}>Company*</span>}
                         name="company"
                     >
                         <p className={styles.formFields}>{user.company.company_name}</p>
-                       </Form.Item>
+                       </Form1.Item>
                 </div>
                     <div className={styles.formControl}>
-                        <Form.Item
+                        <Form1.Item
                             label={<span className={styles.label}>Email Address*</span>}
                             name="email"
                         >
                             <p className={styles.formFields}>{user.email}</p>
-                        </Form.Item>
+                        </Form1.Item>
                     </div>
                     <div className={styles.formControl}>
-                        <Form.Item
+                        <Form1.Item
                             label={<span className={styles.label}>Phone Number*</span>}
                             name="phone"
                             rules={[
@@ -136,20 +141,20 @@ const UserEditInfor = ({user}: any) => {
                                 value={formData.phone}
                                 onChange={(e: any) => setFormData({...formData, phone: e.target.value})}
                             />
-                        </Form.Item>
+                        </Form1.Item>
                     </div>
-                    <Form.Item>
+                    <Form1.Item>
                         <div className={styles.buttonContainer}>
                             <div>
                                 <Button className={styles.buttonEdit} htmlType="submit" onClick={handleEdit}
-                                        label='SAVE'/>
+                                        label='SAVE' style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}}/>
                             </div>
                             <div>
                                 <Button className={styles.buttonCancel} onClick={handleCancel} label='CANCEL'/>
                             </div>
                         </div>
-                    </Form.Item>
-                </Form>
+                    </Form1.Item>
+                </Form1>
             </Modal>
         </>
     )

@@ -21,7 +21,6 @@ const AddUser = ({onAddSuccess}: any) => {
     const showPopup = () => {
         setVisible(true);
     };
-
     const handleCancel = () => {
         form.resetFields();
         setVisible(false);
@@ -151,7 +150,7 @@ const AddUser = ({onAddSuccess}: any) => {
                         <div className={styles.buttonContainer}>
                             <div>
                                 <Button className={styles.buttonAdd} htmlType="submit" onClick={handleSubmit}
-                                        label='ADD NEW USER'/>
+                                        label='ADD NEW USER' style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}} />
                             </div>
                             <div>
                                 <Button className={styles.buttonCancel} onClick={handleCancel} label='CANCEL'/>

@@ -75,10 +75,10 @@
 /*    display: flex;*/
 /*    justify-content: center;*/
 /*}*/
-/*.ant-table-tbody tr.ant-table-row:nth-child(odd) td*/
-/*{*/
-/*    background-color: #EAEEF6;*/
-/*}*/
+.ant-table-tbody tr.ant-table-row:nth-child(odd) td
+{
+    background-color: #EAEEF6;
+}
 /*.ant-table-tbody tr.ant-table-row:nth-child(odd) td::before{*/
 /*    position: absolute;*/
 /*    top: 50%;*/

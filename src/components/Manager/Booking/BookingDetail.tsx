@@ -56,15 +56,12 @@ const BookingDetail = ({ rec }: any) => {
     });
   }, [rec, formBookingDetail]);
 
-
-
-
   const timeString = momment(rec.from_time).format("HH:mm A");
   const timeString2 = momment(rec.to_time).format("HH:mm A");
   const dateString = momment(rec.from_time).format("DD MMM YYYY");
   const dateString2 = momment(rec.to_time).format("dddd");
+  console.log("rec BookingDetail", rec.guests.email);
 
-  
   return (
     <>
       <button key="view" className={styles.custombutton} onClick={showPopup}>
@@ -239,7 +236,7 @@ const BookingDetail = ({ rec }: any) => {
                   split={false}
                   className="demo-loadmore-list"
                   itemLayout="horizontal"
-                  dataSource={rec.booking_email.split(",")}
+                  dataSource={rec.guests}
                   renderItem={(item) => (
                     <List.Item>
                       <Skeleton
@@ -258,7 +255,7 @@ const BookingDetail = ({ rec }: any) => {
                               }
                             />
                           }
-                          title={<p>{item}</p>}
+                          title={<p>{(item as { email: string }).email}</p>}
 
                           // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                         />

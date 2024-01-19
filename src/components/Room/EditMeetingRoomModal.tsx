@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {DragEvent, FormEvent,DragEventHandler,useEffect, useState} from 'react';
 import {Modal, message} from 'antd';
 import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
@@ -18,8 +18,8 @@ const EditNewCompany = ({rec,onEditSuccess}:any) => {
     const [showDragDrop, setShowDragDrop] = useState(true);
     const [apiImagePreview, setApiImagePreview] = useState<string | null>(null);
 
-  
-    const handleDrag = function(e: React.DragEvent<HTMLDivElement>) {
+
+    const handleDrag = (e: DragEvent<HTMLDivElement> | FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         e.stopPropagation();
         if (e.type === "dragenter" || e.type === "dragover") {

@@ -24,13 +24,19 @@ export default function BookRoom({ onAddSuccess }:any) {
         require("bootstrap/dist/js/bootstrap.min.js");
     }, [])
 
+    interface Room {
+        id: number;
+        name: string;
+        // Add other properties as needed
+    }
+
     const [selectedDate, setSelectedDate] = useState(new Date('2023-01-01'));
     const [startTime, setStartTime] = useState<moment.Moment | undefined>();
     const [endTime, setEndTime] = useState<moment.Moment | undefined>();
     const [form] = Form1.useForm();
     const [formCompleted, setFormCompleted] = useState(false)
     const [visible, setVisible] = useState(false);
-    const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
+    const [allRoomsData, setAllRoomData] = useState<Room[]>([]);
 
     const handleChange = (date: React.SetStateAction<Date>) => {
         setSelectedDate(date);

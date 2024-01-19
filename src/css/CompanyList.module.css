@@ -275,3 +275,18 @@
 .inputgroup{
     padding-bottom: 44px;
 }
+.headerTitle{
+    font-family: Be Vietnam Pro;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.customTable{
+    color: #323232;
+    font-family: Be Vietnam Pro;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
