@@ -4,14 +4,12 @@ import Button from "@/constants/Form/Button";
 import styles from "/src/css/BookingDetail.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import api from "@/axiosService";
-import customstyle from "@/css/CompanyList.module.css";
 import Meta from "antd/es/card/Meta";
 import TextArea from "antd/es/input/TextArea";
 import "@/css/BookingDetail.css";
 import moment from "moment";
 import type { SelectProps } from 'antd';
 import BookingDelete from "./BookingDelete";
-import { set } from "lodash";
 
 const BookingEditDetail = ({ rec,onEditSuccess,fetchBooking }: any) => {
 
@@ -40,7 +38,7 @@ const BookingEditDetail = ({ rec,onEditSuccess,fetchBooking }: any) => {
             keyword: value,
           },
         });
-        const data = res.data.data.data.map((user: any) => ({
+        const data = res.data.data.map((user: any) => ({
           value: user,
           text: user,
         }));
@@ -53,7 +51,6 @@ const BookingEditDetail = ({ rec,onEditSuccess,fetchBooking }: any) => {
   const handleDeleteSuccess = () => {
     setDeleteConfirmationVisible(false);
     setVisible(false);
-    //deleteBooking();
     if (onEditSuccess) {
       onEditSuccess();
     }
@@ -87,8 +84,6 @@ const BookingEditDetail = ({ rec,onEditSuccess,fetchBooking }: any) => {
       type_of_booking: rec.type_of_booking,
       room: rec.meeting_room.name,
       date: moment(rec.from_time).format("DD/MM/YYYY"),
-      // from_time: moment(rec.from_time, "HH:mm").format("hh:mm A"),
-      // to_time: moment(rec.to_time, "HH:mm").format("hh:mm A"),
       from_time:moment(rec.from_time).format("hh:mm A"),
       to_time:moment(rec.to_time).format("hh:mm A"),
       guest: rec.guests,
@@ -123,7 +118,6 @@ const BookingEditDetail = ({ rec,onEditSuccess,fetchBooking }: any) => {
                         onEditSuccess();
                     }
                 } else {
-                    // message.error('Failed to create user');
                 }
             } catch (e) {
                 console.error('Error creating user:', e);
@@ -258,8 +252,6 @@ const BookingEditDetail = ({ rec,onEditSuccess,fetchBooking }: any) => {
                   <Form.Item name="from_time" className={styles.inputt}>
                     <Input
                       style={{ width: 140, height: 44, borderRadius: 8,textAlign:'center' }}
-                      // value={fromTime} name="from_time"
-                      // onChange={(e) => setFromTime(e.target.value)}
                     />
                   </Form.Item>
                   <p style={{ margin: 0 }}>TO</p>
@@ -325,14 +317,12 @@ const BookingEditDetail = ({ rec,onEditSuccess,fetchBooking }: any) => {
               </Form.Item>
               <Form.Item label="Agenda" initialValue={rec.agenda} name="agenda">
                 <TextArea
-                  // onChange={(e) => setValue(e.target.value)}
                   placeholder="Enter agenda"
                   autoSize={{ minRows: 3, maxRows: 5 }}
                 />
               </Form.Item>
               <Form.Item label="Objective" name="objective">
                 <TextArea
-                  // onChange={(e) => setValue(e.target.value)}
                   placeholder="Enter objective"
                   autoSize={{ minRows: 3, maxRows: 5 }}
                 />
@@ -373,8 +363,6 @@ const BookingEditDetail = ({ rec,onEditSuccess,fetchBooking }: any) => {
                           title={<p>Baka</p>}
                         // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                         />
-                        {/* <div>{item}</div> */}
-
                     </List.Item>
                   )}
                 />

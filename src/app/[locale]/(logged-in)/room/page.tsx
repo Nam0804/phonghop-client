@@ -81,7 +81,6 @@ const CompanyList = () => {
     fetchData();
   };
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        console.log(dateString);
         setSelectedDate(dateString);
       };
       interface DataType {
