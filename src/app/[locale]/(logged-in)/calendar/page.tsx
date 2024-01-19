@@ -1,13 +1,188 @@
-"use strict";
-import RoomDetailWeekly from '@/components/Booking/RoomDetailWeekly';
-import styles from '@/css/CompanyList.module.css'
+"use client";
+import React, {useRef, useState, useEffect, useCallback} from "react";
+import FullCalendar from "@fullcalendar/react";
+import interactionPlugin from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import {Layout} from 'antd';
+import './calender.css';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import {get} from 'lodash';
+import moment from 'moment';
+import api from '@/axiosService';
+import styles from 'src/css/Calender.module.css';
 import type {DatePickerProps} from 'antd';
 import {DatePicker, Space} from 'antd';
+import {useSelector} from 'react-redux'
+import toast from "react-hot-toast";
+import RoomDetailWeekly from '@/components/Booking/RoomDetailWeekly';
 
 const Index = () => {
+    interface Room {
+        id: number;
+        name: string;
+    }
+
+    const dateFormatforButtonChangeWeek = moment().format("MMMM DD, YYYY");
+    const [title, settitle] = useState<string>(dateFormatforButtonChangeWeek);
+    const calendarRef = useRef<FullCalendar>(null);
+    const user = useSelector((state: any) => state.user.value);
+    const [roomList, setRoomList] = useState<Room[]>([]);
+    const [selectedRoom, setSelectedRoom] = useState('');
+    const [selectedCheckbox, setSelectedCheckbox] = useState('allMeetings');
+    const [initialCheckbox, setInitialCheckbox] = useState('allMeetings');
+    const [events, setEvents] = useState([{}]);
+    const [selectView, setSelectView] = useState<string>('Day');
+    console.log(selectView)
+    const fetchRoom = useCallback(async () => {
+        try {
+            const response = await api.get(`/meeting-rooms/listing`);
+            const rooms = get(response, 'data.data', []);
+            setRoomList(rooms);
+        } catch (error) {
+            console.error(error);
+            toast.error('Error');
+        }
+    }, []);
+
+    const handleCheckboxChange = (id: any) => {
+        setSelectedCheckbox(id);
+    };
+
+    const handleViewChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectView(event.target.value);
+    };
+
+    const handleCb = async () => {
+        try {
+            await fetchData();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const fetchData = async () => {
+        if (selectedCheckbox === 'myMeeting') {
+            const myBookings = await fetchMyBookingHistory();
+            const eventMyBooking = myBookings.map((booking:any) => ({
+                title: booking.topic,
+                start: booking.from_time,
+                end: booking.to_time,
+                allDay: false,
+                backgroundColor: '#388697',
+                booking_user: user.name
+            }));
+            setEvents(eventMyBooking);
+        } else {
+            const allBookings = await fetchAllBookingHistory();
+            const eventAllBooking = allBookings.map((booking: any) => ({
+                title: booking.topic,
+                start: booking.from_time,
+                end: booking.to_time,
+                allDay: false,
+                backgroundColor: '#388697',
+                booking_user: user.name
+            }));
+            setEvents(eventAllBooking);
+        }
+    };
+
+    useEffect(() => {
+        setInitialCheckbox(selectedCheckbox);
+        handleCb()
+    }, [selectedCheckbox]);
+
+    const fetchMyBookingHistory = useCallback(async () => {
+        try {
+            const response = await api.get(`/bookings/history/${user.id}`);
+            const myBookings = get(response, 'data.data', []);
+            return myBookings;
+        } catch (error) {
+            console.error(error);
+            toast.error('Error');
+        }
+    }, []);
+
+    const fetchAllBookingHistory = useCallback(async (company_id = '') => {
+        try {
+            const response = await api.get(`/bookings`);
+            const allBookings = get(response, 'data.data', []);
+            return allBookings;
+        } catch (error) {
+            console.error(error);
+            toast.error('Error');
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchRoom();
+    }, [fetchRoom]);
+
+    const handleRoomChange = (event: any) => {
+        setSelectedRoom(event.target.value);
+    };
+
+    const nextHandle = () => {
+        if (calendarRef.current) {
+            calendarRef.current.getApi().next();
+            settitle(calendarRef.current.getApi().view.title);
+        }
+    };
+
+    const prevHandle = () => {
+        if (calendarRef.current) {
+            calendarRef.current.getApi().prev();
+            settitle(calendarRef.current.getApi().view.title);
+        }
+    };
+
+    const todayHandle = () => {
+        if (calendarRef.current) {
+            calendarRef.current.getApi().today();
+            settitle(calendarRef.current.getApi().view.title);
+        }
+    };
+
+
+    dayjs.extend(customParseFormat);
+    const dateFormat = 'dddd, DD MMMM YYYY';
+    const customFormat: DatePickerProps['format'] = (value: any) =>
+        ` ${value.format(dateFormat)}`;
+    const customDayHeaderFormat = ({date}: any) => {
+        const dayOfWeek = date.toLocaleDateString('en-US', {weekday: 'long'});
+        const formattedDate = date.toLocaleDateString('en-US', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        });
+
+        return `${dayOfWeek} ${formattedDate}`;
+    };
+    // const calendarStyle = (date: any) => {
+    //     let currentDate = `${new Date().getDate()} ${new Date().getMonth() + 1} ${new Date().getFullYear()}`
+    //     let allDate = `${date.getDate()} ${date.getMonth() + 1} ${date.getFullYear()}`
+    //
+    //     if (allDate === currentDate)
+    //         return {
+    //             style: {
+    //                 backgroundColor: '#88C9E8',
+    //                 border: '1px solid gray',
+    //                 margin: 0,
+    //                 padding: 0
+    //             }
+    //         }
+    // }
+
+    const renderEventContent = (eventInfo: any) => {
+        return (
+            <>
+                <p style={{marginBottom: '0px'}}><strong>Meeting: {eventInfo.event.title}</strong></p>
+                <p style={{marginBottom: '0px'}}>Booked by {eventInfo.event.extendedProps.booking_user}</p>
+                <p>{eventInfo.timeText}</p>
+            </>
+        )
+    };
+
     return (
         <>
             <div>
@@ -75,9 +250,9 @@ const Index = () => {
                             </div>
                             <div className={styles.childTextContainer}>
                                 <p className={styles.text}>View:</p>
-                                <select className={styles.weekPicker}>
-                                    <option value="Week">Week</option>
+                                <select className={styles.weekPicker} onChange={handleViewChange} value={selectView}>
                                     <option value="Day">Day</option>
+                                    <option value="Week">Week</option>
                                 </select>
                             </div>
                             <div className={styles.childTextContainer} style={{marginLeft: '84px'}}>
@@ -131,11 +306,24 @@ const Index = () => {
                             </div>
 
                         </div>
-
+                        {selectView === 'Week' ? (
+                            <RoomDetailWeekly
+                                calendarRef={calendarRef}
+                                events={events}
+                                renderEventContent={renderEventContent}
+                            />
+                        ) : (
+                            <p>Add daily room here</p>
+                            // <RoomDetailDaily
+                            //     calendarRef={calendarRef}
+                            //     events={events}
+                            //     renderEventContent={renderEventContent}
+                            // />
+                        )}
                     </div>
                 </Layout>
             </div>
-            <RoomDetailWeekly />
+
         </>
     );
 }
