@@ -3,7 +3,6 @@ import {Modal} from 'antd';
 import Button from "@/constants/Form/Button";
 import styles from '@/css/DeleteMeeting.module.css';
 import axios from "axios";
-import './customantd.css'
 import customstyle from '@/css/CompanyList.module.css'
 import api from '@/axiosService';
 

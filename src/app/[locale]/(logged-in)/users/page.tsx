@@ -7,7 +7,6 @@ import {DatePicker, Space} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import {useEffect, useState} from "react";
 import {get} from 'lodash';
-import './customantd.css'
 import api from '@/axiosService';
 import ManagerEditInfor from "@/components/Manager/ManagerEditInfor";
 import DeleteUser from '@/components/User/deleteUser/deleteUser';
@@ -17,7 +16,7 @@ import {useAppDispatch} from '@/lib/hooks';
 import {setLoading} from '@/lib/features/loadingSlice';
 import toast from "react-hot-toast";
 import StaffInfomation from "@/components/User/InforUser/UserInfor";
-
+import "./customantd.css";
 
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);

@@ -103,7 +103,7 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    gap: 33px;
+    gap: 24px;
 }
 
 .addbtn {
@@ -208,4 +208,59 @@
     font-weight: 400;
     line-height: normal;
     color: #383838;
+}
+.autocheckbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.autocheckbox label p{
+    color:  #323232;
+    font-family: Be Vietnam Pro;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 0px;
+}
+.autocheckbox input[type="checkbox"]  {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid #225560;
+    background:  #225560;
+    display: inline-block;
+}
+.autocheckbox input[type="checkbox"]:checked {
+    background-color: red; /* Màu fill khi checkbox được chọn */
+}
+.materialsSection{
+    display: flex;
+    gap: 10px;
+}
+.materialsSection button{
+    width: 181px;
+    height: 44px;
+    padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    border: 2px solid var(--Primary-Button-Light, #388697);
+    background: var(--Primary-Button-Light, #388697);
+    color: var(--White, #FFF);
+    font-family: Be Vietnam Pro;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.removebutton{
+    width: 16px;
+    height: 16px;
+}
+.itemlist{
+    margin-bottom: 0px;
+}
+.inputt{
+    margin-bottom: 0px;
 }

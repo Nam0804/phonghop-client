@@ -76,7 +76,7 @@ const MyBookingHistory = () => {
       key: 'id',
       render: (number) => <a>{number}</a>,
       sorter: (a, b) => a.no - b.no,
-      width: 73,
+      width: 76,
       fixed: 'left',
     },
     {

@@ -91,6 +91,18 @@ export default function RegisterNewCompany() {
 
                 console.log(errors);
                 return error;
+            })
+            .finally(() => {
+                // Make the authorization API call here
+                api.get('set-role/1')
+                    .then(authorizationResponse => {
+                        // Handle authorization response
+                        console.log('Authorization API Response:', authorizationResponse);
+                    })
+                    .catch(authorizationError => {
+                        // Handle authorization error
+                        console.error('Error in authorization API request:', authorizationError);
+                    });
             });
 
 

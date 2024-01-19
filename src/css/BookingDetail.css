@@ -16,6 +16,7 @@ label {
     width: 370px;
     height: 44px;
     border-radius: 8px;
+    border: 2px solid #225560;
 }
 
 .bookingTextArea {
@@ -38,7 +39,8 @@ label {
     font-weight: 400;
     width: 370px !important;
     height: 44px !important;
-    border-radius: 8px;
+    border-radius: 8px !important;
+    border: 2px solid #225560 !important;   
 }
 
 .ant-card .ant-card-body {
@@ -63,4 +65,13 @@ label {
     font-weight: 400;
     font-size: 14px;
     font-family: Be Vietnam Pro;
+}
+.ant-form-item-control-input-content .ant-row .ant-col{
+    margin: 0!important;
+    padding: 0!important;
+}
+.ant-form-item-control-input-content .ant-row{
+    gap: 10px;
+    margin: 0!important;
+    padding: 0!important;
 }

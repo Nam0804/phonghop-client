@@ -84,7 +84,6 @@ const CompanyList = () => {
     fetchData();
   };
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        console.log(dateString);
         setSelectedDate(dateString);
       };
       interface DataType {
@@ -107,7 +106,7 @@ const CompanyList = () => {
           key: 'id',
           render: (number) => <a>{number}</a>,
           sorter: (a, b) => a.no - b.no,
-          width:73,
+          width:40,
           fixed:'left',
         },
         {
@@ -145,9 +144,11 @@ const CompanyList = () => {
             render: (_, { availabilitys }) => {
                 let color = availabilitys ? '#E56353' : '#388697';
                 return (
-                    <Tag color={color} className="">
+                  <div >
+                    <Tag color={color} key={_}>
                         {availabilitys ? 'Unavailable' : 'Available'}
                     </Tag>
+                  </div>
                 );
             },
             width: 183,
