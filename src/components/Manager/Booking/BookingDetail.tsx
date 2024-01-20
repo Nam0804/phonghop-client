@@ -60,7 +60,6 @@ const BookingDetail = ({ rec }: any) => {
   const timeString2 = momment(rec.to_time).format("HH:mm A");
   const dateString = momment(rec.from_time).format("DD MMM YYYY");
   const dateString2 = momment(rec.to_time).format("dddd");
-  console.log("rec BookingDetail", rec.material);
 
   return (
     <>

@@ -1,20 +1,15 @@
 'use client'
 import React, {useCallback} from "react";
 import styles from '@/css/CompanyList.module.css'
-import Button from "@/constants/Form/Button";
-import Modal from "@/constants/Modal/ChangePasswordModal";
 import BookRoom from "@/components/Booking/BookRoom";
-import {Table, Tag} from 'antd';
+import {Table, Tag,Select} from 'antd';
 import {DatePicker, Space} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import {useEffect, useState} from "react";
 import moment from 'moment';
-import DeleteCompany from "@/components/DeleteCompany/DeleteCompany";
 import api from "@/axiosService";
 import {get} from "lodash";
 import toast from "react-hot-toast";
-import EditNewCompany from "@/components/Admin/EditNewCompany";
-import InformationCompany from "@/components/Admin/InfomationCompany";
 import BookingDetail from "./Booking/BookingDetail";
 import BookingEditDetail from "./Booking/BookingEditDetail";
 
@@ -24,27 +19,34 @@ const ManagerBookingList = () => {
     const [statusButton, setStatusButton] = useState([
         {statusButton: 0, buttonColor: "#8B8B8B"},
     ]);
+    const [selectedStatus, setSelectedStatus] = useState('all');
+    const [filteredBooking, setFilteredBooking] = useState<DataType[]>([]);
     const fetchData = useCallback(async () => {
         try {
             const data = await api.get('bookings');
-            //   const sortedData = res.sort(
-            //     (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-            //   );
-            
-            const res = get(data, 'data.data');
+            let res = get(data, 'data.data',[]);
             setAllStaffData(res)
+            setFilteredBooking(res)
         } catch (error) {
             console.error(error);
             toast.error('Error');
 
         }
-        
-        
-    }, [])
+    }, [selectedStatus])
     useEffect(() => {
         fetchData()
     }, []);
-
+    const handleStatusChange = (e:any) => {
+      const selectedBooking = e.target.value;
+      if (selectedBooking === 'all') {
+        setFilteredBooking(allStaffData);
+      } else {
+        const filteredData = allStaffData.filter((item: any) => {
+          return item.register_status.toString() === selectedBooking;
+        });
+        setFilteredBooking(filteredData);
+      }
+    };
     const handleDeleteSuccess = () => {
         setDeleteConfirmationVisible(false);
         fetchData();
@@ -85,10 +87,8 @@ const ManagerBookingList = () => {
                 dat.register_status = status;
             }
         }
-        console.log(typeof dat)
         try {
             const response = await api.put(`bookings/${dat.id}`, dat)
-            console.log(response);
         }catch (error) {
             console.log(error)
         }
@@ -296,9 +296,49 @@ const ManagerBookingList = () => {
                 </div>
                 <h1 className={styles.label}>Booking List</h1>
             </div>
+            <div className={styles.filter}>
+                <span>
+                    FILTER BY STATUS
+                </span>
+                <select
+                        defaultValue="all"
+                        onChange={(e) => handleStatusChange(e)}
+                >
+                    <option value="all">All Status</option>
+                    <option value="0">Pending</option>
+                    <option value="1">Upcoming</option>
+                    <option value="2">Finished</option>
+                </select>
+            </div>
             <div className={styles.companytable}>
-                <Table columns={columns} dataSource={allStaffData}
+                <Table columns={columns} dataSource={filteredBooking}
+                bordered={true}
                        scroll={{x: 1000}} pagination={false} rowKey={(record) => record.id}
+                       components={{
+                        header: {
+                            cell: (props: any) => (
+                                <th style={{
+                                    background: '#255D6A',
+                                    color: '#fff',
+                                    borderRight: '1px solid #ffffff',
+                                }}>
+                                    {props.children}
+                                </th>
+                            ),
+                        },
+                        body: {
+                            cell: (props: any) => {
+                                const isEvenRow = props.index % 2 === 0;
+                                return (
+                                    <td
+                                        className={styles.customTable}
+                                    >
+                                        {props.children}
+                                    </td>
+                                );
+                            },
+                        },
+                    }}
                 />
             </div>
             <div className={styles.addco}>

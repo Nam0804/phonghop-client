@@ -236,16 +236,16 @@ const CompanyList = () => {
             },
             width: 183,
           },
-        {
+          {
             title: 'View Room Detail',
             key: 'book',
             dataIndex: 'book',
             render: (_, { availabilitys }) => {
                const color = availabilitys ? '#8B8B8B' : '#388697';
                return (
-                  <Tag color={color} key={_}>
-                     Book
-                  </Tag>
+                   <Tag color={color} key={_}>
+                       <Link href={`/${locale}/calendar`} style={{textDecoration:"none"}}>Book</Link>
+                   </Tag>
                );
             },
             width: 154,
