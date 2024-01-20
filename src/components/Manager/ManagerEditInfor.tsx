@@ -10,7 +10,6 @@ import { toast } from 'react-hot-toast';
 import { useLocale, useTranslations } from 'next-intl';
 
 const ManagerEditInfor = ({user, onEditSuccess}: any) => {
-    console.log(user)
     const [form] = Form.useForm();
     const [formData, setFormData] = useState({...user});
     const [formCompleted, setFormCompleted] = useState(true)
