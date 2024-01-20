@@ -42,6 +42,11 @@ export default function BookRoom({onAddSuccess }:any) {
     const user = useSelector((state:any) => state.user.value);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [roomData, setRoomData] = useState<DataType[]>([]);
+    const [selectedRoom, setSelectedRoom] = useState(null);
+
+    const handleSelectChange = (value) => {
+        setSelectedRoom(value);
+    };
 
     // const generateRepeatOptions = (date: Date | null) => {
     //     const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
@@ -261,8 +266,10 @@ export default function BookRoom({onAddSuccess }:any) {
                                                 label: room.name,
                                                 value: room.name,
                                               }))}
+                                              className={styles.roomselect}
+                                              onChange={handleSelectChange}
                                             />
-    
+                                            {selectedRoom && (
                                             <Layout
                                             style={{
                                                 backgroundColor: "#EAEEF6",
@@ -310,6 +317,7 @@ export default function BookRoom({onAddSuccess }:any) {
                                                 </div>
                                             </Card>
                                             </Layout>
+                                            )}
                                         </Form1.Item>
                                     </div>
                                     <div className="mb-3 row" >
