@@ -30,8 +30,9 @@ export default function BookRoom({onAddSuccess }:any) {
         name: string;
       }
 
-    const [startTime, setStartTime] = useState<moment.Moment | undefined>();
-    const [endTime, setEndTime] = useState<moment.Moment | undefined>();
+
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
     const [form] = Form1.useForm();
     const [formCompleted, setFormCompleted] = useState(false)
     const [visible, setVisible] = useState(false);
@@ -42,32 +43,32 @@ export default function BookRoom({onAddSuccess }:any) {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [roomData, setRoomData] = useState<DataType[]>([]);
 
-    const generateRepeatOptions = (date: Date | null) => {
-        const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
+    // const generateRepeatOptions = (date: Date | null) => {
+    //     const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
       
-        return [
-          { value: 'no-repeat', label: 'Doesn’t repeat' },
-          { value: 'every-weekday', label: 'Every weekday' },
-          {
-            value: 'weekly',
-            label: `Weekly - ${date ? dayOfWeek : '(Select a date)'}`,
-          },
-          {
-            value: 'monthly',
-            label: `Monthly - ${date ? dayOfWeek : '(Select a date)'}`,
-          },
-          {
-            value: 'annually',
-            label: `Annually - ${date ? dayOfWeek : '(Select a date)'}`,
-          },
-        ];
-      };
+    //     return [
+    //       { value: 'no-repeat', label: 'Doesn’t repeat' },
+    //       { value: 'every-weekday', label: 'Every weekday' },
+    //       {
+    //         value: 'weekly',
+    //         label: `Weekly - ${date ? dayOfWeek : '(Select a date)'}`,
+    //       },
+    //       {
+    //         value: 'monthly',
+    //         label: `Monthly - ${date ? dayOfWeek : '(Select a date)'}`,
+    //       },
+    //       {
+    //         value: 'annually',
+    //         label: `Annually - ${date ? dayOfWeek : '(Select a date)'}`,
+    //       },
+    //     ];
+    //   };
 
     const handleRepeatChange = (selectedOption: { value: string; label: string } | null) => {
         setRepeatType(selectedOption);
       };
 
-    const repeatOptions = generateRepeatOptions(selectedDate);
+    //const repeatOptions = generateRepeatOptions(selectedDate);
 
     const handleStartTimeChange = (value: moment.Moment | undefined) => {
         setStartTime(value);
@@ -79,10 +80,7 @@ export default function BookRoom({onAddSuccess }:any) {
 
 
      const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        console.log(dateString);
-        if (date && typeof date === 'object') {
-            setSelectedDate(date.toDate() as unknown as null);
-        }
+        setSelectedDate(dateString);
     };
     
 
@@ -133,9 +131,10 @@ export default function BookRoom({onAddSuccess }:any) {
           .validateFields()
           .then(async (values) => {
             try {
-              const meetingRoomsResponse = await api.get('meeting-rooms/listing');
+               const meetingRoomsResponse = await api.get('meeting-rooms/listing');
               
-              if (meetingRoomsResponse.status === 200) {
+                if (meetingRoomsResponse.status === 200)
+                {
                 const meetingRooms = meetingRoomsResponse.data.data;
       
                 const selectedMeetingRoomId = meetingRooms.length > 0 ? meetingRooms[0].id : null;
@@ -145,10 +144,18 @@ export default function BookRoom({onAddSuccess }:any) {
                   booking_name: user.name,
                   booking_email: user.email,
                   booking_title: user.title,
-                  meeting_room_id: selectedMeetingRoomId,
+                  meeting_room_id: 1,
+                  from_time: `${selectedDate} ${moment(startTime,'HH:mm A').format('HH:mm:ss')}`,
+                    to_time: `${selectedDate} ${moment(endTime,'HH:mm A').format('HH:mm:ss')}`,
+                    repeat_type:1
                 };
 
-                const bookingResponse = await api.post('bookings', values);
+                const bookingResponse = await api.post('external-bookings', values,
+                {headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                });
       
                 if (bookingResponse.status === 200) {
                   message.success('Booking created successfully');
@@ -162,13 +169,10 @@ export default function BookRoom({onAddSuccess }:any) {
                 }
                 
                 setFilteredRooms(bookingResponse.data.data);
-              } else {
-                message.error('Failed to fetch meeting rooms');
-              }
+            }
             } catch (e) {
               console.error('Error creating booking:', e);
               message.error('Failed to create booking');
-              console.log(values);
             }
           })
           .catch((errorInfo) => {
@@ -319,14 +323,13 @@ export default function BookRoom({onAddSuccess }:any) {
                                                         </Space>
                                                 </div>
                                                 <div>
-                                                    <Selects  options={repeatOptions} onChange={handleRepeatChange} className={ styles.selectedDate } />
+                                                    <Selects onChange={handleRepeatChange} className={ styles.selectedDate } />
                                                 </div>
                                             </div>
                                         </Form1.Item>
                                     </div>
                                     <div className="mb-3 row" style={{ alignItems:'center' }}>
                                     <Form1.Item
-                                            name="time"
                                             label={<span className={styles.formLabel}>Time*:</span>}
                                             rules={[
                                                 {
