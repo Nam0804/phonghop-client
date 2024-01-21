@@ -6,6 +6,7 @@ import styles from '@/css/Login.module.css';
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux'
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Button from '@/constants/Form/Button';
@@ -23,12 +24,22 @@ const LoginPage: React.FC<{}> = () => {
   const locale = useLocale();
   const router = useRouter()
   const dispatch = useAppDispatch()
-
+  const user = useSelector((state:any) => state.user.value);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage1, setErrorMessage1] = useState('');
+  const [errorMessage2, setErrorMessage2] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isNewAccount, setIsNewAccount] = useState(false);
   const [newPassword, setNewPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const user_id = user.id;
   const isFormValid = email !== '' && password !== '';
+  const validatePassword = (password: string) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    return passwordRegex.test(password);
+  };
   const handleLogin = async () => {
     const postData = {
       email: email,
@@ -43,8 +54,8 @@ const LoginPage: React.FC<{}> = () => {
 
       const user = res.data.data.user;
       dispatch(initializeUser(user));
-
-      if (res.data.data.isNewAccount) {
+      const first_login=user.is_first_login;
+      if (first_login===1) {
         setIsNewAccount(true);
         openModal();
       } else {
@@ -74,23 +85,29 @@ const LoginPage: React.FC<{}> = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const handleButtonClick = async () => {
-    if (isNewAccount) {
-      try {
-        const res = await api.post('auth/reset-password', {
-          email: email,
-          newPassword: newPassword,
-        });
-
-        toast.success(t('passwordChanged'));
-        closeModal();
-        setIsNewAccount(false);
-      } catch (error) {
-        console.error(error);
-        toast.error(t('passwordChangeError'));
+  const handleSaveChangePassword = async () => {
+    if (!validatePassword(newPassword)) {
+    setErrorMessage("New password must be at least 8 characters long, contain at least one uppercase letter, and one digit.");
+    return;
+    }
+    if (newPassword !== confirmNewPassword) {
+        setErrorMessage1("Passwords are not the same");
+        return;
+    }
+    if (newPassword === currentPassword) {
+        setErrorMessage("New password should be different from the current password");
+        return;
       }
-    } else {
-      handleLogin();
+    try {
+      const res = await api.post('auth/user/reset-password',
+      { user_id: user_id,
+        new_password:newPassword,
+      });
+      closeModal();
+    } catch (error:any) {
+        if (error.response && error.response.status === 400) {
+            setErrorMessage2("Please re-enter current password");
+        }
     }
   };
   const [passwordVisible, setpasswordVisible] = useState(false);
@@ -115,7 +132,7 @@ const LoginPage: React.FC<{}> = () => {
           </Link>
         </div>
 
-        <Button type="button" className={styles.loginbtn} onClick={handleButtonClick} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>LOG IN</Button>        
+        <Button type="button" className={styles.loginbtn} onClick={handleLogin} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>LOG IN</Button>        
         <div className={styles.account}>
           <p>Don't have an account?</p>
           <Link href={`/${locale}/manager`} className={styles.customlink} passHref>
@@ -130,17 +147,19 @@ const LoginPage: React.FC<{}> = () => {
                   <div className={styles.inputgroup}>
                     <div className={styles.inputform1}>
                       <img src="/pass.svg" alt="" className={styles.icon1} />
-                      <input type={passwordVisible ? 'text' : 'password'} name="password" className={styles.inputsection} placeholder="Password*" onChange={(e: any) => setNewPassword(e.target.value)} />
+                      <input  type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" className={styles.inputsection} value={newPassword} onChange={(e) => {setNewPassword(e.target.value);setErrorMessage(''); }}/>
                       <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide2} onClick={() => setpasswordVisible(!passwordVisible)} />
+                      <p className={styles.error}>{errorMessage}</p>
                     </div>
                     <div className={styles.inputform1}>
                       <img src="/pass.svg" alt="" className={styles.icon1} />
-                      <input type={passwordVisible ? 'text' : 'password'} name="password" className={styles.inputsection} placeholder="Confirm Password*" onChange={(e: any) => setNewPassword(e.target.value)}/>
+                      <input  type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Confirm Password" className={styles.inputsection} value={confirmNewPassword} onChange={(e) => {setConfirmNewPassword(e.target.value);setErrorMessage('');}}/>
                       <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide2} onClick={() => setpasswordVisible(!passwordVisible)} />
+                      <p className={styles.error}>{errorMessage1}</p>
                     </div>
                   </div>
                   <div className={styles.btngroup}>
-                    <Button className={styles.passbtn} onClick={handleButtonClick}>CHANGE PASSWORD</Button>
+                    <Button className={styles.passbtn} onClick={handleSaveChangePassword}>CHANGE PASSWORD</Button>
                   </div>
 
                 </>

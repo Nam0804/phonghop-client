@@ -196,3 +196,17 @@
     transform: translate(0, -50%);
     margin-top: 10px;
 }
+.error{
+    color:  #E56353;
+    font-family: "Be Vietnam Pro";
+    font-size: 11px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    right: 13%;
+    top: 135px;
+    transform: translate(0, -15%);
+    width: 55%;
+    margin-bottom: 0;
+}
