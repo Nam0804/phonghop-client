@@ -17,6 +17,7 @@ import EditNewCompany from "@/components/Admin/EditNewCompany";
 import InformationCompany from "@/components/Admin/InfomationCompany";
 import BookingDetail from "./Booking/BookingDetail";
 import BookingEditDetail from "./Booking/BookingEditDetail";
+import {useSelector} from 'react-redux'
 
 const ManagerBookingList = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
@@ -24,9 +25,10 @@ const ManagerBookingList = () => {
     const [statusButton, setStatusButton] = useState([
         {statusButton: 0, buttonColor: "#8B8B8B"},
     ]);
+    const user = useSelector((state: any) => state.user.value)
     const fetchData = useCallback(async () => {
         try {
-            const data = await api.get('bookings');
+            const data = await api.get(`bookings`, { params: { company_id: user.company_id }});
             //   const sortedData = res.sort(
             //     (a: DataType, b: DataType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
             //   );

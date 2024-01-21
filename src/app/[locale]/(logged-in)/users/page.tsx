@@ -16,7 +16,7 @@ import {useAppDispatch} from '@/lib/hooks';
 import {setLoading} from '@/lib/features/loadingSlice';
 import toast from "react-hot-toast";
 import StaffInfomation from "@/components/User/InforUser/UserInfor";
-import "./customantd.css";
+import UserEditInfor from "@/components/User/editInfor/UserEditInfor";
 
 const UserPage = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
@@ -120,7 +120,13 @@ const UserPage = () => {
             render: (_, record: any) => (
                 <Space size="middle" style={{alignItems:'center'}}>
                     <StaffInfomation rec={record} ></StaffInfomation>
-                    <ManagerEditInfor user={record} onEditSuccess={handleEditSuccess}/>
+                    {
+                        user.type === 1 ? (
+                            <ManagerEditInfor user={record} onEditSuccess={handleEditSuccess}/>
+                        ) : (
+                            <UserEditInfor user={record} onEditSuccess={handleEditSuccess}/>
+                        )
+                    }
                     <DeleteUser user_id={record.id} onDeleteSuccess={handleDeleteSuccess}/>
                 </Space>
             ),
