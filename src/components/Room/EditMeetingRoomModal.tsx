@@ -74,7 +74,7 @@ const EditNewCompany = ({rec,onEditSuccess}:any) => {
 
     useEffect(() => {
         form1.setFieldsValue({
-            room_name: rec.name,
+            name: rec.name,
             location: rec.location,
             capacity: rec.capacity,
             equipment: rec.equipment,
@@ -91,7 +91,7 @@ const EditNewCompany = ({rec,onEditSuccess}:any) => {
             .then(async (values) => {
                 try {
                     console.log(values)
-                    const data = await api.put(`update-meeting-room/${rec.id}`,values)
+                    const data = await api.patch(`update-meeting-room/${rec.id}`,values)
                     if (data.status == 200) {
                         message.success('Room update successfully');
                         setVisible(false);
@@ -131,9 +131,9 @@ const EditNewCompany = ({rec,onEditSuccess}:any) => {
                     requiredMark={false}
                 >
                     <div className={styles.formControl}>
-                        <Form.Item
+                    <Form.Item
                             label={<span className={styles.label}>Room Name*</span>}
-                            name="room_name"
+                            name="name"
                             rules={[
                                 {
                                     required: true,
@@ -148,7 +148,6 @@ const EditNewCompany = ({rec,onEditSuccess}:any) => {
                         >
                             <input className={styles.Input}/>
                         </Form.Item>
-
                     </div>
                     <div className={styles.formControl}>
                         <Form.Item
