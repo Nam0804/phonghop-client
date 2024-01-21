@@ -12,6 +12,7 @@ import {get} from "lodash";
 import toast from "react-hot-toast";
 import BookingDetail from "./Booking/BookingDetail";
 import BookingEditDetail from "./Booking/BookingEditDetail";
+import {useSelector} from 'react-redux'
 
 const ManagerBookingList = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
