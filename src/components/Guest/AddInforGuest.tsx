@@ -1,21 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  Input,
-  Row,
-  Col,
-  Form,
-  Card,
-  Image,
-  Layout,
-  List,
-  Skeleton,
-  Avatar,
-  Select,
-  Flex,
-  CheckboxProps,
-  Checkbox,
-} from "antd";
+import {Modal,Input,Row, Col,Form,Card,Image,Layout,List,Skeleton,Avatar,Select,Flex,CheckboxProps,Checkbox,} from "antd";
 import Button from "@/constants/Form/Button";
 import styles from "/src/css/BookingDetail.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -26,17 +10,17 @@ import "@/css/BookingDetail.css";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 
-const AddInforGuest = ({ rec }: any) => {
+const AddInforGuest = ({openModal,closeModal}:any) => {
   const locale = useLocale();
   const [visible, setVisible] = useState(false);
   const [formBookingDetail] = Form.useForm();
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
 
+
   const onChange1 = (e:any) => {
     setChecked1(e.target.checked);
   };
-
   const onChange2 = (e: any) => {
     setChecked2(e.target.checked);
   };
@@ -48,18 +32,13 @@ const AddInforGuest = ({ rec }: any) => {
 
   const handleCancel = () => {
     formBookingDetail.resetFields();
-    setVisible(false);
+   closeModal(false);
   };
-
   return (
     <>
-      <button key="view" className={styles.custombutton} onClick={showPopup}>
-        <img src="/eye.svg"></img>
-      </button>
       <Modal
         title={<div className={styles.formTitle}>New Booking Session</div>}
-        open={visible}
-        onCancel={handleCancel}
+        open={openModal}
         footer={null}
         closable={false}
         width={1296}
@@ -125,11 +104,10 @@ const AddInforGuest = ({ rec }: any) => {
         </Form>
 
         {/* =================== */}
-        <Form2.Item>
+        <Form.Item>
           <div className="btnBookGroup">
               <Button
                 className="btnBookNow"
-                onClick={handleCancel}
                 label="Book Now"
               />
               <Button
@@ -138,7 +116,7 @@ const AddInforGuest = ({ rec }: any) => {
                 label="Close"
               />
           </div>
-        </Form2.Item>
+        </Form.Item>
       </Modal>
     </>
   );
