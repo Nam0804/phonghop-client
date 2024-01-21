@@ -291,6 +291,33 @@ const CompanyList = () => {
 
                     <Table columns={columns} dataSource={filteredRooms} 
                     scroll={{x:1000}} className={customstyle.customtable} pagination={{ pageSize:5 }}
+                    components={{
+                           header: {
+                               cell: (props: any) => (
+                                   <th style={{
+                                       background: '#255D6A',
+                                       color: '#fff',
+                                       borderRight: '1px solid #ffffff',
+                                   }}>
+                                       {props.children}
+                                   </th>
+                               ),
+                           },
+                           body: {
+                               cell: (props: any) => {
+                                   const isEvenRow = props.index % 2 === 0;
+                                   console.log(isEvenRow)
+
+                                   return (
+                                       <td
+                                           className={styles.customTable}
+                                       >
+                                           {props.children}
+                                       </td>
+                                   );
+                               },
+                           },
+                       }}
                     />
                 </div>
                 {usertype === 1 && (
