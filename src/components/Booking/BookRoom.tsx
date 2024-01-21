@@ -20,6 +20,7 @@ import TextArea from "antd/es/input/TextArea";
 import {Form as Form1} from 'antd'
 import api from '@/axiosService';
 import {Card,Image,Layout,Select} from "antd";
+import { SingleValue } from 'react-select';
 
 export default function BookRoom({onAddSuccess }:any) {
     useEffect(() => {
@@ -30,9 +31,8 @@ export default function BookRoom({onAddSuccess }:any) {
         name: string;
       }
 
-
-    const [startTime, setStartTime] = useState('');
-    const [endTime, setEndTime] = useState('');
+    const [startTime, setStartTime] = useState<moment.Moment | null>(null);
+    const [endTime, setEndTime] = useState<moment.Moment | null>(null);
     const [form] = Form1.useForm();
     const [formCompleted, setFormCompleted] = useState(false)
     const [visible, setVisible] = useState(false);
@@ -42,11 +42,16 @@ export default function BookRoom({onAddSuccess }:any) {
     const user = useSelector((state:any) => state.user.value);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [roomData, setRoomData] = useState<DataType[]>([]);
-    const [selectedRoom, setSelectedRoom] = useState(null);
+    const [selectedRoom, setSelectedRoom] = useState<string>('');
 
-    const handleSelectChange = (value) => {
-        setSelectedRoom(value);
-    };
+    const handleSelectChange = (value: SingleValue<{ label: string; value: string; }>) => {
+        if (value) {
+          setSelectedRoom(value.value);
+        } else {
+          setSelectedRoom("");
+        }
+      };
+      
 
     // const generateRepeatOptions = (date: Date | null) => {
     //     const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
@@ -76,11 +81,11 @@ export default function BookRoom({onAddSuccess }:any) {
     //const repeatOptions = generateRepeatOptions(selectedDate);
 
     const handleStartTimeChange = (value: moment.Moment | undefined) => {
-        setStartTime(value);
+        setStartTime(value || null);
     };
 
     const handleEndTimeChange = (value: moment.Moment | undefined) => {
-        setEndTime(value);
+        setEndTime(value || null);
     };
 
 
