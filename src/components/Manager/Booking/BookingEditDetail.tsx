@@ -52,6 +52,7 @@ const BookingEditDetail = ({ rec,onEditSuccess,fetchBooking }: any) => {
         const res = await api.get('search-user', {
           params: {
             keyword: value,
+            company_id: company_id,
           },
         });
         const data = res.data.data.map((user: any) => ({
