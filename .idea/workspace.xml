@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7760815b-ed84-45f1-8cd2-ec336d1264b0" name="Changes" comment="update">
+    <list default="true" id="7760815b-ed84-45f1-8cd2-ec336d1264b0" name="Changes" comment="update for rendering the company name when edit manager information">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Booking/BookRoom.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Booking/BookRoom.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,30 +167,7 @@
       <workItem from="1705635221007" duration="8000" />
       <workItem from="1705635239173" duration="7032000" />
       <workItem from="1705642347426" duration="8123000" />
-    </task>
-    <task id="LOCAL-00016" summary="delete user update">
-      <option name="closed" value="true" />
-      <created>1703229762741</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1703229762741</updated>
-    </task>
-    <task id="LOCAL-00017" summary="add user update">
-      <option name="closed" value="true" />
-      <created>1703230491831</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1703230491831</updated>
-    </task>
-    <task id="LOCAL-00018" summary="add user update">
-      <option name="closed" value="true" />
-      <created>1703302214783</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1703302214783</updated>
+      <workItem from="1705820155776" duration="3524000" />
     </task>
     <task id="LOCAL-00019" summary="edit user infor update">
       <option name="closed" value="true" />
@@ -559,7 +537,31 @@
       <option name="project" value="LOCAL" />
       <updated>1705651466632</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="update for rendering the booking list of specified company">
+      <option name="closed" value="true" />
+      <created>1705770741560</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1705770741561</updated>
+    </task>
+    <task id="LOCAL-00066" summary="update for rendering the company name when edit manager information">
+      <option name="closed" value="true" />
+      <created>1705771989987</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1705771989987</updated>
+    </task>
+    <task id="LOCAL-00067" summary="update for rendering the company name when edit manager information">
+      <option name="closed" value="true" />
+      <created>1705773235745</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1705773235746</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -589,7 +591,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="testing" />
     <MESSAGE value="delete user confirmation popup" />
     <MESSAGE value="add user popup" />
     <MESSAGE value="update dev branch" />
@@ -613,6 +614,8 @@
     <MESSAGE value="css event" />
     <MESSAGE value="css header" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="update for rendering the booking list of specified company" />
+    <MESSAGE value="update for rendering the company name when edit manager information" />
+    <option name="LAST_COMMIT_MESSAGE" value="update for rendering the company name when edit manager information" />
   </component>
 </project>
