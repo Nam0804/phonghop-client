@@ -56,7 +56,6 @@ export default function RegisterNewCompany() {
     });
 
 
-
     const processForm: SubmitHandler<Inputs> = async(data) => {
         
         clearErrors();
