@@ -357,6 +357,3 @@ const ManagerBookingList = () => {
     );
 }
 export default ManagerBookingList
-
-
-
