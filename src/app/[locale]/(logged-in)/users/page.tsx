@@ -121,11 +121,7 @@ const UserPage = () => {
                 <Space size="middle" style={{alignItems:'center'}}>
                     <StaffInfomation rec={record} ></StaffInfomation>
                     {
-                        user.type === 1 ? (
-                            <ManagerEditInfor user={record} onEditSuccess={handleEditSuccess}/>
-                        ) : (
-                            <UserEditInfor user={record} onEditSuccess={handleEditSuccess}/>
-                        )
+                        <ManagerEditInfor user={record} onEditSuccess={handleEditSuccess}/>
                     }
                     <DeleteUser user_id={record.id} onDeleteSuccess={handleDeleteSuccess}/>
                 </Space>
