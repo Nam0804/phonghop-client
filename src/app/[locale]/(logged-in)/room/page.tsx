@@ -236,16 +236,16 @@ const CompanyList = () => {
             },
             width: 183,
           },
-        {
+          {
             title: 'View Room Detail',
             key: 'book',
             dataIndex: 'book',
             render: (_, { availabilitys }) => {
                const color = availabilitys ? '#8B8B8B' : '#388697';
                return (
-                  <Tag color={color} key={_}>
-                     Book
-                  </Tag>
+                   <Tag color={color} key={_}>
+                       <Link href={`/${locale}/calendar`} style={{textDecoration:"none"}}>Book</Link>
+                   </Tag>
                );
             },
             width: 154,
@@ -291,6 +291,33 @@ const CompanyList = () => {
 
                     <Table columns={columns} dataSource={filteredRooms} 
                     scroll={{x:1000}} className={customstyle.customtable} pagination={{ pageSize:5 }}
+                    components={{
+                           header: {
+                               cell: (props: any) => (
+                                   <th style={{
+                                       background: '#255D6A',
+                                       color: '#fff',
+                                       borderRight: '1px solid #ffffff',
+                                   }}>
+                                       {props.children}
+                                   </th>
+                               ),
+                           },
+                           body: {
+                               cell: (props: any) => {
+                                   const isEvenRow = props.index % 2 === 0;
+                                   console.log(isEvenRow)
+
+                                   return (
+                                       <td
+                                           className={styles.customTable}
+                                       >
+                                           {props.children}
+                                       </td>
+                                   );
+                               },
+                           },
+                       }}
                     />
                 </div>
                 {usertype === 1 && (

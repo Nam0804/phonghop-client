@@ -1,29 +1,24 @@
 'use client'
 import React, { useCallback } from "react";
 import styles from '@/css/CompanyList.module.css'
-import Button from "@/constants/Form/Button";
-import Modal from "@/constants/Modal/ChangePasswordModal";
 import AddNewCompany from "@/components/Admin/AddNewCompany";
 import { Table, Tag } from 'antd';
 import { DatePicker, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from "react";
-// import 'src/app/[locale]/(logged-in)/booking/customantd.css';
 import moment from 'moment';
-import DeleteCompany from "@/components/DeleteCompany/DeleteCompany";
 import api from "@/axiosService";
 import { get } from "lodash";
 import toast from "react-hot-toast";
-import EditNewCompany from "@/components/Admin/EditNewCompany";
-import InformationCompany from "@/components/Admin/InfomationCompany";
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '@/lib/hooks';
-import { setLoading } from '@/lib/features/loadingSlice';
+import BookingEditDetail from "../Manager/Booking/BookingEditDetail";
 
 const MyBookingHistory = () => {
   const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const user = useSelector((state:any) => state.user.value);
+  const [filteredBooking, setFilteredBooking] = useState<DataType[]>([]);
   const dispatch = useAppDispatch()
   
   const fetchData = useCallback(async () => {
@@ -33,6 +28,7 @@ const MyBookingHistory = () => {
       const res = get(data, 'data.data')
       const sortedData = res.sort((a: DataType, b: DataType) => b.id - a.id);
       setAllStaffData(sortedData)
+      setFilteredBooking(sortedData)
       
     } catch (error) {
       console.error(error);
@@ -43,7 +39,17 @@ const MyBookingHistory = () => {
   useEffect(() => {
     fetchData()
   }, []);
-
+  const handleStatusChange = (e:any) => {
+    const selectedBooking = e.target.value;
+    if (selectedBooking === 'all') {
+      setFilteredBooking(allStaffData);
+    } else {
+      const filteredData = allStaffData.filter((item: any) => {
+        return item.register_status.toString() === selectedBooking;
+      });
+      setFilteredBooking(filteredData);
+    }
+  };
   const handleDeleteSuccess = () => {
     setDeleteConfirmationVisible(false);
     fetchData();
@@ -129,7 +135,7 @@ const MyBookingHistory = () => {
           case 0:
             return 'Pending';
           case 1:
-            return 'Accepted';
+            return 'Upcoming';
           case 2:
             return 'Rejected';
           default:
@@ -160,7 +166,7 @@ const MyBookingHistory = () => {
       render: (_, record) => (
         <Space size="middle">
           <button key="view" className={styles.custombutton} ><img src="/eye.svg"></img></button>
-          <button key="edit" className={styles.custombutton} ><img src="/edit.svg"></img></button>
+          <BookingEditDetail rec={record} onEditSuccess={handleEditSuccess} fetchBooking={() => fetchData}></BookingEditDetail>
           <button key="delete" className={styles.custombutton} style={{backgroundColor:'#E56353'}} ><img src="/delete.svg" ></img></button>
         </Space>
       ),
@@ -175,9 +181,49 @@ const MyBookingHistory = () => {
         </div>
         <h1 className={styles.label}>Booking List</h1>
       </div>
+      <div className={styles.filter}>
+                <span>
+                    FILTER BY STATUS
+                </span>
+                <select
+                        defaultValue="all"
+                        onChange={(e) => handleStatusChange(e)}
+                >
+                    <option value="all">All Status</option>
+                    <option value="0">Pending</option>
+                    <option value="1">Upcoming</option>
+                    <option value="2">Finished</option>
+                </select>
+            </div>
       <div className={styles.companytable}>
-        <Table columns={columns} dataSource={allStaffData}
+        <Table columns={columns} dataSource={filteredBooking}
           scroll={{ x: 1000 }} pagination={false} rowKey={(record) => record.id}
+          bordered={true}
+          components={{
+          header: {
+              cell: (props: any) => (
+                  <th style={{
+                      background: '#255D6A',
+                      color: '#fff',
+                      borderRight: '1px solid #ffffff',
+                  }}>
+                      {props.children}
+                  </th>
+              ),
+          },
+          body: {
+              cell: (props: any) => {
+                  const isEvenRow = props.index % 2 === 0;
+                  return (
+                      <td
+                          className={styles.customTable}
+                      >
+                          {props.children}
+                      </td>
+                  );
+              },
+          },
+      }}
         />
       </div>
       <div className={styles.addco}>

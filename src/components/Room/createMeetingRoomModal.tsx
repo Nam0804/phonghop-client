@@ -305,8 +305,8 @@ const AddNewRoom = ({ onAddSuccess }:any) => {
                     <Form2.Item>
                         <div className={styles.buttonContainer}>
                             <div>
-                                <Button className={`${styles.buttonAdd} ${formCompleted ? styles.formCompleted : ''}`} htmlType="submit" onClick={handleSubmit}
-                                        label='ADD NEW ROOM' />
+                                <Button className={styles.buttonAdd} htmlType="submit" onClick={handleSubmit}
+                                        label='ADD NEW ROOM' style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}} />
                             </div>
                             <div>
                                 <Button className={styles.buttonCancel} onClick={handleCancel} label='CANCEL'/>

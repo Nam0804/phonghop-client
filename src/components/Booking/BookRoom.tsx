@@ -7,94 +7,92 @@ import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
 import { useSelector } from 'react-redux'
 import { useState, useEffect } from 'react';
 import CustomTimePicker from "./TimePickerBook";    
-import axios from 'axios';
+import Meta from "antd/es/card/Meta";
 import type { DatePickerProps } from 'antd';
 import { DatePicker, Space } from 'antd';
 import 'rc-time-picker/assets/index.css';
 import { Button, message, Upload } from 'antd';
-import Select from 'react-select';
+import Selects from 'react-select';
 import type { UploadProps } from 'antd';
+import "@/css/BookingAdd.css";
+import moment from "moment";
 import TextArea from "antd/es/input/TextArea";
 import {Form as Form1} from 'antd'
 import api from '@/axiosService';
+import {Card,Image,Layout,Select} from "antd";
+import { SingleValue } from 'react-select';
 
-export default function BookRoom({ onAddSuccess }:any) {
+export default function BookRoom({onAddSuccess }:any) {
     useEffect(() => {
         require("bootstrap/dist/js/bootstrap.min.js");
     }, [])
+    interface DataType {
+        id: number;
+        name: string;
+      }
 
-    const [selectedDate, setSelectedDate] = useState(new Date('2023-01-01'));
-    const [startTime, setStartTime] = useState<moment.Moment | undefined>();
-    const [endTime, setEndTime] = useState<moment.Moment | undefined>();
+    const [startTime, setStartTime] = useState<moment.Moment | null>(null);
+    const [endTime, setEndTime] = useState<moment.Moment | null>(null);
     const [form] = Form1.useForm();
     const [formCompleted, setFormCompleted] = useState(false)
     const [visible, setVisible] = useState(false);
     const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
     const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
-    const [repeatType, setRepeatType] = useState(null);
+    const [repeatType, setRepeatType] = useState<{ value: string; label: string } | null>(null);
     const user = useSelector((state:any) => state.user.value);
-    const [meetingRoomId, setMeetingRoomId] = useState()
-   
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [roomData, setRoomData] = useState<DataType[]>([]);
+    const [selectedRoom, setSelectedRoom] = useState<string>('');
 
-    const generateRepeatOptions = (date: Date | null) => {
-        const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
-      
-        return [
-          { value: 'no-repeat', label: 'Doesn’t repeat' },
-          { value: 'every-weekday', label: 'Every weekday' },
-          {
-            value: 'weekly',
-            label: `Weekly - ${date ? dayOfWeek : '(Select a date)'}`,
-          },
-          {
-            value: 'monthly',
-            label: `Monthly - ${date ? dayOfWeek : '(Select a date)'}`,
-          },
-          {
-            value: 'annually',
-            label: `Annually - ${date ? dayOfWeek : '(Select a date)'}`,
-          },
-        ];
+    const handleSelectChange = (value: SingleValue<{ label: string; value: string; }>) => {
+        if (value) {
+          setSelectedRoom(value.value);
+        } else {
+          setSelectedRoom("");
+        }
       };
       
-    
 
-    const handleRepeatChange = (selectedOption) => {
+    // const generateRepeatOptions = (date: Date | null) => {
+    //     const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
+      
+    //     return [
+    //       { value: 'no-repeat', label: 'Doesn’t repeat' },
+    //       { value: 'every-weekday', label: 'Every weekday' },
+    //       {
+    //         value: 'weekly',
+    //         label: `Weekly - ${date ? dayOfWeek : '(Select a date)'}`,
+    //       },
+    //       {
+    //         value: 'monthly',
+    //         label: `Monthly - ${date ? dayOfWeek : '(Select a date)'}`,
+    //       },
+    //       {
+    //         value: 'annually',
+    //         label: `Annually - ${date ? dayOfWeek : '(Select a date)'}`,
+    //       },
+    //     ];
+    //   };
+
+    const handleRepeatChange = (selectedOption: { value: string; label: string } | null) => {
         setRepeatType(selectedOption);
       };
 
-      const handleDateChange = (date: React.SetStateAction<Date>) => {
-        setSelectedDate(date);
-
-        setRepeatType(null);
-      };
-
-    const repeatOptions = generateRepeatOptions(selectedDate);
+    //const repeatOptions = generateRepeatOptions(selectedDate);
 
     const handleStartTimeChange = (value: moment.Moment | undefined) => {
-        setStartTime(value);
+        setStartTime(value || null);
     };
 
     const handleEndTimeChange = (value: moment.Moment | undefined) => {
-        setEndTime(value);
+        setEndTime(value || null);
     };
 
-    const handleSelectChange = (event:any) => {
-        const selectedRoomName = event.target.value;
-        if (selectedRoomName === "all") {
-          setFilteredRooms(allRoomsData);
-        } else {
-          const filteredRooms = allRoomsData.filter((room) => room.name === selectedRoomName);
-          setFilteredRooms(filteredRooms);
-        }
-     };
 
-    const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        console.log(dateString);
-        if (date && typeof date === 'object') {
-            setSelectedDate(date.toDate());
-        }
-    }; 
+     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
+        setSelectedDate(dateString);
+    };
+    
 
     const handleCancel = () => {
         form.resetFields();
@@ -118,14 +116,35 @@ export default function BookRoom({ onAddSuccess }:any) {
           }
         },
       };
+
+
+      useEffect(() => {
+        const fetchRooms = async () => {
+          try {
+            const company_id = user.company_id;
+            const response = await api.get(`allroom/${company_id}`);
+            if (response.status === 200) {
+              setRoomData(response.data.data);
+            } else {
+              console.error('Failed to fetch rooms');
+            }
+          } catch (error) {
+            console.error('Error fetching rooms:', error);
+          }
+        };
+    
+        fetchRooms();
+      }, []);
+      
     const handleSubmit = () => {
         form
           .validateFields()
           .then(async (values) => {
             try {
-              const meetingRoomsResponse = await api.get('meeting-rooms/listing');
+               const meetingRoomsResponse = await api.get('meeting-rooms/listing');
               
-              if (meetingRoomsResponse.status === 200) {
+                if (meetingRoomsResponse.status === 200)
+                {
                 const meetingRooms = meetingRoomsResponse.data.data;
       
                 const selectedMeetingRoomId = meetingRooms.length > 0 ? meetingRooms[0].id : null;
@@ -135,10 +154,18 @@ export default function BookRoom({ onAddSuccess }:any) {
                   booking_name: user.name,
                   booking_email: user.email,
                   booking_title: user.title,
-                  meeting_room_id: selectedMeetingRoomId,
+                  meeting_room_id: 1,
+                  from_time: `${selectedDate} ${moment(startTime,'HH:mm A').format('HH:mm:ss')}`,
+                    to_time: `${selectedDate} ${moment(endTime,'HH:mm A').format('HH:mm:ss')}`,
+                    repeat_type:1
                 };
 
-                const bookingResponse = await api.post('bookings', values);
+                const bookingResponse = await api.post('external-bookings', values,
+                {headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                });
       
                 if (bookingResponse.status === 200) {
                   message.success('Booking created successfully');
@@ -152,31 +179,28 @@ export default function BookRoom({ onAddSuccess }:any) {
                 }
                 
                 setFilteredRooms(bookingResponse.data.data);
-              } else {
-                message.error('Failed to fetch meeting rooms');
-              }
+            }
             } catch (e) {
               console.error('Error creating booking:', e);
               message.error('Failed to create booking');
-              console.log(values);
             }
           })
           .catch((errorInfo) => {
             console.log(errorInfo);
           });
       };
-      
+    
 
     return (
         <>
 
             <button
                 type="button"
-                className={ styles.bookingButton }
+                className={ styles.addbtn }
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
             >
-                Book Now
+                Book A Room
             </button>
             <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true" >
                 <div className="modal-dialog modal-xl">
@@ -241,40 +265,84 @@ export default function BookRoom({ onAddSuccess }:any) {
                                         </Form1.Item>
                                     </div>
                                     <div className="mb-3 row" >
-                                        <label htmlFor="inputTopic" className={`col-4 ${styles.formLabel}`}>
-                                            Room*:
-                                        </label>
-                                        <div className="col-8">
-                                            <select className={`${styles.formSelect}`} onChange={(e) => handleSelectChange(e)}>
-                                            <option value="all">All Rooms</option>
-                                                {allRoomsData.map((room) => (
-                                                    <option key={room.id} value={room.name}>
-                                                    {room.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
+                                    <Form1.Item label={<span className={styles.formLabel}>Room*:</span>} name="room">
+                                        <Selects
+                                            options={roomData.map((room) => ({
+                                                label: room.name,
+                                                value: room.name,
+                                              }))}
+                                              className={styles.roomselect}
+                                              onChange={handleSelectChange}
+                                            />
+                                            {selectedRoom && (
+                                            <Layout
+                                            style={{
+                                                backgroundColor: "#EAEEF6",
+                                                width: 370,
+
+                                                borderRadius: 8,
+                                                marginTop: 16,
+                                                padding: 8,
+                                            }}
+                                            content="center"
+                                            >
+                                            <Card
+                                                bordered={false}
+                                                style={{
+                                                backgroundColor: "#EAEEF6",
+                                                padding: 0,
+                                                boxShadow: "none",
+                                                }}
+                                                cover={
+                                                <Image
+                                                    alt="example"
+                                                    width={354}
+                                                    height={197}
+                                                    preview={true}
+                                                />
+                                                }
+                                            >
+                                                <Meta />
+                                                <div className="inforRoom">
+                                                <span>
+                                                    <strong>Capacity: </strong>
+                                                </span>
+                                                <br />
+                                                <span>
+                                                    <strong>Location: </strong>
+                                                </span>
+                                                <br />
+                                                <span>
+                                                    <strong>Floor: </strong>
+                                                </span>
+                                                <br />
+                                                <span>
+                                                    <strong>Equipment: </strong>
+                                                </span>
+                                                </div>
+                                            </Card>
+                                            </Layout>
+                                            )}
+                                        </Form1.Item>
                                     </div>
                                     <div className="mb-3 row" >
                                     <Form1.Item
-                                            name="time"
                                             label={<span className={styles.formLabel}>Date*:</span>}
                                             >
                                         <div className={styles.dateTimePicker}>
                                                 <div className={styles.date}>
                                                         <Space direction="vertical">
-                                                                <DatePicker selected={selectedDate} onChange={onChange} showToday={false} style={{ width:'181px',height:'44px' }}/>
+                                                            <DatePicker selected={selectedDate} onChange={onChange} showToday={false} style={{ width:'181px',height:'44px' }}/>
                                                         </Space>
                                                 </div>
                                                 <div>
-                                                    <select  options={repeatOptions} onChange={handleRepeatChange} className={ styles.selectedDate } />
+                                                    <Selects onChange={handleRepeatChange} className={ styles.selectedDate } />
                                                 </div>
                                             </div>
                                         </Form1.Item>
                                     </div>
                                     <div className="mb-3 row" style={{ alignItems:'center' }}>
                                     <Form1.Item
-                                            name="time"
                                             label={<span className={styles.formLabel}>Time*:</span>}
                                             rules={[
                                                 {
