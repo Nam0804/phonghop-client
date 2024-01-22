@@ -118,7 +118,6 @@ const Index = () => {
                 }
             });
             const allBookings = get(response, "data.data", []);
-            console.log(allBookings)
             return allBookings;
         } catch (error) {
             console.error(error);
