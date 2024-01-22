@@ -13,7 +13,6 @@ import toast from "react-hot-toast";
 import BookingDetail from "./Booking/BookingDetail";
 import BookingEditDetail from "./Booking/BookingEditDetail";
 import {useSelector} from 'react-redux'
-import { log } from "console";
 
 
 const ManagerBookingList = () => {
