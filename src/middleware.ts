@@ -9,7 +9,6 @@ export default async function middleware(request: NextRequest) {
         "register",
         "forgotpassword",
         "resetpassword",
-        "manager",
         "guest",
     ];
     const adminRoutes = [
@@ -19,6 +18,7 @@ export default async function middleware(request: NextRequest) {
         "room",
         "booking",
         "users",
+        "manager",
     ];
     const userRoutes = [
         "room",
@@ -33,22 +33,22 @@ export default async function middleware(request: NextRequest) {
         defaultLocale: "en",
         localePrefix: "always",
     });
-    let allowedRoutes = [];
+    let allowedRoutes: string | any[] = [];
     switch (type) {
-        case 'admin':
+        case '0':
             allowedRoutes = authRoutes.concat(adminRoutes);
             break;
-        case 'manager':
+        case '1':
             allowedRoutes = authRoutes.concat(managerRoutes);
             break;
-        case 'user':
+        case '2':
             allowedRoutes = authRoutes.concat(userRoutes);
             break;
         default:
-            // Unknown role, redirect to login
+            // Unknown type, redirect to login
+            allowedRoutes = authRoutes;
             request.nextUrl.pathname = `/${locale}/login`;
             request.cookies.delete("token");
-            return handleI18nRouting(request);
     }
 
     if (
@@ -59,6 +59,14 @@ export default async function middleware(request: NextRequest) {
         request.nextUrl.pathname = `/${locale}/login`;
         request.cookies.delete("token");
         return handleI18nRouting(request);
+    }else if (
+        !allowedRoutes.includes(segments[0])
+    ){
+        request.nextUrl.pathname = `/${locale}/login`;
+        request.cookies.delete("token");
+        return handleI18nRouting(request);
+    }else {
+        request.nextUrl.pathname = `/${locale}/${segments[0]}`;
     }
 
     const response = await handleI18nRouting(request);
