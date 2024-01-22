@@ -19,10 +19,12 @@ export default async function middleware(request: NextRequest) {
         "booking",
         "users",
         "manager",
+        "calendar"
     ];
     const userRoutes = [
         "room",
         "booking",
+        "calendar"
     ];
 
     const token = request.cookies.get("token")?.value;
