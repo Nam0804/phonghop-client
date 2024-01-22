@@ -50,6 +50,7 @@ const LoginPage: React.FC<{}> = () => {
       dispatch(setLoading(true));
       const res = await api.post('auth/login', postData);
       toast.success(t('success'));
+      sessionStorage.setItem('current_password',password)
       Cookies.set('token', res.data.data.token);
 
       const user = res.data.data.user;
@@ -99,11 +100,22 @@ const LoginPage: React.FC<{}> = () => {
         return;
       }
     try {
+
       const res = await api.post('auth/user/reset-password',
       { user_id: user_id,
+        old_password:sessionStorage.getItem('current_password'),
         new_password:newPassword,
       });
       closeModal();
+      if(user.type === 0){
+        router.push(`/${locale}/company`);
+        }else{
+          router.push(`/${locale}/room`);
+        }
+      const first_login=user.is_first_login;
+      if (first_login) {
+        user.is_first_login = 0;
+    }
     } catch (error:any) {
         if (error.response && error.response.status === 400) {
             setErrorMessage2("Please re-enter current password");

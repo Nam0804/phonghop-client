@@ -40,7 +40,7 @@ export default function BookRoom({onAddSuccess }:any) {
     const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
     const [repeatType, setRepeatType] = useState<{ value: string; label: string } | null>(null);
     const user = useSelector((state:any) => state.user.value);
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [selectedDate, setSelectedDate] = useState('');
     const [roomData, setRoomData] = useState<DataType[]>([]);
     const [selectedRoom, setSelectedRoom] = useState<string>('');
 
@@ -155,7 +155,7 @@ export default function BookRoom({onAddSuccess }:any) {
                   booking_email: user.email,
                   booking_title: user.title,
                   meeting_room_id: 1,
-                  from_time: `${selectedDate} ${moment(startTime,'HH:mm A').format('HH:mm:ss')}`,
+                    from_time: `${selectedDate} ${moment(startTime,'HH:mm A').format('HH:mm:ss')}`,
                     to_time: `${selectedDate} ${moment(endTime,'HH:mm A').format('HH:mm:ss')}`,
                     repeat_type:1
                 };
@@ -332,7 +332,7 @@ export default function BookRoom({onAddSuccess }:any) {
                                         <div className={styles.dateTimePicker}>
                                                 <div className={styles.date}>
                                                         <Space direction="vertical">
-                                                            <DatePicker selected={selectedDate} onChange={onChange} showToday={false} style={{ width:'181px',height:'44px' }}/>
+                                                            <DatePicker onChange={onChange} showToday={false} style={{ width:'181px',height:'44px' }}/>
                                                         </Space>
                                                 </div>
                                                 <div>

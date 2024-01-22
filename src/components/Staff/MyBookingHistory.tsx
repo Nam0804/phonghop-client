@@ -19,6 +19,7 @@ import InformationCompany from "@/components/Admin/InfomationCompany";
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/loadingSlice';
+import BookRoom from "@/components/Booking/BookRoom";
 
 const MyBookingHistory = () => {
   const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
@@ -182,7 +183,7 @@ const MyBookingHistory = () => {
       </div>
       <div className={styles.addco}>
         {/* <Button className={styles.addbtn}>ADD NEW COMPANY</Button> */}
-        <AddNewCompany onAddSuccess={handleAddSuccess}></AddNewCompany>
+        <BookRoom onAddSuccess={handleAddSuccess}></BookRoom>
       </div>
     </div>
   );

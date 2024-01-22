@@ -290,7 +290,7 @@ const CompanyList = () => {
                 <div className={styles.companytable}>
 
                     <Table columns={columns} dataSource={filteredRooms} 
-                    scroll={{x:1000}} className={customstyle.customtable} pagination={{ pageSize:5 }}
+                    scroll={{x:1000}} className={customstyle.customtable} pagination={{ pageSize:5 }} bordered={true}
                     components={{
                            header: {
                                cell: (props: any) => (
