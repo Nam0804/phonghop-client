@@ -285,3 +285,46 @@
     font-weight: 400;
     line-height: normal;
 }
+.inputRegister{
+    width: 216px;
+    height: 32px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 5px 0px 5px;
+    margin-right: 20px;
+    border-radius: 8px;
+    border: 1px solid #323232;
+}
+.customTable{
+    color: #323232;
+    font-family: Be Vietnam Pro;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.filter{
+    margin: 24px 0 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.filter span{
+    color:  #323232;
+    text-align: center;
+    font-family: "Be Vietnam Pro";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    margin-right: 32px;
+}
+.filter select{
+    width: 216px;
+    height: 32px;
+    padding: 0px 0px 0px 16px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    border: 1px solid #323232;
+}
