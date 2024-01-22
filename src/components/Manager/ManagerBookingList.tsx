@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import BookingDetail from "./Booking/BookingDetail";
 import BookingEditDetail from "./Booking/BookingEditDetail";
 import {useSelector} from 'react-redux'
+import { log } from "console";
+
 
 const ManagerBookingList = () => {
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
@@ -20,12 +22,19 @@ const ManagerBookingList = () => {
     const [statusButton, setStatusButton] = useState([
         {statusButton: 0, buttonColor: "#8B8B8B"},
     ]);
+    const user = useSelector((state: any) => state.user.value);
+    const company_id = user.company_id;
     const [selectedStatus, setSelectedStatus] = useState('all');
     const [filteredBooking, setFilteredBooking] = useState<DataType[]>([]);
     const fetchData = useCallback(async () => {
         try {
-            const data = await api.get('bookings');
-            let res = get(data, 'data.data',[]);
+            const data = await api.get('bookings', {
+              params:{
+                company_id: company_id
+              }
+            });
+            let res = get(data, 'data.data');
+            
             setAllStaffData(res)
             setFilteredBooking(res)
         } catch (error) {
@@ -188,7 +197,7 @@ const ManagerBookingList = () => {
         title: "Add meeting notes",
         key: "meeting_note",
         width: 145,
-        render: (_, record, meeting_note) => {
+        render: (_, record, meeting_note) => {          
           return (
             <Space size="middle">
               <button className={styles.custombutton}>
