@@ -52,7 +52,7 @@ const LoginPage: React.FC<{}> = () => {
       toast.success(t('success'));
       sessionStorage.setItem('current_password',password)
       Cookies.set('token', res.data.data.token);
-
+      Cookies.set('type', res.data.data.user.type);
       const user = res.data.data.user;
       dispatch(initializeUser(user));
       const first_login=user.is_first_login;

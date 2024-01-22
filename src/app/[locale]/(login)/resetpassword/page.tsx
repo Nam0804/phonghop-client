@@ -36,20 +36,6 @@ const ResetPasswordPage: React.FC = () => {
         setRePasswordVisibility(!isRePasswordVisible);
     };
     const handleSubmit = async () => {
-        const postData = {
-            token: sessionStorage.getItem('token'),
-            email: sessionStorage.getItem('email'),
-            password: newPassword,
-            password_confirmation: newPasswordConfirmation,
-        }
-        try {
-            const res = await api.post('auth/reset-password',postData)
-            router.push(`/${locale}/login`);
-        }
-        catch (error) {
-            console.log(error);
-            setIsOk(false);
-        } 
         if (newPassword !== newPasswordConfirmation) {
             setIsOk(false)
             setErrorMessage('Password is not the same');
@@ -68,6 +54,20 @@ const ResetPasswordPage: React.FC = () => {
             setErrorMessage(`Password length must be between ${minLength} and ${maxLength} characters`);
             return;
         }
+        const postData = {
+            token: sessionStorage.getItem('token'),
+            email: sessionStorage.getItem('email'),
+            password: newPassword,
+            password_confirmation: newPasswordConfirmation,
+        }
+        try {
+            const res = await api.post('auth/reset-password',postData)
+            router.push(`/${locale}/login`);
+        }
+        catch (error) {
+            console.log(error);
+            setIsOk(false);
+        } 
     };
 
     return (
