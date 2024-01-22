@@ -98,8 +98,6 @@ const DeleteMeeting = ({ room_id,onDeleteSuccess,cancel }:any) => {
           }
         } catch (error) {
             console.error('Error:', error);
-        } finally {
-            cancel(false);
         }
       }
 
@@ -120,6 +118,7 @@ const DeleteMeeting = ({ room_id,onDeleteSuccess,cancel }:any) => {
                  footer={null}
                  closable={false}
                  width={626}
+                 centered
              >
                  {errorMessage && (
                      <div className={styles.errorMessage}>

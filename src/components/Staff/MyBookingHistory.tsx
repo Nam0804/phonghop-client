@@ -20,6 +20,7 @@ const MyBookingHistory = () => {
     const user = useSelector((state: any) => state.user.value);
     const [filteredBooking, setFilteredBooking] = useState<DataType[]>([]);
     const dispatch = useAppDispatch()
+    const link = `http://localhost:3000/en/guest?company_id=${user.company_id}`
 
     const fetchData = useCallback(async () => {
         try {
@@ -188,20 +189,23 @@ const MyBookingHistory = () => {
                 </div>
                 <h1 className={styles.label}>Booking List</h1>
             </div>
-            <div className={styles.filter}>
+            <div className={styles.filter} style={{display:"flex", justifyContent:"space-between"}}>
                 <div>
-                    <span>
+                    <div>
+                       <span>
                     FILTER BY STATUS
-                </span>
-                    <select
-                        defaultValue="all"
-                        onChange={(e) => handleStatusChange(e)}
-                    >
-                        <option value="all">All Status</option>
-                        <option value="0">Pending</option>
-                        <option value="1">Upcoming</option>
-                        <option value="2">Finished</option>
-                    </select>
+                    </span>
+                        <select
+                            defaultValue="all"
+                            onChange={(e) => handleStatusChange(e)}
+                        >
+                            <option value="all">All Status</option>
+                            <option value="0">Pending</option>
+                            <option value="1">Upcoming</option>
+                            <option value="2">Finished</option>
+                        </select>
+                    </div>
+                    <input type={"text"} name={"guest-register"} value={link}/>
                 </div>
             </div>
             <div className={styles.companytable}>

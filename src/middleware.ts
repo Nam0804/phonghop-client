@@ -9,6 +9,7 @@ export default async function middleware(request: NextRequest) {
         "register",
         "forgotpassword",
         "resetpassword",
+        "manager",
         "guest",
     ];
     const adminRoutes = [
@@ -62,6 +63,7 @@ export default async function middleware(request: NextRequest) {
         request.cookies.delete("token");
         return handleI18nRouting(request);
     }else if (
+        token &&
         !allowedRoutes.includes(segments[0])
     ){
         request.nextUrl.pathname = `/${locale}/login`;

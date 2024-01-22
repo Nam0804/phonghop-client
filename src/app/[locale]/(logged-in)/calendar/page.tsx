@@ -33,13 +33,14 @@ const Index = () => {
     const dateFormatforButtonChangeWeek = moment().format("MMMM DD, YYYY");
     const [title, settitle] = useState<string>(dateFormatforButtonChangeWeek);
     const calendarRef = useRef<FullCalendar>(null);
-    const user = useSelector((state: any) => state.user.value);
     const [roomList, setRoomList] = useState<Room[]>([]);
     const [selectedRoom, setSelectedRoom] = useState("");
     const [selectedCheckbox, setSelectedCheckbox] = useState("allMeetings");
     const [initialCheckbox, setInitialCheckbox] = useState("allMeetings");
     const [events, setEvents] = useState([{}]);
     const [selectView, setSelectView] = useState<string>("Day");
+    const user = useSelector((state: any) => state.user.value);
+    const company_id = user.company_id;
 
     const fetchRoom = useCallback(async () => {
         try {
@@ -93,7 +94,6 @@ const Index = () => {
             setEvents(eventAllBooking);
         }
     };
-
     useEffect(() => {
         setInitialCheckbox(selectedCheckbox);
         handleCb();
@@ -110,10 +110,15 @@ const Index = () => {
         }
     }, []);
 
-    const fetchAllBookingHistory = useCallback(async (company_id = "") => {
+    const fetchAllBookingHistory = useCallback(async () => {
         try {
-            const response = await api.get(`/bookings`);
+            const response = await api.get(`/bookings`, {
+                params:{
+                    company_id: company_id
+                }
+            });
             const allBookings = get(response, "data.data", []);
+            console.log(allBookings)
             return allBookings;
         } catch (error) {
             console.error(error);
