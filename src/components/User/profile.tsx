@@ -58,7 +58,7 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
   };
   useEffect(() => {
     if (apiSliceProfile && usertype == 0) {
-      const initialData = {
+      const initialData:any = {
         name: apiSliceProfile.name,
         email: apiSliceProfile.email,
         phone: apiSliceProfile.phone,

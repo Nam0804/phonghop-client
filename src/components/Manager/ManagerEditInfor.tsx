@@ -85,7 +85,7 @@ const ManagerEditInfor = ({user, onEditSuccess}: any) => {
                             label={<span className={styles.label}>Company*</span>}
                             name="company"
                         >
-                            <p className={styles.formFields}>{user.company.data.company_name}</p>
+                            <p className={styles.formFields}>{user.company.company_name}</p>
                         </Form.Item>
                     </div>
                     <div className={styles.formControl}>

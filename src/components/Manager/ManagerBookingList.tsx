@@ -14,20 +14,28 @@ import BookingDetail from "./Booking/BookingDetail";
 import BookingEditDetail from "./Booking/BookingEditDetail";
 import {useSelector} from 'react-redux'
 
+
 const ManagerBookingList = () => {
-    const user = useSelector((state: any) => state.user.value);
-    const guestRegisterLink = `http://localhost:3000/en/booking?company_id=${user.company_id}`
     const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
     const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
     const [statusButton, setStatusButton] = useState([
         {statusButton: 0, buttonColor: "#8B8B8B"},
     ]);
+    const user = useSelector((state: any) => state.user.value);
+    const company_id = user.company_id;
     const [selectedStatus, setSelectedStatus] = useState('all');
     const [filteredBooking, setFilteredBooking] = useState<DataType[]>([]);
+    const link = `http://localhost:3000/en/guest?company_id=${user.company_id}`
+
     const fetchData = useCallback(async () => {
         try {
-            const data = await api.get('bookings');
-            let res = get(data, 'data.data', []);
+            const data = await api.get('bookings', {
+                params: {
+                    company_id: company_id
+                }
+            });
+            let res = get(data, 'data.data');
+
             setAllStaffData(res)
             setFilteredBooking(res)
         } catch (error) {
@@ -301,23 +309,24 @@ const ManagerBookingList = () => {
                 <h1 className={styles.label}>Booking List</h1>
             </div>
             <div className={styles.filter}>
-                <div>
-                    <span>FILTER BY STATUS</span>
-                    <select
-                        defaultValue="all"
-                        onChange={(e) => handleStatusChange(e)}
-                    >
-                        <option value="all">All Status</option>
-                        <option value="0">Pending</option>
-                        <option value="1">Upcoming</option>
-                        <option value="2">Finished</option>
-                    </select>
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <div>
+                        <span>
+                            FILTER BY STATUS
+                        </span>
+                        <select
+                            defaultValue="all"
+                            onChange={(e) => handleStatusChange(e)}
+                        >
+                            <option value="all">All Status</option>
+                            <option value="0">Pending</option>
+                            <option value="1">Upcoming</option>
+                            <option value="2">Finished</option>
+                        </select>
+                    </div>
+                    <input type={"text"} name={"guest-register"} value={link}/>
                 </div>
-                <input type={"text"} name={"guest-register"} value={guestRegisterLink}
-                       className={styles.inputRegister}/>
             </div>
-
-
             <div className={styles.companytable}>
                 <Table columns={columns} dataSource={filteredBooking}
                        bordered={true}
@@ -356,6 +365,3 @@ const ManagerBookingList = () => {
     );
 }
 export default ManagerBookingList
-
-
-

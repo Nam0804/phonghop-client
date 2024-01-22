@@ -307,7 +307,6 @@
     margin: 24px 0 0 16px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 .filter span{
     color:  #323232;

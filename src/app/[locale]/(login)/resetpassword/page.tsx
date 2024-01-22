@@ -69,7 +69,6 @@ const ResetPasswordPage: React.FC = () => {
             setIsOk(false);
         } 
     };
-
     return (
         <>
             <div className={styles.inputform}>
