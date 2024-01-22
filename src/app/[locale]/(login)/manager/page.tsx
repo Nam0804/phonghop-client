@@ -35,6 +35,7 @@ export default function RegisterNewCompany() {
     const [isRePasswordVisible, setRePasswordVisibility] = useState(false);
     const [apiData, setApiData] = useState(null);
     const [areAllFieldsValid, setAreAllFieldsValid] = useState(false);
+    const [formCompleted, setFormCompleted] = useState(false)
 
 
     const openModal = () => {
@@ -191,7 +192,7 @@ export default function RegisterNewCompany() {
                             </p>
                         )}
                         <div className={`text-end pt-5 ${styles.w90}`}>
-                            <button className={`${styles.nextBtn} ${areAllFieldsValid ? styles.greenBtn : ''}`} onClick={nextStep}>Next</button>
+                            <button className={`${styles.nextBtn} ${areAllFieldsValid ? styles.greenBtn : ''}`} onClick={nextStep} style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}}>Next</button>
                         </div>
 
 
@@ -269,7 +270,7 @@ export default function RegisterNewCompany() {
                             )}
                         </div>
                         <div className=' d-flex justify-content-between pt-5'>
-                            <Button className={`${styles.createBtn} ${areAllFieldsValid ? styles.greenBtn : ''}`} onClick={nextStep} >CREATE ACCOUNT</Button>
+                            <Button className={`${styles.createBtn} ${areAllFieldsValid ? styles.greenBtn : ''}`} onClick={nextStep} style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}} >CREATE ACCOUNT</Button>
                             <Button className={styles.cancelbtn} onClick={prevStep}>CANCEL</Button>
                         </div>
                         <div className={`${styles.progressbar} mb-3`}>
