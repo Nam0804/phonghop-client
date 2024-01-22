@@ -142,3 +142,7 @@ label {
     letter-spacing: 0em;
     color: #225560;
 }
+
+.inVisibleModal{
+    display: none;
+}

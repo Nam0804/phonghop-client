@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import CustomTimePicker from "../Booking/TimePickerBook";    
 import Meta from "antd/es/card/Meta";
 import type { DatePickerProps } from 'antd';
-import { DatePicker, Space } from 'antd';
+import { DatePicker, Modal, Space } from 'antd';
 import 'rc-time-picker/assets/index.css';
 import { Button, message, Upload } from 'antd';
 import Selects from 'react-select';
@@ -54,6 +54,10 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
     const [showAddInforModal, setShowAddInforModal] = useState(false);
     const [step, setStep] = useState(1);
 
+    const destroyAll = () => {
+      Modal.destroyAll();
+    };
+
     const handleSelectChange = (value:any) => {
         setSelectedRoom(value);
     };
@@ -68,7 +72,10 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
         setShowAddInforModal(true);
     }
     const handleCloseAddInforModal = () => {
-        setShowAddInforModal(false);
+        // console.log('close modal');
+        // destroyAll();
+        setStep(1);
+        // setShowAddInforModal();
     }
 
      const onChange: DatePickerProps['onChange'] = (date, dateString) => {
@@ -115,6 +122,7 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
       
     const handleSubmit = () => {
         setStep(2);
+        // setShowAddInforModal(false);
         // form
         //   .validateFields()
         //   .then(async (values) => {

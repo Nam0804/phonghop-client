@@ -16,290 +16,363 @@ import DeleteMeeting from "@/components/DeleteMeeting/DeleteMeeting";
 import EditRoom from "@/components/Room/EditMeetingRoomModal";
 import { useSelector } from "react-redux";
 import moment from "moment";
-import Link from "next/link";
+import Link from 'next/link';
+
+
+
+// Use it in your table
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (text, record) => <CellComponent record={record} />,
+  },
+  // other columns...
+];
 import { useLocale } from "next-intl";
+import { useNavigate } from "react-router-dom";
+
 
 const CompanyList = () => {
   const locale = useLocale();
   const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
-  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
+    useState(false);
   const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
-  const [selectedTimeStartValue, setSelectedTimeStartValue] = useState('');
-  const [selectedTimeEndValue, setSelectedTimeEndValue] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
-  const user = useSelector((state:any) => state.user.value);
+  const [selectedTimeStartValue, setSelectedTimeStartValue] = useState("");
+  const [selectedTimeEndValue, setSelectedTimeEndValue] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const user = useSelector((state: any) => state.user.value);
   const company_id = user.company_id;
   const usertype = user.type;
+  // const navigate = useNavigate();
+
+  // Define your cell component
+  const CellComponent = ({ record }: { record: any }) => (
+    <Link href={`/calendar/${record}`}>
+      Book
+    </Link>
+  );
 
   const fetchData = useCallback(async () => {
     try {
-      const url =window.location.href;
+      const url = window.location.href;
       const registerurl = `${url}/${company_id}`;
-      const formattedStartTime = moment(selectedTimeStartValue, 'hh:mm A').format('HH:mm:ss');
-      const formattedEndTime = moment(selectedTimeEndValue, 'hh:mm A').format('HH:mm:ss');
+      const formattedStartTime = moment(
+        selectedTimeStartValue,
+        "hh:mm A"
+      ).format("HH:mm:ss");
+      const formattedEndTime = moment(selectedTimeEndValue, "hh:mm A").format(
+        "HH:mm:ss"
+      );
       const data = await api.get(`allroom/${company_id}`, {
         params: {
           starttime: `${selectedDate} ${formattedStartTime}`,
-          endtime: `${selectedDate} ${formattedEndTime}`
-        }
+          endtime: `${selectedDate} ${formattedEndTime}`,
+        },
       });
-      
-      setAllRoomData(data.data.data)
+
+      setAllRoomData(data.data.data);
       setFilteredRooms(data.data.data);
-      } catch (error) {
-        console.error(error);
-        toast.error('Error');
+    } catch (error) {
+      console.error(error);
+      toast.error("Error");
+    }
+  }, [selectedDate, selectedTimeStartValue, selectedTimeEndValue]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
-      }
-    }, [selectedDate, selectedTimeStartValue, selectedTimeEndValue])
-    useEffect(() => {
-      fetchData()
-    }, [fetchData]);
-
-    const handleDeleteSuccess = () => {
-      setDeleteConfirmationVisible(false);
-      fetchData();
-    };
-    const handleAddSuccess = () => {
-      fetchData();
-    };
-    const handleEditSuccess = () => {
-      fetchData();
-    };
-    const handleSelectChange = (event:any) => {
-      const selectedRoomName = event.target.value;
-      if (selectedRoomName === "all") {
-        setFilteredRooms(allRoomsData);
-      } else {
-        const filteredRooms = allRoomsData.filter((room) => room.name === selectedRoomName);
-        setFilteredRooms(filteredRooms);
-      }
-   };
-   const handleTimeStartChange = (newTimeStart:any) => {
+  const handleDeleteSuccess = () => {
+    setDeleteConfirmationVisible(false);
+    fetchData();
+  };
+  const handleAddSuccess = () => {
+    fetchData();
+  };
+  const handleEditSuccess = () => {
+    fetchData();
+  };
+  const handleSelectChange = (event: any) => {
+    const selectedRoomName = event.target.value;
+    if (selectedRoomName === "all") {
+      setFilteredRooms(allRoomsData);
+    } else {
+      const filteredRooms = allRoomsData.filter(
+        (room) => room.name === selectedRoomName
+      );
+      setFilteredRooms(filteredRooms);
+    }
+  };
+  const handleTimeStartChange = (newTimeStart: any) => {
     setSelectedTimeStartValue(newTimeStart);
     fetchData();
   };
-  const handleTimeEndChange = (newTimeEnd:any) => {
+  const handleTimeEndChange = (newTimeEnd: any) => {
     setSelectedTimeEndValue(newTimeEnd);
     fetchData();
   };
-    const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        setSelectedDate(dateString);
-      };
-      interface DataType {
-        id:number;
-        key: string;
-        no: number;
-        name: string;
-        location: string;
-        capacity:number;
-        equipment:string;
-        availabilitys: boolean;
-        book:string;
-      }
-      let columns: ColumnsType<DataType> = [];
-      {if (usertype === 1) {
-        columns = [
-          {
-          title: 'No',
-          dataIndex: 'id',
-          key: 'id',
+  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
+    setSelectedDate(dateString);
+  };
+  interface DataType {
+    id: number;
+    key: string;
+    no: number;
+    name: string;
+    location: string;
+    capacity: number;
+    equipment: string;
+    availabilitys: boolean;
+    book: string;
+  }
+  let columns: ColumnsType<DataType> = [];
+  {
+    if (usertype === 1) {
+      columns = [
+        {
+          title: "No",
+          dataIndex: "id",
+          key: "id",
           render: (number) => <a>{number}</a>,
           sorter: (a, b) => a.no - b.no,
-          width:40,
-          fixed:'left',
+          width: 40,
+          fixed: "left",
         },
         {
-          title: 'Room Name',
-          dataIndex: 'name',
-          key: 'name',
-          sorter:(a,b) => a.name.localeCompare(b.name),
-          fixed:'left',
-          width:175,
+          title: "Room Name",
+          dataIndex: "name",
+          key: "name",
+          sorter: (a, b) => a.name.localeCompare(b.name),
+          fixed: "left",
+          width: 175,
         },
         {
-          title: 'Location',
-          dataIndex: 'location',
-          key: 'location',
-          sorter:(a,b) => a.location.localeCompare(b.location),
+          title: "Location",
+          dataIndex: "location",
+          key: "location",
+          sorter: (a, b) => a.location.localeCompare(b.location),
           width: 165,
         },
         {
-            title: 'Capacity',
-            dataIndex: 'capacity',
-            key: 'capacity',
-            sorter:(a,b) => a.capacity-b.capacity,
-            width:159
+          title: "Capacity",
+          dataIndex: "capacity",
+          key: "capacity",
+          sorter: (a, b) => a.capacity - b.capacity,
+          width: 159,
         },
         {
-            title: 'Equipment',
-            dataIndex: 'equipment',
-            key: 'equipment',
-            width: 251,
+          title: "Equipment",
+          dataIndex: "equipment",
+          key: "equipment",
+          width: 251,
         },
         {
-            title: 'Room Availability',
-            key: 'availabilitys',
-            dataIndex: 'availabilitys',
-            render: (_, { availabilitys }) => {
-                let color = availabilitys ? '#E56353' : '#388697';
-                return (
-                  <div >
-                    <Tag color={color} key={_}>
-                        {availabilitys ? 'Unavailable' : 'Available'}
-                    </Tag>
-                  </div>
-                );
-            },
-            width: 183,
+          title: "Room Availability",
+          key: "availabilitys",
+          dataIndex: "availabilitys",
+          render: (_, { availabilitys }) => {
+            let color = availabilitys ? "#E56353" : "#388697";
+            return (
+              <div>
+                <Tag color={color} key={_}>
+                  {availabilitys ? "Unavailable" : "Available"}
+                </Tag>
+              </div>
+            );
           },
-        {
-            title: 'View Room Detail',
-            key: 'book',
-            dataIndex: 'book',
-            render: (_, { availabilitys }) => {
-               const color = availabilitys ? '#8B8B8B' : '#388697';
-               return (
-                   <Tag color={color} key={_}>
-                       <Link href={`/${locale}/calendar`} style={{textDecoration:"none"}}>Book</Link>
-                   </Tag>
-               );
-            },
-            width: 154,
+          width: 183,
         },
         {
-          title: 'Action',
-          key: 'action',
+          title: "View Room Detail",
+          key: "book",
+          dataIndex: "book",
+          // onCell: (record) => ({
+          //   onClick: () => navigate(`/room/${record.id}`),
+          // }),
+          render: (_, { availabilitys }, record) => {
+            ''
+            console.log(record);
+            
+            const color = availabilitys ? "#8B8B8B" : "#388697";
+            return (
+              <CellComponent record={record} />
+              // (
+              //   <Tag color={color} key={_}>
+              //     {/* <Link href={`/room/${_}`}>Book</Link> */}
+              //     Book
+              //   </Tag>
+              // )
+            );
+          },
+          width: 154,
+        },
+        {
+          title: "Action",
+          key: "action",
           render: (_, record) => (
             <Space size="middle">
-                <EditRoom rec={record} onEditSuccess={handleEditSuccess}></EditRoom>
-                <DeleteMeeting room_id={record.id} onDeleteSuccess={handleDeleteSuccess}></DeleteMeeting>
+              <EditRoom
+                rec={record}
+                onEditSuccess={handleEditSuccess}
+              ></EditRoom>
+              <DeleteMeeting
+                room_id={record.id}
+                onDeleteSuccess={handleDeleteSuccess}
+              ></DeleteMeeting>
             </Space>
           ),
-          fixed: 'right',
+          fixed: "right",
           width: 137,
         },
       ];
-    }}
+    }
+  }
 
-    
-    {if (usertype === 2) {
+  {
+    if (usertype === 2) {
       columns = [
         {
-          title: 'No',
-          dataIndex: 'id',
-          key: 'id',
+          title: "No",
+          dataIndex: "id",
+          key: "id",
           render: (number) => <a>{number}</a>,
           sorter: (a, b) => a.no - b.no,
-          width:73,
-          fixed:'left',
+          width: 73,
+          fixed: "left",
         },
         {
-          title: 'Room Name',
-          dataIndex: 'name',
-          key: 'name',
-          sorter:(a,b) => a.name.localeCompare(b.name),
-          fixed:'left',
-          width:175,
+          title: "Room Name",
+          dataIndex: "name",
+          key: "name",
+          sorter: (a, b) => a.name.localeCompare(b.name),
+          fixed: "left",
+          width: 175,
         },
         {
-          title: 'Location',
-          dataIndex: 'location',
-          key: 'location',
-          sorter:(a,b) => a.location.localeCompare(b.location),
+          title: "Location",
+          dataIndex: "location",
+          key: "location",
+          sorter: (a, b) => a.location.localeCompare(b.location),
           width: 165,
         },
         {
-            title: 'Capacity',
-            dataIndex: 'capacity',
-            key: 'capacity',
-            sorter:(a,b) => a.capacity-b.capacity,
-            width:159
+          title: "Capacity",
+          dataIndex: "capacity",
+          key: "capacity",
+          sorter: (a, b) => a.capacity - b.capacity,
+          width: 159,
         },
         {
-            title: 'Equipment',
-            dataIndex: 'equipment',
-            key: 'equipment',
-            width: 251,
+          title: "Equipment",
+          dataIndex: "equipment",
+          key: "equipment",
+          width: 251,
         },
         {
-            title: 'Room Availability',
-            key: 'availabilitys',
-            dataIndex: 'availabilitys',
-            render: (_, { availabilitys }) => {
-                let color = availabilitys ? '#E56353' : '#388697';
-                return (
-                    <Tag color={color} className="">
-                        {availabilitys ? 'Unavailable' : 'Available'}
-                    </Tag>
-                );
-            },
-            width: 183,
+          title: "Room Availability",
+          key: "availabilitys",
+          dataIndex: "availabilitys",
+          render: (_, { availabilitys }) => {
+            let color = availabilitys ? "#E56353" : "#388697";
+            return (
+              <Tag color={color} className="">
+                {availabilitys ? "Unavailable" : "Available"}
+              </Tag>
+            );
           },
-        {
-            title: 'View Room Detail',
-            key: 'book',
-            dataIndex: 'book',
-            render: (_, { availabilitys }) => {
-               const color = availabilitys ? '#8B8B8B' : '#388697';
-               return (
-                  <Tag color={color} key={_}>
-                     Book
-                  </Tag>
-               );
-            },
-            width: 154,
+          width: 183,
         },
-      ];}}
-    return(
-            <div className={styles.container}>
-                <div className={styles.labelsection}>
-                    <div className={styles.square}>
-                    </div>
-                    <h1 className={styles.label}>Meeting Room List</h1>
-                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></span>
-                </div>
-                <p className={customstyle.text}>View By:</p>
-                <div className={customstyle.selectsection}>
-                    <div className={customstyle.dateTimePicker}>
-                        <div className={customstyle.date}>
-                            <p>Date:</p>
-                            <Space direction="vertical">
-                                <DatePicker style={{ width:'221px',height:'36px' }} onChange={onChange} showToday={false}/>
-                            </Space>
-                        </div>
-                        <div className={customstyle.time}>
-                            <p>Time:</p>
-                            <CustomTimePicker onChange={handleTimeStartChange}></CustomTimePicker>
-                            <p>To:</p>
-                            <CustomTimePicker onChange={handleTimeEndChange}></CustomTimePicker>
-                        </div>
-                    </div>
-                    <div className={customstyle.roomPicker}>
-                        <p>Choose a room</p>
-                        <select onChange={(e) => handleSelectChange(e)}>
-                        <option value="all">All Rooms</option>
-                          {allRoomsData.map((room) => (
-                            <option key={room.id} value={room.name}>
-                              {room.name}
-                            </option>
-                          ))}
-                        </select>
-                    </div>
-                </div>
-                <div className={styles.companytable}>
-
-                    <Table columns={columns} dataSource={filteredRooms} 
-                    scroll={{x:1000}} className={customstyle.customtable} pagination={{ pageSize:5 }}
-                    />
-                </div>
-                {usertype === 1 && (
-                  <div className={styles.addco}>
-                      <AddNewRoom onAddSuccess={handleAddSuccess}>ADD NEW ROOM</AddNewRoom>
-                  </div>
-                )}
-            </div>
-    );
+        {
+          title: "View Room Detail",
+          key: "book",
+          dataIndex: "book",
+          render: (_, { availabilitys }) => {
+            const color = availabilitys ? "#8B8B8B" : "#388697";
+            return (
+              <Tag color={color} key={_}>
+                Book
+              </Tag>
+            );
+          },
+          width: 154,
+        },
+      ];
+    }
+  }
+  return (
+    <div className={styles.container}>
+      <div className={styles.labelsection}>
+        <div className={styles.square}></div>
+        <h1 className={styles.label}>Meeting Room List</h1>
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+        </span>
+      </div>
+      <p className={customstyle.text}>View By:</p>
+      <div className={customstyle.selectsection}>
+        <div className={customstyle.dateTimePicker}>
+          <div className={customstyle.date}>
+            <p>Date:</p>
+            <Space direction="vertical">
+              <DatePicker
+                style={{ width: "221px", height: "36px" }}
+                onChange={onChange}
+                showToday={false}
+              />
+            </Space>
+          </div>
+          <div className={customstyle.time}>
+            <p>Time:</p>
+            <CustomTimePicker
+              onChange={handleTimeStartChange}
+            ></CustomTimePicker>
+            <p>To:</p>
+            <CustomTimePicker onChange={handleTimeEndChange}></CustomTimePicker>
+          </div>
+        </div>
+        <div className={customstyle.roomPicker}>
+          <p>Choose a room</p>
+          <select onChange={(e) => handleSelectChange(e)}>
+            <option value="all">All Rooms</option>
+            {allRoomsData.map((room) => (
+              <option key={room.id} value={room.name}>
+                {room.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div className={styles.companytable}>
+        <Table
+          columns={columns}
+          dataSource={filteredRooms}
+          scroll={{ x: 1000 }}
+          className={customstyle.customtable}
+          pagination={{ pageSize: 5 }}
+        />
+      </div>
+      {usertype === 1 && (
+        <div className={styles.addco}>
+          <AddNewRoom onAddSuccess={handleAddSuccess}>ADD NEW ROOM</AddNewRoom>
+        </div>
+      )}
+    </div>
+  );
 }
 export default CompanyList
 
