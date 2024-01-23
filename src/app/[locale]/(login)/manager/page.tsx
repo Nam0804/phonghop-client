@@ -13,6 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Modal from "@/constants/Modal/ViewModal";
 import { get } from 'lodash';
 import api from '@/axiosService';
+import { useLocale } from 'next-intl';
 
 const steps = [
     {},
@@ -36,9 +37,9 @@ export default function RegisterNewCompany() {
     const [apiData, setApiData] = useState(null);
     const [areAllFieldsValid, setAreAllFieldsValid] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
+    const locale = useLocale();
 
     const handleInputChange = () => {
-      // Kiểm tra xem tất cả các trường đã được điền đầy đủ hay chưa
       const inputs = document.querySelectorAll('input[type="text"]');
       let isAllFieldsFilled = true;
       inputs.forEach((input) => {
@@ -46,10 +47,20 @@ export default function RegisterNewCompany() {
           isAllFieldsFilled = false;
         }
       });
-  
-      // Cập nhật trạng thái của form
       setIsFormValid(isAllFieldsFilled);
     };
+
+    const handleChange = () => {
+        const inputs = document.querySelectorAll('input[type="text"], input[type="password"]');
+        let isAllFieldsFilled = true;
+        inputs.forEach((input) => {
+          if (input.value.trim() === '') {
+            isAllFieldsFilled = false;
+          }
+        });
+    
+        setIsFormValid(isAllFieldsFilled);
+      };
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -155,7 +166,7 @@ export default function RegisterNewCompany() {
 
     const prevStep = () => {
         if (currentStep > 1) {
-            setCurrentStep(1);
+            window.location.href = `/${locale}/login`;
         }
     }
     return (
@@ -223,7 +234,7 @@ export default function RegisterNewCompany() {
                             <p className={styles.subContent}>Please input your company manager information.</p>
                             <div className={styles.input}>
                                 <img src="/userlogin.svg" alt="" className={styles.icon} />
-                                <input type="text"  {...register('name')} placeholder="Manager Name*" className={styles.inputsection} onChange={handleInputChange}/>
+                                <input type="text"  {...register('name')} placeholder="Manager Name*" className={styles.inputsection} onChange={handleChange}/>
                             </div>
                             {errors.name && (
                                 <p className={styles.errorMessage}>
@@ -232,7 +243,7 @@ export default function RegisterNewCompany() {
                             )}
                             <div className={styles.input}>
                                 <img src="/title.svg" alt="" className={styles.icon} />
-                                <input type="text"  {...register('title')} placeholder="Manager Title*" className={styles.inputsection} onChange={handleInputChange}/>
+                                <input type="text"  {...register('title')} placeholder="Manager Title*" className={styles.inputsection} onChange={handleChange}/>
                             </div>
                             {errors.title && (
                                 <p className={styles.errorMessage}>
@@ -241,7 +252,7 @@ export default function RegisterNewCompany() {
                             )}
                             <div className={styles.input}>
                                 <img src="/mail.svg" alt="" className={styles.icon} />
-                                <input type="text" {...register('email')} placeholder="Manager Email*" className={styles.inputsection} onChange={handleInputChange}/>
+                                <input type="text" {...register('email')} placeholder="Manager Email*" className={styles.inputsection} onChange={handleChange}/>
                             </div>
                             {errors.email && (
                                 <p className={styles.errorMessage}>
@@ -250,7 +261,7 @@ export default function RegisterNewCompany() {
                             )}
                             <div className={styles.input}>
                                 <img src="/phone.svg" alt="" className={styles.icon} />
-                                <input type="text" {...register('phone')} placeholder="Manager Phone" className={styles.inputsection} onChange={handleInputChange}/>
+                                <input type="text" {...register('phone')} placeholder="Manager Phone" className={styles.inputsection} onChange={handleChange}/>
                             </div>
                             {errors.phone && (
                                 <p className={styles.errorMessage}>
@@ -259,7 +270,7 @@ export default function RegisterNewCompany() {
                             )}
                             <div className={styles.input}>
                                 <img src="/pass.svg" alt="" className={styles.icon} />
-                                <input type={isPasswordVisible ? 'text' : 'password'} {...register('password')} placeholder="Password*" className={styles.inputsection} onChange={handleInputChange}/>
+                                <input type={isPasswordVisible ? 'text' : 'password'} {...register('password')} placeholder="Password*" className={styles.inputsection} onChange={handleChange}/>
                                 <div className={styles.showhide} onClick={togglePasswordVisibility}>
                                     {isPasswordVisible ? <img src="/eyeshow.svg" alt="" className={styles.showhide} /> : <img src="/eyeshide.svg" alt="" className={styles.showhide} />}
                                 </div>
@@ -271,7 +282,7 @@ export default function RegisterNewCompany() {
                             )}
                             <div className={styles.input}>
                                 <img src="/pass.svg" alt="" className={styles.icon} />
-                                <input type={isRePasswordVisible ? 'text' : 'password'} {...register('password_confirmation')} placeholder="Confirm Password*" className={styles.inputsection} onChange={handleInputChange}/>
+                                <input type={isRePasswordVisible ? 'text' : 'password'} {...register('password_confirmation')} placeholder="Confirm Password*" className={styles.inputsection} onChange={handleChange}/>
                                 <div className={styles.showhide} onClick={toggleRePasswordVisibility}>
                                     {isRePasswordVisible ? <img src="/eyeshow.svg" alt="" className={styles.showhide} /> : <img src="/eyeshide.svg" alt="" className={styles.showhide} />}
                                 </div>
