@@ -89,7 +89,6 @@ const DayView = ({calendarRef, events, renderEventContent}: any) => {
                       selectable
                       selectOverlap={false}
                       eventOverlap={false}
-                      expandThrough={false}
                       events={events}
                       eventMinHeight={66}
                       // dayPropGetter={calendarStyle}
