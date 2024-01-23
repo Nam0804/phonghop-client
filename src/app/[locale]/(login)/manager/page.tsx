@@ -35,7 +35,13 @@ export default function RegisterNewCompany() {
     const [isRePasswordVisible, setRePasswordVisibility] = useState(false);
     const [apiData, setApiData] = useState(null);
     const [areAllFieldsValid, setAreAllFieldsValid] = useState(false);
-    const [formCompleted, setFormCompleted] = useState(false)
+    const [input1, setInput1] = useState('');
+    const [input2, setInput2] = useState('');
+    const [input3, setInput3] = useState('');
+    const [input4, setInput4] = useState('');
+    const [input5, setInput5] = useState('');
+    const [input6, setInput6] = useState('');
+    const isFormValid = input1 !== '' && input2 !== '' && input3 !== '' && input4 !== '' && input5 !== '' && input6 !== '';
 
 
     const openModal = () => {
@@ -156,7 +162,8 @@ export default function RegisterNewCompany() {
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 28 24" fill="none" className={styles.icon}>
                             <path d="M22 16H19.3333V18.6667H22M22 10.6667H19.3333V13.3333H22M24.6667 21.3333H14V18.6667H16.6667V16H14V13.3333H16.6667V10.6667H14V8H24.6667M11.3333 5.33333H8.66667V2.66667H11.3333M11.3333 10.6667H8.66667V8H11.3333M11.3333 16H8.66667V13.3333H11.3333M11.3333 21.3333H8.66667V18.6667H11.3333M6 5.33333H3.33334V2.66667H6M6 10.6667H3.33334V8H6M6 16H3.33334V13.3333H6M6 21.3333H3.33334V18.6667H6M14 5.33333V0H0.666672V24H27.3333V5.33333H14Z" fill="#5D5D5D"/>
                         </svg>
-                            <input type="text" placeholder="Company Name*" {...register('company_name')} className={styles.inputsection} />
+                            <input type="text" placeholder="Company Name*" {...register('company_name')} className={styles.inputsection} onChange={(e:any) => setInput1(e.target.value)} value={input1} />
+                            
                         </div>
                         {errors.company_name && (
                             <p className={styles.errorMessage}>
@@ -165,7 +172,7 @@ export default function RegisterNewCompany() {
                         )}
                         <div className={styles.input}>
                             <img src="/domain.svg" alt="" className={styles.icon} />
-                            <input type="text"  {...register('company_domain')} placeholder="Company Domain*" className={styles.inputsection} />
+                            <input type="text"  {...register('company_domain')} placeholder="Company Domain*" className={styles.inputsection} onChange={(e:any) => setInput2(e.target.value)} value={input2}/>
                         </div>
                         {errors.company_domain && (
                             <p className={styles.errorMessage}>
@@ -174,7 +181,7 @@ export default function RegisterNewCompany() {
                         )}
                         <div className={styles.input}>
                             <img src="/address.svg" alt="" className={styles.icon} />
-                            <input type="text" {...register('company_address')} placeholder="Company Address*" className={styles.inputsection} />
+                            <input type="text" {...register('company_address')} placeholder="Company Address*" className={styles.inputsection} onChange={(e:any) => setInput3(e.target.value)} value={input3}/>
                         </div>
                         {errors.company_address && (
                             <p className={styles.errorMessage}>
@@ -183,7 +190,7 @@ export default function RegisterNewCompany() {
                         )}
                         <div className={styles.input}>
                             <img src="/tax-code.svg" alt="" className={styles.icon} />
-                            <input type="text" {...register('company_taxcode')} placeholder="Tax Code" className={styles.inputsection} />
+                            <input type="text" {...register('company_taxcode')} placeholder="Tax Code" className={styles.inputsection} onChange={(e:any) => setInput4(e.target.value)} value={input4}/>
                         </div>
                         {errors.company_taxcode && (
                             <p className={styles.errorMessage}>
@@ -191,7 +198,7 @@ export default function RegisterNewCompany() {
                             </p>
                         )}
                         <div className={`text-end pt-5 ${styles.w90}`}>
-                            <button className={`${styles.nextBtn} ${areAllFieldsValid ? styles.greenBtn : ''}`} onClick={nextStep} style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}}>Next</button>
+                            <button className={styles.nextBtn} onClick={nextStep} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>Next</button>
                         </div>
 
 
@@ -269,7 +276,7 @@ export default function RegisterNewCompany() {
                             )}
                         </div>
                         <div className=' d-flex justify-content-between pt-5'>
-                            <Button className={`${styles.createBtn} ${areAllFieldsValid ? styles.greenBtn : ''}`} onClick={nextStep} style={!formCompleted ? {backgroundColor:'#8B8B8B'}:{backgroundColor:'#225560'}} >CREATE ACCOUNT</Button>
+                            <Button className={`${styles.createBtn} ${areAllFieldsValid ? styles.greenBtn : ''}`} onClick={nextStep} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>CREATE ACCOUNT</Button>
                             <Button className={styles.cancelbtn} onClick={prevStep}>CANCEL</Button>
                         </div>
                         <div className={`${styles.progressbar} mb-3`}>
