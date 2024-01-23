@@ -35,14 +35,21 @@ export default function RegisterNewCompany() {
     const [isRePasswordVisible, setRePasswordVisibility] = useState(false);
     const [apiData, setApiData] = useState(null);
     const [areAllFieldsValid, setAreAllFieldsValid] = useState(false);
-    const [input1, setInput1] = useState('');
-    const [input2, setInput2] = useState('');
-    const [input3, setInput3] = useState('');
-    const [input4, setInput4] = useState('');
-    const [input5, setInput5] = useState('');
-    const [input6, setInput6] = useState('');
-    const isFormValid = input1 !== '' && input2 !== '' && input3 !== '' && input4 !== '' && input5 !== '' && input6 !== '';
+    const [isFormValid, setIsFormValid] = useState(false);
 
+    const handleInputChange = () => {
+      // Kiểm tra xem tất cả các trường đã được điền đầy đủ hay chưa
+      const inputs = document.querySelectorAll('input[type="text"]');
+      let isAllFieldsFilled = true;
+      inputs.forEach((input) => {
+        if (input.value.trim() === '') {
+          isAllFieldsFilled = false;
+        }
+      });
+  
+      // Cập nhật trạng thái của form
+      setIsFormValid(isAllFieldsFilled);
+    };
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -162,7 +169,7 @@ export default function RegisterNewCompany() {
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 28 24" fill="none" className={styles.icon}>
                             <path d="M22 16H19.3333V18.6667H22M22 10.6667H19.3333V13.3333H22M24.6667 21.3333H14V18.6667H16.6667V16H14V13.3333H16.6667V10.6667H14V8H24.6667M11.3333 5.33333H8.66667V2.66667H11.3333M11.3333 10.6667H8.66667V8H11.3333M11.3333 16H8.66667V13.3333H11.3333M11.3333 21.3333H8.66667V18.6667H11.3333M6 5.33333H3.33334V2.66667H6M6 10.6667H3.33334V8H6M6 16H3.33334V13.3333H6M6 21.3333H3.33334V18.6667H6M14 5.33333V0H0.666672V24H27.3333V5.33333H14Z" fill="#5D5D5D"/>
                         </svg>
-                            <input type="text" placeholder="Company Name*" {...register('company_name')} className={styles.inputsection} onChange={(e:any) => setInput1(e.target.value)} value={input1} />
+                            <input type="text" placeholder="Company Name*" {...register('company_name')} className={styles.inputsection} onChange={handleInputChange}/>
                             
                         </div>
                         {errors.company_name && (
@@ -172,7 +179,7 @@ export default function RegisterNewCompany() {
                         )}
                         <div className={styles.input}>
                             <img src="/domain.svg" alt="" className={styles.icon} />
-                            <input type="text"  {...register('company_domain')} placeholder="Company Domain*" className={styles.inputsection} onChange={(e:any) => setInput2(e.target.value)} value={input2}/>
+                            <input type="text"  {...register('company_domain')} placeholder="Company Domain*" className={styles.inputsection} onChange={handleInputChange}/>
                         </div>
                         {errors.company_domain && (
                             <p className={styles.errorMessage}>
@@ -181,7 +188,7 @@ export default function RegisterNewCompany() {
                         )}
                         <div className={styles.input}>
                             <img src="/address.svg" alt="" className={styles.icon} />
-                            <input type="text" {...register('company_address')} placeholder="Company Address*" className={styles.inputsection} onChange={(e:any) => setInput3(e.target.value)} value={input3}/>
+                            <input type="text" {...register('company_address')} placeholder="Company Address*" className={styles.inputsection} onChange={handleInputChange}/>
                         </div>
                         {errors.company_address && (
                             <p className={styles.errorMessage}>
@@ -190,7 +197,7 @@ export default function RegisterNewCompany() {
                         )}
                         <div className={styles.input}>
                             <img src="/tax-code.svg" alt="" className={styles.icon} />
-                            <input type="text" {...register('company_taxcode')} placeholder="Tax Code" className={styles.inputsection} onChange={(e:any) => setInput4(e.target.value)} value={input4}/>
+                            <input type="text" {...register('company_taxcode')} placeholder="Tax Code" className={styles.inputsection} onChange={handleInputChange}/>
                         </div>
                         {errors.company_taxcode && (
                             <p className={styles.errorMessage}>
@@ -198,7 +205,7 @@ export default function RegisterNewCompany() {
                             </p>
                         )}
                         <div className={`text-end pt-5 ${styles.w90}`}>
-                            <button className={styles.nextBtn} onClick={nextStep} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>Next</button>
+                            <button className={`${styles.nextBtn} ${isFormValid ? styles.valid : ''}`} onClick={nextStep}>Next</button>
                         </div>
 
 
@@ -216,7 +223,7 @@ export default function RegisterNewCompany() {
                             <p className={styles.subContent}>Please input your company manager information.</p>
                             <div className={styles.input}>
                                 <img src="/userlogin.svg" alt="" className={styles.icon} />
-                                <input type="text"  {...register('name')} placeholder="Manager Name*" className={styles.inputsection} />
+                                <input type="text"  {...register('name')} placeholder="Manager Name*" className={styles.inputsection} onChange={handleInputChange}/>
                             </div>
                             {errors.name && (
                                 <p className={styles.errorMessage}>
@@ -225,7 +232,7 @@ export default function RegisterNewCompany() {
                             )}
                             <div className={styles.input}>
                                 <img src="/title.svg" alt="" className={styles.icon} />
-                                <input type="text"  {...register('title')} placeholder="Manager Title*" className={styles.inputsection} />
+                                <input type="text"  {...register('title')} placeholder="Manager Title*" className={styles.inputsection} onChange={handleInputChange}/>
                             </div>
                             {errors.title && (
                                 <p className={styles.errorMessage}>
@@ -234,7 +241,7 @@ export default function RegisterNewCompany() {
                             )}
                             <div className={styles.input}>
                                 <img src="/mail.svg" alt="" className={styles.icon} />
-                                <input type="text" {...register('email')} placeholder="Manager Email*" className={styles.inputsection} />
+                                <input type="text" {...register('email')} placeholder="Manager Email*" className={styles.inputsection} onChange={handleInputChange}/>
                             </div>
                             {errors.email && (
                                 <p className={styles.errorMessage}>
@@ -243,7 +250,7 @@ export default function RegisterNewCompany() {
                             )}
                             <div className={styles.input}>
                                 <img src="/phone.svg" alt="" className={styles.icon} />
-                                <input type="text" {...register('phone')} placeholder="Manager Phone" className={styles.inputsection} />
+                                <input type="text" {...register('phone')} placeholder="Manager Phone" className={styles.inputsection} onChange={handleInputChange}/>
                             </div>
                             {errors.phone && (
                                 <p className={styles.errorMessage}>
@@ -252,7 +259,7 @@ export default function RegisterNewCompany() {
                             )}
                             <div className={styles.input}>
                                 <img src="/pass.svg" alt="" className={styles.icon} />
-                                <input type={isPasswordVisible ? 'text' : 'password'} {...register('password')} placeholder="Password*" className={styles.inputsection} />
+                                <input type={isPasswordVisible ? 'text' : 'password'} {...register('password')} placeholder="Password*" className={styles.inputsection} onChange={handleInputChange}/>
                                 <div className={styles.showhide} onClick={togglePasswordVisibility}>
                                     {isPasswordVisible ? <img src="/eyeshow.svg" alt="" className={styles.showhide} /> : <img src="/eyeshide.svg" alt="" className={styles.showhide} />}
                                 </div>
@@ -264,7 +271,7 @@ export default function RegisterNewCompany() {
                             )}
                             <div className={styles.input}>
                                 <img src="/pass.svg" alt="" className={styles.icon} />
-                                <input type={isRePasswordVisible ? 'text' : 'password'} {...register('password_confirmation')} placeholder="Confirm Password*" className={styles.inputsection} />
+                                <input type={isRePasswordVisible ? 'text' : 'password'} {...register('password_confirmation')} placeholder="Confirm Password*" className={styles.inputsection} onChange={handleInputChange}/>
                                 <div className={styles.showhide} onClick={toggleRePasswordVisibility}>
                                     {isRePasswordVisible ? <img src="/eyeshow.svg" alt="" className={styles.showhide} /> : <img src="/eyeshide.svg" alt="" className={styles.showhide} />}
                                 </div>
@@ -276,7 +283,7 @@ export default function RegisterNewCompany() {
                             )}
                         </div>
                         <div className=' d-flex justify-content-between pt-5'>
-                            <Button className={`${styles.createBtn} ${areAllFieldsValid ? styles.greenBtn : ''}`} onClick={nextStep} style={{ backgroundColor: isFormValid ? '#225560' : '#8B8B8B' }}>CREATE ACCOUNT</Button>
+                            <Button id="nextButton" className={`${styles.createBtn} ${isFormValid ? styles.valid : ''}`} onClick={nextStep}>CREATE ACCOUNT</Button>
                             <Button className={styles.cancelbtn} onClick={prevStep}>CANCEL</Button>
                         </div>
                         <div className={`${styles.progressbar} mb-3`}>

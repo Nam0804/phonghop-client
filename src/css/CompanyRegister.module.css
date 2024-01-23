@@ -233,7 +233,8 @@
     line-height: normal;
     margin-bottom: 0;
 }
-.greenBtn {
+.valid {
     background-color: #225560;
-    color: #fff;
-}
+    /* Các thuộc tính CSS khác */
+  }
+  
