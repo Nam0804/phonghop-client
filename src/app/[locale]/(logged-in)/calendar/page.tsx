@@ -73,22 +73,22 @@ const Index = () => {
         if (selectedCheckbox === "myMeeting") {
             const myBookings = await fetchMyBookingHistory();
             const eventMyBooking = myBookings.map((booking: any) => ({
-                title: booking.topic,
+                title: booking.room_status === 1 ? booking.topic : "Private Meeting",
                 start: booking.from_time,
                 end: booking.to_time,
                 allDay: false,
-                backgroundColor: "#388697",
+                backgroundColor: booking.room_status === 1 ? "#388697" : "#323232",
                 booking_user: user.name,
             }));
             setEvents(eventMyBooking);
         } else {
             const allBookings = await fetchAllBookingHistory();
             const eventAllBooking = allBookings.map((booking: any) => ({
-                title: booking.topic,
+                title: booking.room_status === 1 ? booking.topic : "Private Meeting",
                 start: booking.from_time,
                 end: booking.to_time,
                 allDay: false,
-                backgroundColor: "#388697",
+                backgroundColor: booking.room_status === 1 ? "#388697" : "#323232",
                 booking_user: user.name,
             }));
             setEvents(eventAllBooking);
