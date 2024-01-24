@@ -38,29 +38,34 @@ export default function RegisterNewCompany() {
     const [areAllFieldsValid, setAreAllFieldsValid] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const locale = useLocale();
-
     const handleInputChange = () => {
-      const inputs = document.querySelectorAll('input[type="text"]');
-      let isAllFieldsFilled = true;
-      inputs.forEach((input) => {
-        if (input.value.trim() === '') {
-          isAllFieldsFilled = false;
-        }
-      });
-      setIsFormValid(isAllFieldsFilled);
-    };
-
-    const handleChange = () => {
-        const inputs = document.querySelectorAll('input[type="text"], input[type="password"]');
+        const inputs = document.querySelectorAll<HTMLInputElement>('input[type="text"]');
         let isAllFieldsFilled = true;
+
         inputs.forEach((input) => {
-          if (input.value.trim() === '') {
+            if (input.value.trim() === '') {
             isAllFieldsFilled = false;
-          }
+            }
         });
-    
+
         setIsFormValid(isAllFieldsFilled);
-      };
+        };
+
+
+
+        const handleChange = () => {
+            const inputs = document.querySelectorAll<HTMLInputElement>('input[type="text"], input[type="password"]');
+            let isAllFieldsFilled = true;
+            
+            inputs.forEach((input) => {
+                if (input.value.trim() === '') {
+                isAllFieldsFilled = false;
+                }
+            });
+            
+            setIsFormValid(isAllFieldsFilled);
+            };
+          
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -169,6 +174,11 @@ export default function RegisterNewCompany() {
             window.location.href = `/${locale}/login`;
         }
     }
+    const redirectToLogin = () => {
+        const newUrl = `/${locale}/login`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      };
+    
     return (
         <>
             <form className={`${styles.content} w-75`} onSubmit={handleSubmit(processForm)}>
@@ -208,7 +218,7 @@ export default function RegisterNewCompany() {
                         )}
                         <div className={styles.input}>
                             <img src="/tax-code.svg" alt="" className={styles.icon} />
-                            <input type="text" {...register('company_taxcode')} placeholder="Tax Code" className={styles.inputsection} onChange={handleInputChange}/>
+                            <input {...register('company_taxcode')} placeholder="Tax Code" className={styles.inputsection} />
                         </div>
                         {errors.company_taxcode && (
                             <p className={styles.errorMessage}>
@@ -294,8 +304,10 @@ export default function RegisterNewCompany() {
                             )}
                         </div>
                         <div className=' d-flex justify-content-between pt-5'>
-                            <Button id="nextButton" className={`${styles.createBtn} ${isFormValid ? styles.valid : ''}`} onClick={nextStep}>CREATE ACCOUNT</Button>
-                            <Button className={styles.cancelbtn} onClick={prevStep}>CANCEL</Button>
+                            <Button className={`${styles.createBtn} ${isFormValid ? styles.valid : ''}`} onClick={nextStep}>CREATE ACCOUNT</Button>
+                            <Link href={`/${locale}/login`} >
+                                <Button className={styles.cancelbtn} onClick={redirectToLogin}>CANCEL</Button>
+                            </Link>
                         </div>
                         <div className={`${styles.progressbar} mb-3`}>
                             <div className={styles.halfColorEnd}></div>
