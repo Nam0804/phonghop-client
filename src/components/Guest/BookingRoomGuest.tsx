@@ -22,7 +22,7 @@ import api from '@/axiosService';
 import {Card,Image,Layout,Select,Progress} from "antd";
 import AddInforGuest from './AddInforGuest';
 import * as bootstrap from 'bootstrap';
-import { set } from 'lodash';
+import { set, values } from 'lodash';
 
 
 export default function BookingRoomGuest({onAddSuccess }:any) {
@@ -51,6 +51,7 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [roomData, setRoomData] = useState<DataType[]>([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
+    const [step1Data, setStep1Data] = useState<any>({});
     const [showAddInforModal, setShowAddInforModal] = useState(false);
     const [step, setStep] = useState(1);
 
@@ -81,27 +82,6 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
      const onChange: DatePickerProps['onChange'] = (date, dateString) => {
         setSelectedDate(dateString);
     };
-
-   
-    const props: UploadProps = {
-        name: 'file',
-        action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-        headers: {
-          authorization: 'authorization-text',
-        },
-        onChange(info) {
-          if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
-        },
-      };
-
-
       useEffect(() => {
         const fetchRooms = async () => {
           try {
@@ -120,60 +100,16 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
         fetchRooms();
       }, []);
       
-    const handleSubmit = () => {
-        setStep(2);
-        // setShowAddInforModal(false);
-        // form
-        //   .validateFields()
-        //   .then(async (values) => {
-        //     try {
-        //        const meetingRoomsResponse = await api.get('meeting-rooms/listing');
-              
-        //         if (meetingRoomsResponse.status === 200)
-        //         {
-        //         const meetingRooms = meetingRoomsResponse.data.data;
-      
-        //         const selectedMeetingRoomId = meetingRooms.length > 0 ? meetingRooms[0].id : null;
-      
-        //         values = {
-        //           ...form.getFieldsValue(),
-        //           booking_name: user.name,
-        //           booking_email: user.email,
-        //           booking_title: user.title,
-        //           meeting_room_id: 1,
-        //           from_time: `${selectedDate} ${moment(startTime,'HH:mm A').format('HH:mm:ss')}`,
-        //             to_time: `${selectedDate} ${moment(endTime,'HH:mm A').format('HH:mm:ss')}`,
-        //             repeat_type:1
-        //         };
-
-        //         const bookingResponse = await api.post('external-bookings', values,
-        //         {headers:{
-        //             'Content-Type': 'application/json',
-        //             'Accept': 'application/json',
-        //         },
-        //         });
-      
-        //         if (bookingResponse.status === 200) {
-        //           message.success('Booking created successfully');
-        //           form.resetFields();
-        //           setVisible(false);
-        //           if (onAddSuccess) {
-        //             onAddSuccess();
-        //           }
-        //         } else {
-        //           message.error('Failed to create booking');
-        //         }
-                
-        //         setFilteredRooms(bookingResponse.data.data);
-        //     }
-        //     } catch (e) {
-        //       console.error('Error creating booking:', e);
-        //       message.error('Failed to create booking');
-        //     }
-        //   })
-        //   .catch((errorInfo) => {
-        //     console.log(errorInfo);
-        //   });
+      const handleSubmit = () => {
+        form
+            .validateFields()
+            .then(() => {
+                setStep(2);
+                setStep1Data(form.getFieldsValue());
+            })
+            .catch(errorInfo => {
+                console.log('Validation failed:', errorInfo);
+            });
     };
     return (
         <>
@@ -187,7 +123,7 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
             </button>
 
             {step === 1 && (
-            <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-xl">
                     <div className="modal-content">
                         <Form1
@@ -393,14 +329,14 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
                                         </label>
                                         <div className={`col-8 ${styles.materialpush}`}>
                                             <div className='col-4'>
-                                                <Upload {...props}>
+                                                {/* <Upload {...props}>
                                                     <Button>Choose a file</Button>
-                                                </Upload>
+                                                </Upload> */}
                                             </div>
                                             <div className='col-4'>
-                                                <Upload {...props}>
+                                                {/* <Upload {...props}>
                                                     <Button>Share a link</Button>
-                                                </Upload>
+                                                </Upload> */}
                                             </div>
                                         </div>
                                     </div>
@@ -413,7 +349,7 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
                         </div>
 
                         <div className="modal-footer" style={{ borderTop:'unset', justifyContent:'center' }}>
-                            <button type="button" className={`${styles.buttonAdd} ${formCompleted ? styles.formCompleted : ''}`}  onClick={handleSubmit} data-bs-dismiss="modal">
+                            <button type="button" className={`${styles.buttonAdd} ${formCompleted ? styles.formCompleted : ''}`}  onClick={handleSubmit} >
                                 BOOK NOW
                             </button>
                             <button type="button" className={styles.buttonCancel}  data-bs-dismiss="modal">
@@ -426,7 +362,7 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
                 </div>
             </div>
             )}
-            {step === 2 && <AddInforGuest openModal={handleOpenAddInforModal} closeModal={handleCloseAddInforModal}></AddInforGuest>}
+            {step === 2 && <AddInforGuest openModal={handleOpenAddInforModal} closeModal={handleCloseAddInforModal} step1Data={step1Data}></AddInforGuest>}
         </>
     )
 }

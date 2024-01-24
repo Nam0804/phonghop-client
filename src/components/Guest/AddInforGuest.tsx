@@ -10,7 +10,7 @@ import "@/css/BookingDetail.css";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 
-const AddInforGuest = ({openModal, closeModal}:any) => {
+const AddInforGuest = ({openModal, closeModal,step1Data}:any) => {
   const locale = useLocale();
   const [visible, setVisible] = useState(false);
   const [formBookingDetail] = Form.useForm();
@@ -19,7 +19,6 @@ const AddInforGuest = ({openModal, closeModal}:any) => {
   const [openModal1, setOpenModal] = useState(true);
   const [currentProgress, setCurrentProgress] = useState(70);
   
-
 useEffect(() => {
   if (checked1) {
     setCurrentProgress(100);
