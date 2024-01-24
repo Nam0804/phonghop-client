@@ -56,7 +56,7 @@ const LoginPage: React.FC<{}> = () => {
       const user = res.data.data.user;
       dispatch(initializeUser(user));
       const first_login=user.is_first_login;
-      if (first_login===1) {
+      if (first_login===0) {
         setIsNewAccount(true);
         openModal();
       } else {
@@ -114,7 +114,7 @@ const LoginPage: React.FC<{}> = () => {
         }
       const first_login=user.is_first_login;
       if (first_login) {
-        user.is_first_login = 0;
+        user.is_first_login = 1;
     }
     } catch (error:any) {
         if (error.response && error.response.status === 400) {
