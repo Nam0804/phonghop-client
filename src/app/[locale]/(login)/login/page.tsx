@@ -115,7 +115,15 @@ const LoginPage: React.FC<{}> = () => {
       const first_login=user.is_first_login;
       if (first_login) {
         user.is_first_login = 1;
-    }
+        try {
+          const res = await api.post(`store-users`, {
+            user_id: user_id,
+            is_first_login: 1,
+          });
+
+        } catch (error: any) {
+        }
+      }
     } catch (error:any) {
         if (error.response && error.response.status === 400) {
             setErrorMessage2("Please re-enter current password");
