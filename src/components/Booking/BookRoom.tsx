@@ -53,32 +53,11 @@ export default function BookRoom({onAddSuccess }:any) {
       };
       
 
-    // const generateRepeatOptions = (date: Date | null) => {
-    //     const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
-      
-    //     return [
-    //       { value: 'no-repeat', label: 'Doesn’t repeat' },
-    //       { value: 'every-weekday', label: 'Every weekday' },
-    //       {
-    //         value: 'weekly',
-    //         label: `Weekly - ${date ? dayOfWeek : '(Select a date)'}`,
-    //       },
-    //       {
-    //         value: 'monthly',
-    //         label: `Monthly - ${date ? dayOfWeek : '(Select a date)'}`,
-    //       },
-    //       {
-    //         value: 'annually',
-    //         label: `Annually - ${date ? dayOfWeek : '(Select a date)'}`,
-    //       },
-    //     ];
-    //   };
 
     const handleRepeatChange = (selectedOption: { value: string; label: string } | null) => {
         setRepeatType(selectedOption);
       };
 
-    //const repeatOptions = generateRepeatOptions(selectedDate);
 
     const handleStartTimeChange = (value: moment.Moment | undefined) => {
         setStartTime(value || null);
