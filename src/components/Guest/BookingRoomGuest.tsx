@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import CustomTimePicker from "../Booking/TimePickerBook";    
 import Meta from "antd/es/card/Meta";
 import type { DatePickerProps } from 'antd';
-import { DatePicker, Modal, Space } from 'antd';
+import { DatePicker, Space } from 'antd';
 import 'rc-time-picker/assets/index.css';
 import { Button, message, Upload } from 'antd';
 import Selects from 'react-select';
@@ -23,6 +23,7 @@ import {Card,Image,Layout,Select,Progress} from "antd";
 import AddInforGuest from './AddInforGuest';
 import * as bootstrap from 'bootstrap';
 import { set, values } from 'lodash';
+import { Modal } from 'bootstrap';
 
 
 export default function BookingRoomGuest({onAddSuccess }:any) {
@@ -112,257 +113,355 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
             });
     };
     return (
-        <>
-            <button
-                type="button"
-                className={ styles.addbtn }
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-            >
-                Book A Room
-            </button>
+      <>
+        <button
+          type="button"
+          className={styles.addbtn}
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          Book A Room
+        </button>
 
-            {step === 1 && (
-            <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog modal-xl">
-                    <div className="modal-content">
-                        <Form1
-                            form={form}
-                            name="Add new company"
-                            requiredMark={false}
-                            onValuesChange={(changedValues, allValues) => {
-                                const isFormCompleted = Object.values(allValues).every(value => value !== undefined && value !== '');
-                                setFormCompleted(isFormCompleted);
-                            }}
-                        >
-                        <div className="modal-header" style={{ borderBottom:'unset', justifyContent:'center' }}>
-                            <h5 className={`modal-title ${styles.modalTitle}`} id="exampleModalLabel">
-                                New Booking Session
-                            </h5>
+        {step === 1 && (
+          <div
+            className="modal fade"
+            id="exampleModal"
+            tabIndex={-1}
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog modal-xl">
+              <div className="modal-content">
+                <Form1
+                  form={form}
+                  name="Add new company"
+                  requiredMark={false}
+                  onValuesChange={(changedValues, allValues) => {
+                    const isFormCompleted = Object.values(allValues).every(
+                      (value) => value !== undefined && value !== ""
+                    );
+                    setFormCompleted(isFormCompleted);
+                  }}
+                >
+                  <div
+                    className="modal-header"
+                    style={{ borderBottom: "unset", justifyContent: "center" }}
+                  >
+                    <h5
+                      className={`modal-title ${styles.modalTitle}`}
+                      id="exampleModalLabel"
+                    >
+                      New Booking Session
+                    </h5>
+                  </div>
+                  <div className="modal-body">
+                    <div className="row">
+                      <div className="col-md-6 ml-2">
+                        <div className="mb-3 row">
+                          <Form1.Item
+                            name="topic"
+                            label={
+                              <span className={styles.formLabel}>
+                                Meeting Topic*:
+                              </span>
+                            }
+                            rules={[
+                              {
+                                required: true,
+                                message: (
+                                  <span className={styles.errorMessage}>
+                                    This field is required!
+                                  </span>
+                                ),
+                              },
+                            ]}
+                          >
+                            <Input
+                              type="text"
+                              className={`${styles.formControl}`}
+                              id="inputTopic"
+                              required
+                            />
+                          </Form1.Item>
                         </div>
-                        <div className="modal-body">
-                            <div className='row'>
-                                <div className="col-md-6 ml-2">
-                                    <div className="mb-3 row" >
-                                        <Form1.Item
-                                            name="topic" 
-                                            label={<span className={styles.formLabel}>Meeting Topic*:</span>}
-                                            rules={[
-                                                {
-                                                required: true,
-                                                message: (
-                                                    <span className={styles.errorMessage}>
-                                                    This field is required!
-                                                    </span>
-                                                ),
-                                                },
-                                            ]}
-                                            >
-                                            <Input type="text" className={`${styles.formControl}`} id="inputTopic" />
-                                            </Form1.Item>
+                        <div className="mb-3 row">
+                          <Form1.Item
+                            name="type_of_booking"
+                            label={
+                              <span className={styles.formLabel}>
+                                Type of booking*:
+                              </span>
+                            }
+                            rules={[
+                              {
+                                required: true,
+                                message: (
+                                  <span className={styles.errorMessage}>
+                                    This field is required!
+                                  </span>
+                                ),
+                              },
+                            ]}
+                          >
+                            <select
+                              className={`${styles.formSelect}`}
+                              aria-label="Default select example"
+                            >
+                              <option selected>Choose type of booking</option>
+                              <option value="1">Meeting</option>
+                              <option value="2">Personal use</option>
+                              <option value="3">Unavailable</option>
+                            </select>
+                          </Form1.Item>
+                        </div>
+                        <div className="mb-3 row">
+                          <Form1.Item
+                            label={
+                              <span className={styles.formLabel}>Room*:</span>
+                            }
+                            name="room"
+                          >
+                            <Selects
+                              options={roomData.map((room) => ({
+                                label: room.name,
+                                value: room.name,
+                              }))}
+                              className={styles.roomselect}
+                              onChange={handleSelectChange}
+                            />
+                            {selectedRoom && (
+                              <Layout
+                                style={{
+                                  backgroundColor: "#EAEEF6",
+                                  width: 370,
 
-                                    </div>
-                                    <div className="mb-3 row" >
-                                    <Form1.Item
-                                            name="type_of_booking" 
-                                            label={<span className={styles.formLabel}>Type of booking*:</span>}
-                                            rules={[
-                                                {
-                                                required: true,
-                                                message: (
-                                                    <span className={styles.errorMessage}>
-                                                    This field is required!
-                                                    </span>
-                                                ),
-                                                },
-                                            ]}
-                                            >
-                                        <select className={`${styles.formSelect}`} aria-label="Default select example">
-                                                <option selected>Choose type of booking</option>
-                                                <option value="1">Meeting</option>
-                                                <option value="2">Personal use</option>
-                                                <option value="3">Unavailable</option>
-                                        </select>
-                                        </Form1.Item>
-                                    </div>
-                                    <div className="mb-3 row" >
-                                    <Form1.Item label={<span className={styles.formLabel}>Room*:</span>} name="room">
-                                        <Selects
-                                            options={roomData.map((room) => ({
-                                                label: room.name,
-                                                value: room.name,
-                                              }))}
-                                              className={styles.roomselect}
-                                              onChange={handleSelectChange}
-                                            />
-                                            {selectedRoom && (
-                                            <Layout
-                                            style={{
-                                                backgroundColor: "#EAEEF6",
-                                                width: 370,
-
-                                                borderRadius: 8,
-                                                marginTop: 16,
-                                                padding: 8,
-                                            }}
-                                            content="center"
-                                            >
-                                            <Card
-                                                bordered={false}
-                                                style={{
-                                                backgroundColor: "#EAEEF6",
-                                                padding: 0,
-                                                boxShadow: "none",
-                                                }}
-                                                cover={
-                                                <Image
-                                                    alt="example"
-                                                    width={354}
-                                                    height={197}
-                                                    preview={true}
-                                                />
-                                                }
-                                            >
-                                                <Meta />
-                                                <div className="inforRoom">
-                                                <span>
-                                                    <strong>Capacity: </strong>
-                                                </span>
-                                                <br />
-                                                <span>
-                                                    <strong>Location: </strong>
-                                                </span>
-                                                <br />
-                                                <span>
-                                                    <strong>Floor: </strong>
-                                                </span>
-                                                <br />
-                                                <span>
-                                                    <strong>Equipment: </strong>
-                                                </span>
-                                                </div>
-                                            </Card>
-                                            </Layout>
-                                            )}
-                                        </Form1.Item>
-                                    </div>
-                                    <div className="mb-3 row" >
-                                    <Form1.Item
-                                            label={<span className={styles.formLabel}>Date*:</span>}
-                                            >
-                                        <div className={styles.dateTimePicker}>
-                                                <div className={styles.date}>
-                                                        <Space direction="vertical">
-                                                            <DatePicker selected={selectedDate} onChange={onChange} showToday={false} style={{ width:'181px',height:'44px' }}/>
-                                                        </Space>
-                                                </div>
-                                                <div>
-                                                    <Selects className={ styles.selectedDate } />
-                                                </div>
-                                            </div>
-                                        </Form1.Item>
-                                    </div>
-                                    <div className="mb-3 row" style={{ alignItems:'center' }}>
-                                    <Form1.Item
-                                            label={<span className={styles.formLabel}>Time*:</span>}
-                                            rules={[
-                                                {
-                                                required: true,
-                                                message: (
-                                                    <span className={styles.errorMessage}>
-                                                    This field is required!
-                                                    </span>
-                                                ),
-                                                },
-                                            ]}
-                                            >
-                                        <div className={styles.dateTimePicker}>
-                                                <div className={styles.time}>
-                                                    <Form1.Item name="from_time">
-                                                        <CustomTimePicker onChange={handleStartTimeChange}></CustomTimePicker>
-                                                    </Form1.Item>
-                                                    <p>To:</p>
-                                                    <Form1.Item name="to_time">
-                                                        <CustomTimePicker onChange={handleEndTimeChange}></CustomTimePicker>
-                                                    </Form1.Item>
-                                                </div>
-                                            </div>
-                                        </Form1.Item>
-                                    </div>
-                                </div>
-                                <div className="col-md-6 ml-2">
-                                    <div className="mb-3 row" >
-                                        <label htmlFor="inputGuest" className={`col-4 ${styles.formLabel}`}>
-                                            Guest:
-                                        </label>
-                                        <div className="col-8">
-                                            <input type="text" className={`${styles.formControl}`} id="inputGuest" />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row" >
-                                        <label htmlFor="inputGuest" className={`col-4 ${styles.formLabel}`}>
-                                            Agenda:
-                                        </label>
-                                        <div className="col-8">
-                                        <TextArea
-                                            placeholder="Agenda"
-                                            autoSize={{ minRows: 3, maxRows: 5 }}
-                                            className={`${styles.formControl1}`}
-                                        />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row" >
-                                        <label htmlFor="inputObject" className={`col-4 ${styles.formLabel}`}>
-                                            Objective:
-                                        </label>
-                                        <div className="col-8">
-                                        <TextArea
-                                            placeholder="Objective"
-                                            autoSize={{ minRows: 3, maxRows: 5 }}
-                                            className={`${styles.formControl1}`}
-                                        />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row" >
-                                        <label htmlFor="inputMaterial" className={`col-4 ${styles.formLabel}`}>
-                                                Material:
-                                        </label>
-                                        <div className={`col-8 ${styles.materialpush}`}>
-                                            <div className='col-4'>
-                                                {/* <Upload {...props}>
+                                  borderRadius: 8,
+                                  marginTop: 16,
+                                  padding: 8,
+                                }}
+                                content="center"
+                              >
+                                <Card
+                                  bordered={false}
+                                  style={{
+                                    backgroundColor: "#EAEEF6",
+                                    padding: 0,
+                                    boxShadow: "none",
+                                  }}
+                                  cover={
+                                    <Image
+                                      alt="example"
+                                      width={354}
+                                      height={197}
+                                      preview={true}
+                                    />
+                                  }
+                                >
+                                  <Meta />
+                                  <div className="inforRoom">
+                                    <span>
+                                      <strong>Capacity: </strong>
+                                    </span>
+                                    <br />
+                                    <span>
+                                      <strong>Location: </strong>
+                                    </span>
+                                    <br />
+                                    <span>
+                                      <strong>Floor: </strong>
+                                    </span>
+                                    <br />
+                                    <span>
+                                      <strong>Equipment: </strong>
+                                    </span>
+                                  </div>
+                                </Card>
+                              </Layout>
+                            )}
+                          </Form1.Item>
+                        </div>
+                        <div className="mb-3 row">
+                          <Form1.Item
+                            label={
+                              <span className={styles.formLabel}>Date*:</span>
+                            }
+                          >
+                            <div className={styles.dateTimePicker}>
+                              <div className={styles.date}>
+                                <Space direction="vertical">
+                                  <DatePicker
+                                    selected={selectedDate}
+                                    onChange={onChange}
+                                    showToday={false}
+                                    style={{ width: "181px", height: "44px" }}
+                                  />
+                                </Space>
+                              </div>
+                              <div>
+                                <Selects className={styles.selectedDate} />
+                              </div>
+                            </div>
+                          </Form1.Item>
+                        </div>
+                        <div
+                          className="mb-3 row"
+                          style={{ alignItems: "center" }}
+                        >
+                          <Form1.Item
+                            label={
+                              <span className={styles.formLabel}>Time*:</span>
+                            }
+                            rules={[
+                              {
+                                required: true,
+                                message: (
+                                  <span className={styles.errorMessage}>
+                                    This field is required!
+                                  </span>
+                                ),
+                              },
+                            ]}
+                          >
+                            <div className={styles.dateTimePicker}>
+                              <div className={styles.time}>
+                                <Form1.Item name="from_time">
+                                  <CustomTimePicker
+                                    onChange={handleStartTimeChange}
+                                  ></CustomTimePicker>
+                                </Form1.Item>
+                                <p>To:</p>
+                                <Form1.Item name="to_time">
+                                  <CustomTimePicker
+                                    onChange={handleEndTimeChange}
+                                  ></CustomTimePicker>
+                                </Form1.Item>
+                              </div>
+                            </div>
+                          </Form1.Item>
+                        </div>
+                      </div>
+                      <div className="col-md-6 ml-2">
+                        <div className="mb-3 row">
+                          <label
+                            htmlFor="inputGuest"
+                            className={`col-4 ${styles.formLabel}`}
+                          >
+                            Guest:
+                          </label>
+                          <div className="col-8">
+                            <input
+                              type="text"
+                              className={`${styles.formControl}`}
+                              id="inputGuest"
+                            />
+                          </div>
+                        </div>
+                        <div className="mb-3 row">
+                          <label
+                            htmlFor="inputGuest"
+                            className={`col-4 ${styles.formLabel}`}
+                          >
+                            Agenda:
+                          </label>
+                          <div className="col-8">
+                            <TextArea
+                              placeholder="Agenda"
+                              autoSize={{ minRows: 3, maxRows: 5 }}
+                              className={`${styles.formControl1}`}
+                            />
+                          </div>
+                        </div>
+                        <div className="mb-3 row">
+                          <label
+                            htmlFor="inputObject"
+                            className={`col-4 ${styles.formLabel}`}
+                          >
+                            Objective:
+                          </label>
+                          <div className="col-8">
+                            <TextArea
+                              placeholder="Objective"
+                              autoSize={{ minRows: 3, maxRows: 5 }}
+                              className={`${styles.formControl1}`}
+                            />
+                          </div>
+                        </div>
+                        <div className="mb-3 row">
+                          <label
+                            htmlFor="inputMaterial"
+                            className={`col-4 ${styles.formLabel}`}
+                          >
+                            Material:
+                          </label>
+                          <div className={`col-8 ${styles.materialpush}`}>
+                            <div className="col-4">
+                              {/* <Upload {...props}>
                                                     <Button>Choose a file</Button>
                                                 </Upload> */}
-                                            </div>
-                                            <div className='col-4'>
-                                                {/* <Upload {...props}>
+                            </div>
+                            <div className="col-4">
+                              {/* <Upload {...props}>
                                                     <Button>Share a link</Button>
                                                 </Upload> */}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
+                          </div>
                         </div>
-                        <div className={`${styles.checkbox}`}>
-                                <input type="checkbox" name="" id=""/>
-                                <h6>Share meeting information to the organization</h6>
-                        </div>
-
-                        <div className="modal-footer" style={{ borderTop:'unset', justifyContent:'center' }}>
-                            <button type="button" className={`${styles.buttonAdd} ${formCompleted ? styles.formCompleted : ''}`}  onClick={handleSubmit} >
-                                BOOK NOW
-                            </button>
-                            <button type="button" className={styles.buttonCancel}  data-bs-dismiss="modal">
-                                CLOSE
-                            </button>
-                            <Progress style={{width:'50%',display: 'flex',justifyContent:'center',margin: '24px auto'}} percent={currentProgress} status="active" showInfo={false} strokeColor="#388697"/>
-                        </div>
-                    </Form1>
+                      </div>
                     </div>
-                </div>
+                  </div>
+                  <div className={`${styles.checkbox}`}>
+                    <input type="checkbox" name="" id="" />
+                    <h6>Share meeting information to the organization</h6>
+                  </div>
+
+                  <div
+                    className="modal-footer"
+                    style={{ borderTop: "unset", justifyContent: "center" }}
+                  >
+                    {JSON.stringify(formCompleted)}
+                    <button
+                      type="button"
+                      className={`${styles.buttonAdd} ${
+                        formCompleted ? styles.formCompleted : ""
+                      }`}
+                      onClick={handleSubmit}
+                      data-bs-dismiss={!formCompleted ? 'modal' : ''}
+                    >
+                      BOOK NOW
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.buttonCancel}
+                      data-bs-dismiss="modal"
+                    >
+                      CLOSE
+                    </button>
+                    <Progress
+                      style={{
+                        width: "50%",
+                        display: "flex",
+                        justifyContent: "center",
+                        margin: "24px auto",
+                      }}
+                      percent={currentProgress}
+                      status="active"
+                      showInfo={false}
+                      strokeColor="#388697"
+                    />
+                  </div>
+                </Form1>
+              </div>
             </div>
-            )}
-            {step === 2 && <AddInforGuest openModal={handleOpenAddInforModal} closeModal={handleCloseAddInforModal} step1Data={step1Data}></AddInforGuest>}
-        </>
-    )
+          </div>
+        )}
+        {step === 2 && (
+          <AddInforGuest
+            openModal={handleOpenAddInforModal}
+            closeModal={handleCloseAddInforModal}
+            step1Data={step1Data}
+          ></AddInforGuest>
+        )}
+      </>
+    );
 }
