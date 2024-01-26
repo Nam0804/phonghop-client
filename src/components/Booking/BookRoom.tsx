@@ -136,7 +136,8 @@ export default function BookRoom({onAddSuccess }:any) {
                   meeting_room_id: 1,
                     from_time: `${selectedDate} ${moment(startTime,'HH:mm A').format('HH:mm:ss')}`,
                     to_time: `${selectedDate} ${moment(endTime,'HH:mm A').format('HH:mm:ss')}`,
-                    repeat_type:1
+                    repeat_type:1,
+                    sharing_confirmation: form.getFieldValue('sharing_confirmation') ? 1 : 0,
                 };
 
                 const bookingResponse = await api.post('external-bookings', values,
@@ -402,7 +403,7 @@ export default function BookRoom({onAddSuccess }:any) {
                             </div>
                         </div>
                         <div className={`${styles.checkbox}`}>
-                                <input type="checkbox" name="" id=""/>
+                                <input type="checkbox" name="sharing_confirmation" id=""/>
                                 <h6>Share meeting information to the organization</h6>
                         </div>
 
