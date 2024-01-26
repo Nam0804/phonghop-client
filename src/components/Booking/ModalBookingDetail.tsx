@@ -25,7 +25,6 @@ import "@/css/BookingDetail.css";
 import momment from "moment";
 import "bootstrap/dist/css/bootstrap.min.css";
 const ModalBookingDetail = ({rec, formBookingDetail, visible, handleCancel}:any) => {
-    console.log(rec);
     const timeString = momment(rec.from_time).format("HH:mm A");
     const timeString2 = momment(rec.to_time).format("HH:mm A");
     const dateString = momment(rec.from_time).format("DD MMM YYYY");

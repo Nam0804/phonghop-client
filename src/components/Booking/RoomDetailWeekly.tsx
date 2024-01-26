@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import DeleteUser from "@/components/User/deleteUser/deleteUser";
 import ModalBookingDetail from "@/components/Booking/ModalBookingDetail"
 interface BookingDetails {
+    type_of_booking: any;
     topic: string;
     type: string;
     room: string;
@@ -40,6 +41,7 @@ const RoomDetailWeekly = ({calendarRef, events, renderEventContent, fetchAllBook
         objective: '',
         materials: '',
         meeting_room: '',
+        type_of_booking: ''
     });
     const [formBookingDetail] = Form.useForm();
 
@@ -60,7 +62,6 @@ const RoomDetailWeekly = ({calendarRef, events, renderEventContent, fetchAllBook
             const response = await api.get(`/bookings/${booking_id}`);
             const res = get(response, 'data.data');
             await setBookingDetails({...res});
-            console.log(bookingDetails)
             setVisible(true);
         } catch (error) {
             console.error('Error fetching booking details:', error);
