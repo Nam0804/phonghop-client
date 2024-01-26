@@ -52,11 +52,7 @@ export default function BookRoom({onAddSuccess }:any) {
         }
       };
 
-<<<<<<< Updated upstream
-    const handleCheckboxChange = (e: any) => {
-=======
     const handleCheckboxChange = (e:any) => {
->>>>>>> Stashed changes
         setIsChecked(e.target.checked);
     };
     // const generateRepeatOptions = (date: Date | null) => {
