@@ -122,6 +122,7 @@ const UserPage = () => {
         return <div className={styles.headerTitle}>Action</div>;
       },
       key: "action",
+      align: "center",
       render: (_, record: any) => (
         <Space size="middle" style={{ alignItems: "center" }}>
           <StaffInfomation rec={record}></StaffInfomation>

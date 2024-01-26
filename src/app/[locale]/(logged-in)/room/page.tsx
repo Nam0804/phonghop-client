@@ -188,6 +188,7 @@ const CompanyList = () => {
         {
           title: "Action",
           key: "action",
+          align: "center",
           render: (_, record) => (
             <Space size="middle">
               <EditRoom
