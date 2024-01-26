@@ -18,8 +18,11 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import Link from "next/link";
 import { useLocale } from "next-intl";
+import { useDispatch } from 'react-redux';
+import { setSelectedRoom } from "@/lib/features/room/roomSlice";
 
 const CompanyList = () => {
+  const dispatch = useDispatch();
   const locale = useLocale();
   const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
@@ -66,8 +69,9 @@ const CompanyList = () => {
     const handleEditSuccess = () => {
       fetchData();
     };
+    const [selectedRoomName, setSelectedRoomName] = useState('all');
     const handleSelectChange = (event:any) => {
-      const selectedRoomName = event.target.value;
+      setSelectedRoomName(event.target.value);
       if (selectedRoomName === "all") {
         setFilteredRooms(allRoomsData);
       } else {
@@ -156,12 +160,12 @@ const CompanyList = () => {
         {
             title: 'View Room Detail',
             key: 'book',
-            dataIndex: 'book',
-            render: (_, { availabilitys }) => {
+            render: (_,record,availabilitys) => {
                const color = availabilitys ? '#8B8B8B' : '#388697';
+               
                return (
-                   <Tag color={color} key={_}>
-                       <Link href={`/${locale}/calendar`} style={{textDecoration:"none"}}>Book</Link>
+                   <Tag key={record.key} color={color}>
+                       <Link href={`/${locale}/room/${record.id}`} style={{textDecoration:"none"}} onClick={() => dispatch(setSelectedRoom(record))}>Book</Link>
                    </Tag>
                );
             },
@@ -240,11 +244,11 @@ const CompanyList = () => {
             title: 'View Room Detail',
             key: 'book',
             dataIndex: 'book',
-            render: (_, { availabilitys }) => {
+            render: (_, { availabilitys },record) => {
                const color = availabilitys ? '#8B8B8B' : '#388697';
                return (
                    <Tag color={color} key={_}>
-                       <Link href={`/${locale}/calendar`} style={{textDecoration:"none"}}>Book</Link>
+                       <Link href={`/${locale}/room/detail/${record}`} style={{textDecoration:"none"}}>Book</Link>
                    </Tag>
                );
             },
@@ -257,7 +261,7 @@ const CompanyList = () => {
                     <div className={styles.square}>
                     </div>
                     <h1 className={styles.label}>Meeting Room List</h1>
-                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></span>
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" ><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></span>
                 </div>
                 <p className={customstyle.text}>View By:</p>
                 <div className={customstyle.selectsection}>
@@ -277,7 +281,7 @@ const CompanyList = () => {
                     </div>
                     <div className={customstyle.roomPicker}>
                         <p>Choose a room</p>
-                        <select onChange={(e) => handleSelectChange(e)}>
+                        <select onChange={(e) => handleSelectChange(e)} value={selectedRoomName}>
                         <option value="all">All Rooms</option>
                           {allRoomsData.map((room) => (
                             <option key={room.id} value={room.name}>
@@ -306,8 +310,6 @@ const CompanyList = () => {
                            body: {
                                cell: (props: any) => {
                                    const isEvenRow = props.index % 2 === 0;
-                                   console.log(isEvenRow)
-
                                    return (
                                        <td
                                            className={styles.customTable}

@@ -31,3 +31,4 @@ export default function LocaleLayout({ children, params: { locale } }: any) {
     </SpinFC>
   );
 }
+

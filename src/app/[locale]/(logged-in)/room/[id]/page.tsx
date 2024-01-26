@@ -17,6 +17,9 @@ import toast from "react-hot-toast";
 import RoomDetailWeekly from "@/components/Booking/RoomDetailWeekly";
 import DayView from "@/components/Room/DayView";
 import BookRom from "@/components/Booking/BookRoom"
+import { useDispatch } from 'react-redux';
+import { setSelectedRoom } from "@/lib/features/room/roomSlice";
+import { useRouter } from "next/navigation";
 
 const Index = () => {
     interface Room {
@@ -29,29 +32,50 @@ const Index = () => {
         renderEventContent: (eventInfo: any) => Element;
         // Other props...
     }
-
+    const dispatch = useDispatch();
     const dateFormatforButtonChangeWeek = moment().format("MMMM DD, YYYY");
     const [title, settitle] = useState<string>(dateFormatforButtonChangeWeek);
     const calendarRef = useRef<FullCalendar>(null);
     const [roomList, setRoomList] = useState<Room[]>([]);
-    const [selectedRoom, setSelectedRoom] = useState("");
+
+    const [selectedRoomId, setSelectedRoomId] = useState<any | undefined>('');    
     const [selectedCheckbox, setSelectedCheckbox] = useState("allMeetings");
     const [initialCheckbox, setInitialCheckbox] = useState("allMeetings");
     const [events, setEvents] = useState([{}]);
     const [selectView, setSelectView] = useState<string>("Day");
     const user = useSelector((state: any) => state.user.value);
     const company_id = user.company_id;
+    const [selectedRoomInfo, setSelectedRoomInfo] = useState<any>();
 
-    const fetchRoom = useCallback(async () => {
+    const handleRoomSelectChange = (e:any) => {
+        const selectedId = e.target.value;
+        setSelectedRoomId(selectedId);
+        let selectedRoom = roomList.find((room) => room.id == selectedId);
+        setSelectedRoomInfo(selectedRoom);
+      };
+    //dispatch(setSelectedRoom(selectedRoomInfo))
+      
+    useEffect(() => {
+        
+        
+        const fetchRoom = async () => {
         try {
-            const response = await api.get(`/meeting-rooms/listing`);
+            const response = await api.get(`/meeting-rooms/listing`,{
+                params:{
+                    company_id: company_id,
+                }
+            });
             const rooms = get(response, "data.data", []);
             setRoomList(rooms);
         } catch (error) {
             console.error(error);
             toast.error("Error");
         }
-    }, []);
+    };
+    fetchRoom();
+    },[selectedRoomId]);
+
+
 
     const handleCheckboxChange = (id: any) => {
         setSelectedCheckbox(id);
@@ -101,20 +125,29 @@ const Index = () => {
 
     const fetchMyBookingHistory = useCallback(async () => {
         try {
-            const response = await api.get(`/bookings/history/${user.id}`);
+            const response = await api.get(`/bookings/history/${user.id}`,{
+                params:{
+                    company_id: company_id,
+                    room_id: selectedRoomId
+                }
+            });
             const myBookings = get(response, "data.data", []);
             return myBookings;
         } catch (error) {
             console.error(error);
             toast.error("Error");
         }
-    }, []);
+    }, [selectedRoomId]);
+    useEffect(() => {
+        fetchMyBookingHistory();
+      }, [fetchMyBookingHistory]);
 
     const fetchAllBookingHistory = useCallback(async () => {
         try {
             const response = await api.get(`/bookings`, {
                 params:{
-                    company_id: company_id
+                    company_id: company_id,
+                    room_id: selectedRoomId
                 }
             });
             const allBookings = get(response, "data.data", []);
@@ -123,15 +156,8 @@ const Index = () => {
             console.error(error);
             toast.error("Error");
         }
-    }, []);
+    }, [selectedRoomId]);
 
-    useEffect(() => {
-        fetchRoom();
-    }, [fetchRoom]);
-
-    const handleRoomChange = (event: any) => {
-        setSelectedRoom(event.target.value);
-    };
 
     const nextHandle = () => {
         if (calendarRef.current) {
@@ -269,8 +295,8 @@ const Index = () => {
                                 <p className={styles.text}>View As:</p>
                                 <select
                                     className={styles.roomPicker}
-                                    value={selectedRoom}
-                                    onChange={handleRoomChange}
+                                    value={selectedRoomInfo ? selectedRoomInfo.name : ''}
+                                    onChange={handleRoomSelectChange}
                                 >
                                     <option value="" disabled>
                                         Select a room
@@ -361,6 +387,19 @@ const Index = () => {
                         )}
                     </div>
                 </Layout>
+                <div>
+                    {selectedRoomInfo ? (
+                        <div>
+                            <h2>{selectedRoomInfo.name}</h2>
+                            <p>Location: {selectedRoomInfo.location}</p>
+                            <p>Floor: {selectedRoomInfo.floor}</p>
+                            <p>Capacity: {selectedRoomInfo.capacity}</p>
+                            {/* Thêm các trường thông tin khác nếu có */}
+                        </div>
+                    ) : (
+                        <p>Select a room to view details.</p>
+                    )}
+                </div>
             </div>
         </>
     );

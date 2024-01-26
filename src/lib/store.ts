@@ -2,6 +2,7 @@ import { MiddlewareArray, combineReducers, configureStore } from '@reduxjs/toolk
 import userReducer from './features/user/userSlice'
 import loadingReducer from './features/loadingSlice'
 import profileReducer from '@/lib/slices/profileSlice'
+import setSelectedRoom from './features/room/roomSlice'
 import {
     persistReducer,
     FLUSH,
@@ -19,6 +20,8 @@ const rootReducer = combineReducers({
     user: userReducer,
     loading: loadingReducer,
     profile: profileReducer,
+    room: setSelectedRoom,
+
     [profileApi.reducerPath]: profileApi.reducer,
 })
 
