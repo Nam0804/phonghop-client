@@ -1,11 +1,10 @@
 'use client'
 import React, { useCallback } from "react";
 import styles from '@/css/CompanyList.module.css'
-import Button from "@/constants/Form/Button";
-import Modal from "@/constants/Modal/ChangePasswordModal";
+import customstyle from "@/css/MeetingRoomList.module.css";
 import AddNewCompany from "@/components/Admin/AddNewCompany";
-import { Table, Tag } from 'antd';
-import { DatePicker, Space } from 'antd';
+import { Table, Tooltip} from 'antd';
+import {Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from "react";
 import DeleteCompany from "@/components/DeleteCompany/DeleteCompany";
@@ -14,6 +13,7 @@ import { get } from "lodash";
 import toast from "react-hot-toast";
 import EditNewCompany from "@/components/Admin/EditNewCompany";
 import InformationCompany from "@/components/Admin/InfomationCompany";
+import '@/css/Table.module.css';
 
 const CompanyPage = () => {
   const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
@@ -63,82 +63,121 @@ const CompanyPage = () => {
   }
   const columns: ColumnsType<DataType> = [
     {
-      title: 'No',
-      dataIndex: 'id',
-      key: 'id',
+      title: "No",
+      dataIndex: "id",
+      key: "id",
       render: (number) => <a>{number}</a>,
       sorter: (a, b) => a.no - b.no,
       width: 60,
-      fixed: 'left',
+      fixed: "left",
     },
     {
-      title: 'Company Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Company Name",
+      dataIndex: "name",
+      key: "name",
       sorter: (a, b) => a.name.localeCompare(b.name),
-      fixed: 'left',
+      fixed: "left",
     },
     {
-      title: 'Company Domain',
-      dataIndex: 'domain',
-      key: 'domain',
+      title: "Company Domain",
+      dataIndex: "domain",
+      key: "domain",
       sorter: (a, b) => a.domain.localeCompare(b.domain),
       width: 149,
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-      width: 159
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+      width: 159,
     },
     {
-      title: 'Manager Name',
-      dataIndex: ['manager', 'manager_name'],
-      key: 'manager[manager_name]',
+      title: "Manager Name",
+      dataIndex: ["manager", "manager_name"],
+      key: "manager[manager_name]",
       width: 128,
     },
     {
-      title: 'Manager Title',
-      dataIndex: ['manager', 'manager_title'],
-      key: 'manager[manager_title]',
+      title: "Manager Title",
+      dataIndex: ["manager", "manager_title"],
+      key: "manager[manager_title]",
       width: 143,
     },
     {
-      title: 'Email',
-      dataIndex: ['manager', 'manager_email'],
-      key: 'manager[manager_email]',
+      title: "Email",
+      dataIndex: ["manager", "manager_email"],
+      key: "manager[manager_email]",
     },
     {
-      title: 'Manager Phone Number',
-      dataIndex: ['manager', 'manager_phone'],
-      key: 'manager[manager_phone]',
+      title: "Manager Phone Number",
+      dataIndex: ["manager", "manager_phone"],
+      key: "manager[manager_phone]",
       width: 145,
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: "Action",
+      key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <InformationCompany rec={record} ></InformationCompany>
-          <button key="skipdownline" className={styles.custombutton}><img src="/skipdownline.svg"></img></button>
-          <EditNewCompany rec={record} onEditSuccess={handleEditSuccess}></EditNewCompany>
-          <DeleteCompany company_id={record.id} onDeleteSuccess={handleDeleteSuccess}></DeleteCompany>
+          <InformationCompany rec={record}></InformationCompany>
+          <Tooltip title="Quick Access">
+            <button key="skipdownline" className={styles.custombutton}>
+              <img src="/skipdownline.svg"></img>
+            </button>
+          </Tooltip>
+
+          <EditNewCompany
+            rec={record}
+            onEditSuccess={handleEditSuccess}
+          ></EditNewCompany>
+          <DeleteCompany
+            company_id={record.id}
+            onDeleteSuccess={handleDeleteSuccess}
+          ></DeleteCompany>
         </Space>
       ),
-      fixed: 'right',
+      fixed: "right",
       width: 191,
     },
   ];
   return (
     <div className={styles.container}>
       <div className={styles.labelsection}>
-        <div className={styles.square}>
-        </div>
+        <div className={styles.square}></div>
         <h1 className={styles.label}>Company List</h1>
       </div>
       <div className={styles.companytable}>
-        <Table columns={columns} dataSource={allStaffData}
-          scroll={{ x: 1300 }} pagination={false} rowKey={(record) => record.id}
+        <Table
+          columns={columns}
+          bordered
+          dataSource={allStaffData}
+          scroll={{ x: 1300 }}
+          pagination={false}
+          rowKey={(record) => record.id}
+          // className={customstyle.customtable}
+          components={{
+            header: {
+              cell: (props: any) => (
+                <th
+                  style={{
+                    background: "#255D6A",
+                    color: "#fff",
+                    borderRight: "1px solid #ffffff",
+                  }}
+                >
+                  {props.children}
+                </th>
+              ),
+            },
+            body: {
+              cell: (props: any) => {
+                const isEvenRow = props.index % 2 === 0;
+                // console.log(isEvenRow);
+
+                return <td className={styles.customTable}>{props.children}</td>;
+              },
+            },
+          }}
         />
       </div>
       <div className={styles.addco}>

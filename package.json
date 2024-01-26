@@ -48,6 +48,7 @@
     "react-select": "^5.8.0",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
+    "sass": "^1.70.0",
     "sort-by": "^0.0.2",
     "tui-date-picker": "^4.3.3",
     "validator": "^13.11.0",
