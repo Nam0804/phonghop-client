@@ -43,7 +43,7 @@ export default function BookRoom({onAddSuccess }:any) {
     const [selectedDate, setSelectedDate] = useState('');
     const [roomData, setRoomData] = useState<DataType[]>([]);
     const [selectedRoom, setSelectedRoom] = useState<string>('');
-
+    const [isChecked, setIsChecked] = useState(true);
     const handleSelectChange = (value: SingleValue<{ label: string; value: string; }>) => {
         if (value) {
           setSelectedRoom(value.value);
@@ -51,8 +51,30 @@ export default function BookRoom({onAddSuccess }:any) {
           setSelectedRoom("");
         }
       };
-      
 
+    const handleCheckboxChange = (e:any) => {
+        setIsChecked(e.target.checked);
+    };
+    // const generateRepeatOptions = (date: Date | null) => {
+    //     const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
+      
+    //     return [
+    //       { value: 'no-repeat', label: 'Doesn’t repeat' },
+    //       { value: 'every-weekday', label: 'Every weekday' },
+    //       {
+    //         value: 'weekly',
+    //         label: `Weekly - ${date ? dayOfWeek : '(Select a date)'}`,
+    //       },
+    //       {
+    //         value: 'monthly',
+    //         label: `Monthly - ${date ? dayOfWeek : '(Select a date)'}`,
+    //       },
+    //       {
+    //         value: 'annually',
+    //         label: `Annually - ${date ? dayOfWeek : '(Select a date)'}`,
+    //       },
+    //     ];
+    //   };
 
     const handleRepeatChange = (selectedOption: { value: string; label: string } | null) => {
         setRepeatType(selectedOption);
@@ -137,7 +159,7 @@ export default function BookRoom({onAddSuccess }:any) {
                     from_time: `${selectedDate} ${moment(startTime,'HH:mm A').format('HH:mm:ss')}`,
                     to_time: `${selectedDate} ${moment(endTime,'HH:mm A').format('HH:mm:ss')}`,
                     repeat_type:1,
-                    sharing_confirmation: form.getFieldValue('sharing_confirmation') ? 1 : 0,
+                    room_status: isChecked ? 1 : 0,
                 };
 
                 const bookingResponse = await api.post('external-bookings', values,
@@ -403,7 +425,11 @@ export default function BookRoom({onAddSuccess }:any) {
                             </div>
                         </div>
                         <div className={`${styles.checkbox}`}>
-                                <input type="checkbox" name="sharing_confirmation" id=""/>
+                                <input type="checkbox"
+                                       name=""
+                                       id=""
+                                       checked={isChecked}
+                                       onChange={handleCheckboxChange}/>
                                 <h6>Share meeting information to the organization</h6>
                         </div>
 

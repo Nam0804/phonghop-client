@@ -14,12 +14,8 @@ import DeleteCompany from "@/components/DeleteCompany/DeleteCompany";
 import api from "@/axiosService";
 import { get } from "lodash";
 import toast from "react-hot-toast";
-import EditNewCompany from "@/components/Admin/EditNewCompany";
-import InformationCompany from "@/components/Admin/InfomationCompany";
-import { useSelector } from 'react-redux'
-import { useAppDispatch } from '@/lib/hooks';
-import { setLoading } from '@/lib/features/loadingSlice';
-import BookRoom from "@/components/Booking/BookRoom";
+import {useSelector} from 'react-redux'
+import {useAppDispatch} from '@/lib/hooks';
 import BookingEditDetail from "../Manager/Booking/BookingEditDetail";
 
 const MyBookingHistory = () => {

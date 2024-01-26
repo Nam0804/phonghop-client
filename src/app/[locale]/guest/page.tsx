@@ -11,63 +11,29 @@ import { useEffect, useState, useCallback } from "react";
 import { get } from "lodash";
 import toast from "react-hot-toast";
 import {useSelector} from 'react-redux';
-import moment from "moment";
 
 const HomePage = () => {
     const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
     const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
-    const [selectedTimeStartValue, setSelectedTimeStartValue] = useState('');
-    const [selectedTimeEndValue, setSelectedTimeEndValue] = useState('');
-    const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
-    const [selectedDate, setSelectedDate] = useState('');
-    const user = useSelector((state:any) => state.user.value);
-    const company_id = user.company_id;
-    const usertype = user.type;
     
 
     const fetchData = useCallback(async () => {
-      try {
-        const url =window.location.href;
-        const registerurl = `${url}/${company_id}`;
-        const formattedStartTime = moment(selectedTimeStartValue, 'hh:mm A').format('HH:mm:ss');
-        const formattedEndTime = moment(selectedTimeEndValue, 'hh:mm A').format('HH:mm:ss');
-        const data = await api.get(`allroom/${company_id}`, {
-          params: {
-            starttime: `${selectedDate} ${formattedStartTime}`,
-            endtime: `${selectedDate} ${formattedEndTime}`
-          }
-        });
+    try {
+
         
-        setAllRoomData(data.data.data)
-        setFilteredRooms(data.data.data);
+        // const data = await api.get('meeting-rooms/listing')
+        // console.log(data.data.data.data);
+        // const res = get(data, 'data.data.data')  
+        // setAllRoomData(res)
         } catch (error) {
-          console.error(error);
-          toast.error('Error');
-  
+        console.error(error);
+        toast.error('Error');
+
         }
-      }, [selectedDate, selectedTimeStartValue, selectedTimeEndValue])
+    }, [])
     useEffect(() => {
         fetchData()
     }, []);
-
-    const handleSelectChange = (event:any) => {
-        const selectedRoomName = event.target.value;
-        if (selectedRoomName === "all") {
-          setFilteredRooms(allRoomsData);
-        } else {
-          const filteredRooms = allRoomsData.filter((room) => room.name === selectedRoomName);
-          setFilteredRooms(filteredRooms);
-        }
-     };
-
-    const handleTimeStartChange = (newTimeStart:any) => {
-        setSelectedTimeStartValue(newTimeStart);
-        fetchData();
-      };
-      const handleTimeEndChange = (newTimeEnd:any) => {
-        setSelectedTimeEndValue(newTimeEnd);
-        fetchData();
-      };
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
         console.log(date, dateString);
       };
@@ -75,7 +41,7 @@ const HomePage = () => {
         id:number;
         key: string;
         no: number;
-        name: string;
+        roomname: string;
         location: string;
         capacity:number;
         equipment:string;
@@ -96,7 +62,7 @@ const HomePage = () => {
           title: 'Room Name',
           dataIndex: 'name',
           key: 'name',
-          sorter:(a,b) => a.name.localeCompare(b.name),
+          sorter:(a,b) => a.roomname.localeCompare(b.roomname),
           fixed:'left',
           width:175,
         },
@@ -177,63 +143,33 @@ const HomePage = () => {
             </div>
             <p className={customstyle.text}>View By:</p>
             <div className={customstyle.selectsection}>
-            <div className={customstyle.dateTimePicker}>
-                        <div className={customstyle.date}>
-                            <p>Date:</p>
-                            <Space direction="vertical">
-                                <DatePicker style={{ width:'221px',height:'36px' }} onChange={onChange} showToday={false}/>
-                            </Space>
-                        </div>
-                        <div className={customstyle.time}>
-                            <p>Time:</p>
-                            <CustomTimePicker onChange={handleTimeStartChange}></CustomTimePicker>
-                            <p>To:</p>
-                            <CustomTimePicker onChange={handleTimeEndChange}></CustomTimePicker>
-                        </div>
+                <div className={customstyle.dateTimePicker}>
+                    <div className={customstyle.date}>
+                        <p>Date:</p>
+                        <Space direction="vertical">
+                            <DatePicker style={{ width:'221px',height:'36px' }} onChange={onChange} showToday={false}/>
+                        </Space>
                     </div>
-                    <div className={customstyle.roomPicker}>
-                        <p>Choose a room</p>
-                        <select onChange={(e) => handleSelectChange(e)}>
-                        <option value="all">All Rooms</option>
-                          {allRoomsData.map((room) => (
-                            <option key={room.id} value={room.name}>
-                              {room.name}
-                            </option>
-                          ))}
-                        </select>
+                    <div className={customstyle.time}>
+                        <p>Time:</p>
+                        <CustomTimePicker></CustomTimePicker>
+                        <p>To:</p>
+                        <CustomTimePicker></CustomTimePicker>
                     </div>
+                </div>
+                <div className={customstyle.roomPicker}>
+                    <p>Choose a room</p>
+                    <select >
+                        <option value="apple">Quả táo</option>
+                        <option value="pear">Quả lê</option>
+                        <option value="peach">Quả đào</option>
+                    </select>
+                </div>
             </div>
             <div className={styles.companytable}>
 
                 <Table columns={columns} dataSource={allRoomsData} 
-                scroll={{x:1000}} className={customstyle.customtable} bordered={true}
-                components={{
-                    header: {
-                        cell: (props: any) => (
-                            <th style={{
-                                background: '#255D6A',
-                                color: '#fff',
-                                borderRight: '1px solid #ffffff',
-                            }}>
-                                {props.children}
-                            </th>
-                        ),
-                    },
-                    body: {
-                        cell: (props: any) => {
-                            const isEvenRow = props.index % 2 === 0;
-                            console.log(isEvenRow)
-
-                            return (
-                                <td
-                                    className={styles.customTable}
-                                >
-                                    {props.children}
-                                </td>
-                            );
-                        },
-                    },
-                }}
+                scroll={{x:1000}} className={customstyle.customtable}
                 />
             </div>
         </div>

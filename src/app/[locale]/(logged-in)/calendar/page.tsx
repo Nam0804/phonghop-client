@@ -23,6 +23,7 @@ const Index = () => {
         id: number;
         name: string;
     }
+
     interface DayViewProps {
         calendarRef: RefObject<FullCalendar>;
         events: {}[];
@@ -73,23 +74,25 @@ const Index = () => {
         if (selectedCheckbox === "myMeeting") {
             const myBookings = await fetchMyBookingHistory();
             const eventMyBooking = myBookings.map((booking: any) => ({
-                title: booking.topic,
+                title: booking.room_status === 1 ? booking.topic : "Private Meeting",
                 start: booking.from_time,
                 end: booking.to_time,
                 allDay: false,
-                backgroundColor: "#388697",
+                backgroundColor: booking.room_status === 1 ? "#388697" : "#323232",
                 booking_user: user.name,
+                booking_id: booking.id
             }));
             setEvents(eventMyBooking);
         } else {
             const allBookings = await fetchAllBookingHistory();
             const eventAllBooking = allBookings.map((booking: any) => ({
-                title: booking.topic,
+                title: booking.room_status === 1 ? booking.topic : "Private Meeting",
                 start: booking.from_time,
                 end: booking.to_time,
                 allDay: false,
-                backgroundColor: "#388697",
+                backgroundColor: booking.room_status === 1 ? "#388697" : "#323232",
                 booking_user: user.name,
+                booking_id: booking.id
             }));
             setEvents(eventAllBooking);
         }
@@ -113,7 +116,7 @@ const Index = () => {
     const fetchAllBookingHistory = useCallback(async () => {
         try {
             const response = await api.get(`/bookings`, {
-                params:{
+                params: {
                     company_id: company_id
                 }
             });
@@ -209,7 +212,7 @@ const Index = () => {
                                                 width: "24px",
                                                 height: "24px",
                                                 backgroundColor: "#388697",
-                                                padding:'0px'
+                                                padding: '0px'
                                             }}
                                         >
                                             <svg
@@ -242,7 +245,7 @@ const Index = () => {
                                                 width: "24px",
                                                 height: "24px",
                                                 backgroundColor: "#388697",
-                                                padding:'0px'
+                                                padding: '0px'
                                             }}
                                         >
                                             <svg
@@ -351,6 +354,7 @@ const Index = () => {
                                 calendarRef={calendarRef}
                                 events={events}
                                 renderEventContent={renderEventContent}
+                                bookingList={fetchAllBookingHistory}
                             />
                         ) : (
                             <DayView
@@ -365,5 +369,4 @@ const Index = () => {
         </>
     );
 };
-
 export default Index;
