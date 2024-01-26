@@ -1,6 +1,8 @@
-.text{
-    color:  #8B8B8B;
-    font-family: 'Open Sans';
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap');
+
+.text {
+    color: #8B8B8B;
+    font-family: 'Be Vietnam Pro';
     font-size: 12px;
     font-style: normal;
     font-weight: 700;
@@ -10,12 +12,14 @@
     margin-bottom: 11px;
     text-transform: uppercase;
 }
+
 .dateTimePicker {
     margin-left: 32px;
 }
-.dateTimePicker .date p,.dateTimePicker .time p,.roomPicker p{
-    color:  #323232;
-    font-family: Be Vietnam Pro;
+
+.dateTimePicker .date p, .dateTimePicker .time p, .roomPicker p {
+    color: #323232;
+    font-family: 'Be Vietnam Pro';
     font-size: 12px;
     font-style: normal;
     font-weight: 700;
@@ -23,7 +27,8 @@
     text-transform: uppercase;
     margin-bottom: 0;
 }
-.roomPicker select{
+
+.roomPicker select {
     display: flex;
     width: 216px;
     height: 32px;
@@ -31,25 +36,44 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 8px;
-    border: 1px solid  #323232;
+    border: 1px solid #323232;
     border-radius: 8px;
+    font-family: 'Be Vietnam Pro';
 }
-.selectsection,.dateTimePicker,.time,.date,.roomPicker{
+
+.selectsection, .dateTimePicker, .time, .date, .roomPicker {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-family: 'Be Vietnam Pro';
 }
-.date{
+
+.date {
+    font-family: 'Be Vietnam Pro';
     gap: 32px;
 }
-.dateTimePicker{
+
+.date input {
+    font-family: 'Be Vietnam Pro' !important;
+}
+
+.dateTimePicker {
+    font-family: 'Be Vietnam Pro' !important;
     justify-content: space-between;
     gap: 42px;
 }
-.time{
+
+.time {
+    font-family: 'Be Vietnam Pro';
     gap: 32px;
 }
-.roomPicker{
+
+.roomPicker {
+    font-family: 'Be Vietnam Pro';
     gap: 32px;
     margin-right: 6px;
+}
+
+.time select {
+    width: fit-content !important;
 }
