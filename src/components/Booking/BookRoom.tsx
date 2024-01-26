@@ -80,7 +80,6 @@ export default function BookRoom({onAddSuccess }:any) {
         setRepeatType(selectedOption);
       };
 
-    //const repeatOptions = generateRepeatOptions(selectedDate);
 
     const handleStartTimeChange = (value: moment.Moment | undefined) => {
         setStartTime(value || null);

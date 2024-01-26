@@ -113,7 +113,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
           formData.append("equipment", values.equipment);
           formData.append("availability", values.availability);
           formData.append("company_id", user.company_id);
-          //formData.append('image', imageFile);
+          formData.append('image', imageFile);
 
           const data = await api.post("store-meeting-room", formData, {
             headers: {
