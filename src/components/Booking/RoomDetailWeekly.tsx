@@ -3,7 +3,7 @@ import React, {useRef, useState, useEffect, useCallback} from "react";
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import {Layout, Modal} from 'antd';
+import {Layout, Modal, Form} from 'antd';
 import './calender.css';
 import {get} from 'lodash';
 import moment from 'moment';
@@ -14,38 +14,76 @@ import {DatePicker, Space} from "antd";
 import {useSelector} from 'react-redux'
 import toast from "react-hot-toast";
 import DeleteUser from "@/components/User/deleteUser/deleteUser";
-import BookingDetail from "@/components/Manager/Booking/BookingDetail";
-
+import ModalBookingDetail from "@/components/Booking/ModalBookingDetail"
+interface BookingDetails {
+    topic: string;
+    type: string;
+    room: string;
+    date: string;
+    time: string;
+    guest: string;
+    agenda: string;
+    objective: string;
+    materials: string;
+    meeting_room: string;
+}
 const RoomDetailWeekly = ({calendarRef, events, renderEventContent, fetchAllBookingHistory, booking_id}: any) => {
     const [visible, setVisible] = useState(false);
-    const [bookingDetails, setBookingDetails] = useState(null);
-    const handleCancel = () => {
-        setVisible(false);
+    const [bookingDetails, setBookingDetails] = useState<BookingDetails>({
+        topic: '',
+        type: '',
+        room: '',
+        date: '',
+        time: '',
+        guest: '',
+        agenda: '',
+        objective: '',
+        materials: '',
+        meeting_room: '',
+    });
+    const [formBookingDetail] = Form.useForm();
+
+    const showPopup = () => {
+        setVisible(true);
+        formBookingDetail.resetFields();
     };
-    const showBookingDetail = async (eventInfo: any) => {
+
+    const handleCancel = () => {
+        formBookingDetail.resetFields();
+        setVisible(false);
+        formBookingDetail.resetFields();
+    };
+
+    const bookingDetail = async (eventInfo: any) => {
         const booking_id = eventInfo.event.extendedProps.booking_id;
         try {
             const response = await api.get(`/bookings/${booking_id}`);
             const res = get(response, 'data.data');
-            setBookingDetails(res);
+            await setBookingDetails({...res});
+            console.log(bookingDetails)
             setVisible(true);
         } catch (error) {
             console.error('Error fetching booking details:', error);
         }
     };
+    useEffect(() => {
+        formBookingDetail.setFieldsValue({
+            topic: bookingDetails.topic,
+            type: bookingDetails.type_of_booking,
+            room: bookingDetails.room,
+            date: bookingDetails.date,
+            time: bookingDetails.time,
+            guest: bookingDetails.guest,
+            agenda: bookingDetails.agenda,
+            objective: bookingDetails.objective,
+            materials: bookingDetails.materials,
+            meeting_room: bookingDetails.meeting_room,
+        });
+    }, [bookingDetails, formBookingDetail]);
 
     return (
         <>
-            <Modal
-                title={<div className={styles.formTitle}>Booking Detail</div>}
-                open={visible}
-                onCancel={handleCancel}
-                footer={null}
-                closable={false}
-                width={1296}
-            >
-                <p>ddd</p>
-            </Modal>
+            <ModalBookingDetail rec={bookingDetails} formBookingDetail={formBookingDetail} visible={visible} handleCancel={handleCancel}></ModalBookingDetail>
             <div className={styles.calender}>
                 <FullCalendar
                     ref={calendarRef}
@@ -61,7 +99,7 @@ const RoomDetailWeekly = ({calendarRef, events, renderEventContent, fetchAllBook
                     events={events}
                     eventMinHeight={66}
                     eventMinWidth={1000}
-                    eventClick={showBookingDetail}
+                    eventClick={bookingDetail}
                     expandRows={true}
                     slotMinTime={"08:00:00"}
                     slotMaxTime={"19:00:00"}
