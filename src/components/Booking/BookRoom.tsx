@@ -102,7 +102,7 @@ export default function BookRoom({onAddSuccess }:any) {
       useEffect(() => {
         const fetchMeetingRooms = async () => {
           try {
-            const response = await api.get(`index-meeting-rooms`);
+            const response = await api.get(`allroom/${company_id}`);
             setRoomData(response.data.data);
           } catch (error) {
             console.error('Error fetching meeting rooms:', error);
