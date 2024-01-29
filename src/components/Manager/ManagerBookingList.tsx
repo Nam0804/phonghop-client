@@ -396,9 +396,6 @@ const ManagerBookingList = () => {
       <div className={styles.addco}>
         <BookRoom onAddSuccess={handleAddSuccess}></BookRoom>
       </div>
-      <div className={styles.addco}>
-        <BookingSuccess></BookingSuccess>
-      </div>
     </div>
   );
 };
