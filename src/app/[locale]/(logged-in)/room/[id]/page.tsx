@@ -52,8 +52,8 @@ const Index = () => {
         setSelectedRoomId(selectedId);
         let selectedRoom = roomList.find((room) => room.id == selectedId);
         setSelectedRoomInfo(selectedRoom);
+        dispatch(setSelectedRoom(selectedRoom))
       };
-    //dispatch(setSelectedRoom(selectedRoomInfo))
       
     useEffect(() => {
         
@@ -295,7 +295,7 @@ const Index = () => {
                                 <p className={styles.text}>View As:</p>
                                 <select
                                     className={styles.roomPicker}
-                                    value={selectedRoomInfo ? selectedRoomInfo.name : ''}
+                                    value={selectedRoomInfo ? selectedRoomInfo.id : ''}
                                     onChange={handleRoomSelectChange}
                                 >
                                     <option value="" disabled>
@@ -387,19 +387,6 @@ const Index = () => {
                         )}
                     </div>
                 </Layout>
-                <div>
-                    {selectedRoomInfo ? (
-                        <div>
-                            <h2>{selectedRoomInfo.name}</h2>
-                            <p>Location: {selectedRoomInfo.location}</p>
-                            <p>Floor: {selectedRoomInfo.floor}</p>
-                            <p>Capacity: {selectedRoomInfo.capacity}</p>
-                            {/* Thêm các trường thông tin khác nếu có */}
-                        </div>
-                    ) : (
-                        <p>Select a room to view details.</p>
-                    )}
-                </div>
             </div>
         </>
     );

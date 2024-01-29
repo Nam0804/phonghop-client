@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
 const roomSlice = createSlice({
@@ -12,6 +12,10 @@ const roomSlice = createSlice({
         },
     },
 });
+
+const store = configureStore({
+    reducer: roomSlice.reducer
+  })
 
 export const { setSelectedRoom } = roomSlice.actions;
 export default roomSlice.reducer;
