@@ -9,31 +9,52 @@ import TextArea from "antd/es/input/TextArea";
 import "@/css/BookingDetail.css";
 import Link from "next/link";
 import { useLocale } from "next-intl";
+import api from "@/axiosService";
+import { repeat } from "lodash";
 
 const AddInforGuest = ({openModal, closeModal,step1Data}:any) => {
   const locale = useLocale();
   const [visible, setVisible] = useState(false);
   const [formBookingDetail] = Form.useForm();
-  const [checked1, setChecked1] = useState(false);
+  const [checked1, setChecked1] = useState(0);
   const [checked2, setChecked2] = useState(false);
   const [openModal1, setOpenModal] = useState(true);
   const [currentProgress, setCurrentProgress] = useState(70);
   
 useEffect(() => {
-  if (checked1) {
-    setCurrentProgress(100);
-  } else {
-    setCurrentProgress(70);
-  }
+  setCurrentProgress(checked1 ? 100 : 70)
 }, [checked1]);
-
+  console.log("step1Data", step1Data);
   const onChange1 = (e:any) => {
-    setChecked1(e.target.checked);
+    setChecked1(e.target.checked ? 1 : 0);
   };
   const onChange2 = (e: any) => {
     setChecked2(e.target.checked);
   };
 
+  
+
+ const handleSave = async () => {
+  try {
+    const formData = formBookingDetail.getFieldsValue();
+    const response = await api.post("bookings", {
+      ...step1Data,
+      ...formData,
+      meeting_room_id: step1Data.room,
+      register_status: checked1,
+      repeat_type: 0,
+      sharing_confirmation: 0,
+    });
+    if (checked1 === 1) {
+      const permissionResponse = await api.get("set-role/2");
+      console.log("Permission granted:", permissionResponse);
+    }
+   
+  } catch (error) {
+    console.error("Error saving data:", error);
+    // Handle the error or display an error message
+  }
+  };
  const closeModal1 = (value: boolean) => {
   setOpenModal(value);
  }
@@ -67,24 +88,24 @@ useEffect(() => {
         >
           <Row>
             <Col span={12}>
-              <Form.Item label="Name*">
+              <Form.Item label="Name*" name="booking_name">
                 <Input className="bookingInput" />
               </Form.Item>
-              <Form.Item label="Email*">
+              <Form.Item label="Email*" name="booking_email">
                 <Input className="bookingInput" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Title">
+              <Form.Item label="Title" name="booking_title">
                 <Input className="bookingInput" />
               </Form.Item>
-              <Form.Item label="Company">
+              <Form.Item label="Company" name="booking_company">
                 <Input className="bookingInput" />
               </Form.Item>
             </Col>
           </Row>
           <Form.Item>
-            <Checkbox checked={checked1} onChange={onChange1}>
+            <Checkbox onChange={onChange1}>
               <span>Create an account to skip this part next time or</span>
             </Checkbox>
             <Link href={`/${locale}/login`} className="SignIn-Guest">
@@ -118,7 +139,7 @@ useEffect(() => {
         {/* =================== */}
         <Form.Item>
           <div className="btnBookGroup">
-            <Button className="btnBookNow" label="Book Now" />
+            <Button className="btnBookNow" label="Book Now" onClick={handleSave}/>
             <Button className="btnClose" onClick={handleCancel} label="Close" />
           </div>
         </Form.Item>

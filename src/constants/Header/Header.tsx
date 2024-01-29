@@ -62,7 +62,7 @@ const Header = () => {
 
       if (response.status === 200) {
         Cookies.remove('token');
-        window.location.href = `/${locale}/guest`;
+        window.location.href = `/${locale}/login`;
       } else {
         console.error('Logout failed');
       }

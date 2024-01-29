@@ -16,7 +16,6 @@ const ManagerEditInfor = ({user, onEditSuccess}: any) => {
     const [visible, setVisible] = useState(false);
     const t = useTranslations('Edit');
     const locale = useLocale();
-
     useEffect(() => {
         form.setFieldsValue({
             'title': user.title,
@@ -75,7 +74,7 @@ const ManagerEditInfor = ({user, onEditSuccess}: any) => {
                 >
                     <div className={styles.formControl}>
                         <Form.Item
-                            label={<span className={styles.label}>Manager Name*</span>}
+                            label={<span className={styles.label}>{user.type === 1 ? 'Manager Name*' : 'Name*'}</span>}
                             name="manager-name"
                         >
                             <p className={styles.formFields}>{user.name}</p>
@@ -91,7 +90,7 @@ const ManagerEditInfor = ({user, onEditSuccess}: any) => {
                     </div>
                     <div className={styles.formControl}>
                         <Form.Item
-                            label={<span className={styles.label}>Manager Title*</span>}
+                            label={<span className={styles.label}>{user.type === 1 ? 'Manager Title*' : 'Title*'}</span>}
                             name="title"
                             rules={[
                                 {

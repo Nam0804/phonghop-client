@@ -40,7 +40,7 @@ const LoginPage: React.FC<{}> = () => {
       const res = await api.post('auth/login', postData);
       toast.success(t('success'));
       Cookies.set('token', res.data.data.token);
-
+      Cookies.set('type', res.data.data.user.type);
       const user = res.data.data.user;
       dispatch(initializeUser(user));
 

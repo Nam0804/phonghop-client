@@ -16,8 +16,7 @@ import toast from "react-hot-toast";
 import DeleteUser from "@/components/User/deleteUser/deleteUser";
 
 const RoomDetailWeekly = ({calendarRef, events, renderEventContent}: any) => {
-    const showModalBooking = (e) => {
-        console.log(e);
+    const showModalBooking = (e:any) => {
         <DeleteUser/>
     }
 

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './TimePickerBook.css'
 
-const CustomTimePicker = ({ onChange }: any) => {
+const CustomTimePicker = ({ onChange,style }: any) => {
   const [selectedTime, setSelectedTime] = useState('08:00');
 
   const generateTimeList = (startHour: number, endHour: number, intervalMinutes: number) => {
@@ -30,7 +30,7 @@ const CustomTimePicker = ({ onChange }: any) => {
 
   return (
     <div >
-      <select value={selectedTime} onChange={handleTimeChange} className='timepicker'>
+      <select value={selectedTime} onChange={handleTimeChange} className='timepicker' style={style}>
         {timeList.map((time) => (
           <option key={time} value={time}>
             {time}
