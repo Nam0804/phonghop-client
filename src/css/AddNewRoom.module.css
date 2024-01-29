@@ -219,3 +219,6 @@
     border-radius: 4px;
     border: none;
 }
+.valid {
+    background-color: #225560;
+  }
