@@ -11,6 +11,8 @@ import { useEffect, useState, useCallback } from "react";
 import { get } from "lodash";
 import toast from "react-hot-toast";
 import {useSelector} from 'react-redux';
+import AddInforGuest from '@/components/Guest/AddInforGuest';
+import BookingRoomGuest from '@/components/Guest/BookingRoomGuest';
 
 const HomePage = () => {
     const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
@@ -172,6 +174,7 @@ const HomePage = () => {
                 scroll={{x:1000}} className={customstyle.customtable}
                 />
             </div>
+            <BookingRoomGuest></BookingRoomGuest>
         </div>
     );
 };

@@ -24,12 +24,11 @@ const MyBookingHistory = () => {
     const user = useSelector((state: any) => state.user.value);
     const [filteredBooking, setFilteredBooking] = useState<DataType[]>([]);
     const dispatch = useAppDispatch()
-    const link = `http://localhost:3000/en/guest?company_id=${user.company_id}`
 
     const fetchData = useCallback(async () => {
         try {
             const user_id = user.id;
-            const data = await api.get(`bookings/history/${user_id}`)
+            const data = await api.get(`bookings-history`)
             const res = get(data, 'data.data')
             const sortedData = res.sort((a: DataType, b: DataType) => b.id - a.id);
             setAllStaffData(sortedData)
@@ -209,7 +208,6 @@ const MyBookingHistory = () => {
                             <option value="2">Finished</option>
                         </select>
                     </div>
-                    <input type={"text"} name={"guest-register"} value={link}/>
                 </div>
             </div>
             <div className={styles.companytable}>

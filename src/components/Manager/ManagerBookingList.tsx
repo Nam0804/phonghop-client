@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import BookingDetail from "./Booking/BookingDetail";
 import BookingEditDetail from "./Booking/BookingEditDetail";
 import { useSelector } from "react-redux";
+import BookingSuccess from "../Booking/BookingSuccess";
 
 const ManagerBookingList = () => {
   const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
@@ -26,7 +27,6 @@ const ManagerBookingList = () => {
   const company_id = user.company_id;
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [filteredBooking, setFilteredBooking] = useState<DataType[]>([]);
-  const link = `http://localhost:3000/en/guest?company_id=${user.company_id}`;
 
   useEffect(() => {
     fetchData().then(() => setLoadingSkeleton(false));
@@ -330,12 +330,6 @@ const ManagerBookingList = () => {
               </option>
             </select>
           </div>
-          <input
-            type={"text"}
-            name={"guest-register"}
-            value={link}
-            className={styles.linkK}
-          />
         </div>
       </div>
       <div className={styles.companytable}>

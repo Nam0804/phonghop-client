@@ -427,7 +427,6 @@ export default function BookRoom({onAddSuccess }:any) {
                     </div>
                 </div>
             </div>
-
         </>
     )
 }
