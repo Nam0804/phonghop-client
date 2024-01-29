@@ -1,451 +1,606 @@
-'use client'
-import * as React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Input from '@/constants/Form/Input';
-import styles from '@/css/Booking.module.css';
-import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox';
-import { useSelector } from 'react-redux'
-import { useState, useEffect } from 'react';
-import CustomTimePicker from "./TimePickerBook";    
+"use client";
+import * as React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import styles from "/src/css/BookingDetail.module.css";
+import Checkbox, { CheckboxChangeEvent } from "antd/es/checkbox/Checkbox";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import CustomTimePicker from "../Booking/TimePickerBook";
 import Meta from "antd/es/card/Meta";
-import type { DatePickerProps } from 'antd';
-import { DatePicker, Space } from 'antd';
-import 'rc-time-picker/assets/index.css';
-import { Button, message, Upload } from 'antd';
-import Selects from 'react-select';
-import type { UploadProps } from 'antd';
+import type { DatePickerProps } from "antd";
+import { ConfigProvider, DatePicker, Space } from "antd";
+import "rc-time-picker/assets/index.css";
+import Selects from "react-select";
+import type { UploadProps } from "antd";
 import "@/css/BookingAdd.css";
 import moment from "moment";
 import TextArea from "antd/es/input/TextArea";
-import {Form as Form1} from 'antd'
-import api from '@/axiosService';
-import {Card,Image,Layout,Select} from "antd";
-import { SingleValue } from 'react-select';
+import { Input, Row, Col, Form, List, Skeleton, Avatar } from "antd";
+import api from "@/axiosService";
+import { Card, Image, Layout, Select, Progress } from "antd";
+// import AddInforGuest from "./AddInforGuest";
 
-export default function BookRoom({onAddSuccess }:any) {
-    useEffect(() => {
-        require("bootstrap/dist/js/bootstrap.min.js");
-    }, [])
-    interface DataType {
-        id: number;
-        name: string;
+import Modal from "antd/es/modal/Modal";
+import Button from "@/constants/Form/Button";
+import BookingSuccess from "./BookingSuccess";
+
+export default function BookRoom({ onAddSuccess }: any) {
+  useEffect(() => {
+    require("bootstrap/dist/js/bootstrap.min.js");
+  }, []);
+  interface DataType {
+    id: number;
+    name: string;
+  }
+
+  const [redirect, setRedirect] = useState(false);
+  const [currentProgress, setCurrentProgress] = useState(50);
+
+  const updateProgress = (progress: number) => {
+    setCurrentProgress(progress);
+  };
+
+  const [startTime, setStartTime] = useState<moment.Moment | null>(null);
+  const handleStartTimeChange = (value: moment.Moment | undefined) => {
+    setStartTime(value || null);
+  };
+  const [endTime, setEndTime] = useState<moment.Moment | null>(null);
+  const handleEndTimeChange = (value: moment.Moment | undefined) => {
+    setEndTime(value || null);
+  };
+
+  const [selectedMaterial, setSelectedMaterial] = useState<string[]>([]);
+  const [selectedGuests, setSelectedGuests] = useState<string[]>([]);
+
+  const [form] = Form.useForm();
+  const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
+  const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
+  const user = useSelector((state: any) => state.user.value);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [roomData, setRoomData] = useState<DataType[]>([]);
+  const [step1Data, setStep1Data] = useState<any>({});
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [step, setStep] = useState(1);
+  const [visible, setVisible] = useState(false);
+  const [selectedRoomId, setSelectedRoomId] = useState<string | undefined>("");
+  const [selectedRoomInfo, setSelectedRoomInfo] = useState<any>(null);
+
+  const handleOpenSuccessModal = () => {
+    setShowSuccessModal(true);
+  };
+  const handleCloseSuccessModal = () => {
+    setStep(0);
+  };
+
+  const today = moment();
+  const handleRoomSelectChange = (value: any) => {
+    setSelectedRoomId(value);
+    const selectedRoom = roomData?.find((room) => room.id === value);
+    setSelectedRoomInfo(selectedRoom);
+  };
+
+  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
+    setSelectedDate(dateString);
+  };
+
+  const handleCancel = () => {
+    form.resetFields();
+    setVisible(false);
+  };
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const response = await api.get(`UnauthorizedUser/2`);
+        setRoomData(response.data.data);
+      } catch (error) {
+        console.error("Error fetching rooms:", error);
       }
+    };
+    fetchRooms();
+  }, []);
 
-    const [startTime, setStartTime] = useState<moment.Moment | null>(null);
-    const [endTime, setEndTime] = useState<moment.Moment | null>(null);
-    const [form] = Form1.useForm();
-    const [formCompleted, setFormCompleted] = useState(false)
-    const [visible, setVisible] = useState(false);
-    const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
-    const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
-    const [repeatType, setRepeatType] = useState<{ value: string; label: string } | null>(null);
-    const user = useSelector((state:any) => state.user.value);
-    const [selectedDate, setSelectedDate] = useState('');
-    const [roomData, setRoomData] = useState<DataType[]>([]);
-    const [selectedRoom, setSelectedRoom] = useState<string>('');
-    const [isChecked, setIsChecked] = useState(true);
-    const handleSelectChange = (value: SingleValue<{ label: string; value: string; }>) => {
-        if (value) {
-          setSelectedRoom(value.value);
+  // const props: UploadProps = {
+  //   name: "file",
+  //   action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+  //   headers: {
+  //     authorization: "authorization-text",
+  //   },
+  //   onChange(info) {
+  //     if (info.file.status !== "uploading") {
+  //       console.log(info.file, info.fileList);
+  //     }
+  //     if (info.file.status === "done") {
+  //       message.success(`${info.file.name} file uploaded successfully`);
+  //     } else if (info.file.status === "error") {
+  //       message.error(`${info.file.name} file upload failed.`);
+  //     }
+  //   },
+  // };
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const company_id = user.company_id;
+        const response = await api.get(`allroom/${company_id}`);
+        if (response.status === 200) {
+          setRoomData(response.data.data);
         } else {
-          setSelectedRoom("");
+          console.error("Failed to fetch rooms");
         }
-      };
-
-    const handleCheckboxChange = (e:any) => {
-        setIsChecked(e.target.checked);
-    };
-    // const generateRepeatOptions = (date: Date | null) => {
-    //     const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
-      
-    //     return [
-    //       { value: 'no-repeat', label: 'Doesn’t repeat' },
-    //       { value: 'every-weekday', label: 'Every weekday' },
-    //       {
-    //         value: 'weekly',
-    //         label: `Weekly - ${date ? dayOfWeek : '(Select a date)'}`,
-    //       },
-    //       {
-    //         value: 'monthly',
-    //         label: `Monthly - ${date ? dayOfWeek : '(Select a date)'}`,
-    //       },
-    //       {
-    //         value: 'annually',
-    //         label: `Annually - ${date ? dayOfWeek : '(Select a date)'}`,
-    //       },
-    //     ];
-    //   };
-
-    const handleRepeatChange = (selectedOption: { value: string; label: string } | null) => {
-        setRepeatType(selectedOption);
-      };
-
-
-    const handleStartTimeChange = (value: moment.Moment | undefined) => {
-        setStartTime(value || null);
+      } catch (error) {
+        console.error("Error fetching rooms:", error);
+      }
     };
 
-    const handleEndTimeChange = (value: moment.Moment | undefined) => {
-        setEndTime(value || null);
-    };
+    fetchRooms();
+  }, []);
 
+  // const handleSubmit = () => {
+  //   form
+  //     .validateFields()
+  //     .then(async (values) => {
+  //       try {
+  //         const meetingRoomsResponse = await api.get("meeting-rooms/listing");
 
-     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        setSelectedDate(dateString);
-    };
-    
+  //         if (meetingRoomsResponse.status === 200) {
+  //           const meetingRooms = meetingRoomsResponse.data.data;
 
-    const handleCancel = () => {
-        form.resetFields();
-        setVisible(false);
-    };
-   
-    const props: UploadProps = {
-        name: 'file',
-        action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-        headers: {
-          authorization: 'authorization-text',
-        },
-        onChange(info) {
-          if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
-        },
-      };
+  //           const selectedMeetingRoomId =
+  //             meetingRooms.length > 0 ? meetingRooms[0].id : null;
 
+  //           values = {
+  //             ...form.getFieldsValue(),
+  //             booking_name: user.name,
+  //             booking_email: user.email,
+  //             booking_title: user.title,
+  //             meeting_room_id: 1,
+  //             from_time: `${selectedDate} ${moment(startTime, "HH:mm A").format(
+  //               "HH:mm:ss"
+  //             )}`,
+  //             to_time: `${selectedDate} ${moment(endTime, "HH:mm A").format(
+  //               "HH:mm:ss"
+  //             )}`,
+  //             repeat_type: 1,
+  //             room_status: isChecked ? 1 : 0,
+  //           };
 
-      useEffect(() => {
-        const fetchRooms = async () => {
-          try {
-            const company_id = user.company_id;
-            const response = await api.get(`allroom/${company_id}`);
-            if (response.status === 200) {
-              setRoomData(response.data.data);
-            } else {
-              console.error('Failed to fetch rooms');
-            }
-          } catch (error) {
-            console.error('Error fetching rooms:', error);
-          }
-        };
-    
-        fetchRooms();
-      }, []);
-      
-    const handleSubmit = () => {
-        form
-          .validateFields()
-          .then(async (values) => {
-            try {
-               const meetingRoomsResponse = await api.get('meeting-rooms/listing');
-              
-                if (meetingRoomsResponse.status === 200)
-                {
-                const meetingRooms = meetingRoomsResponse.data.data;
-      
-                const selectedMeetingRoomId = meetingRooms.length > 0 ? meetingRooms[0].id : null;
-      
-                values = {
-                  ...form.getFieldsValue(),
-                  booking_name: user.name,
-                  booking_email: user.email,
-                  booking_title: user.title,
-                  meeting_room_id: 1,
-                    from_time: `${selectedDate} ${moment(startTime,'HH:mm A').format('HH:mm:ss')}`,
-                    to_time: `${selectedDate} ${moment(endTime,'HH:mm A').format('HH:mm:ss')}`,
-                    repeat_type:1,
-                    room_status: isChecked ? 1 : 0,
-                };
+  //           const bookingResponse = await api.post(
+  //             "external-bookings",
+  //             values,
+  //             {
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //                 Accept: "application/json",
+  //               },
+  //             }
+  //           );
 
-                const bookingResponse = await api.post('external-bookings', values,
-                {headers:{
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                });
-      
-                if (bookingResponse.status === 200) {
-                  message.success('Booking created successfully');
-                  form.resetFields();
-                  setVisible(false);
-                  if (onAddSuccess) {
-                    onAddSuccess();
-                  }
-                } else {
-                  message.error('Failed to create booking');
-                }
-                
-                setFilteredRooms(bookingResponse.data.data);
-            }
-            } catch (e) {
-              console.error('Error creating booking:', e);
-              message.error('Failed to create booking');
-            }
-          })
-          .catch((errorInfo) => {
-            console.log(errorInfo);
-          });
-      };
-    
+  //           if (bookingResponse.status === 200) {
+  //             message.success("Booking created successfully");
+  //             form.resetFields();
+  //             setVisible(false);
+  //             setStep1Data(form.getFieldsValue());
+  //             setStep(2);
+  //             if (onAddSuccess) {
+  //               onAddSuccess();
+  //             }
+  //           } else {
+  //             message.error("Failed to create booking");
+  //           }
 
-    return (
-        <>
+  //           setFilteredRooms(bookingResponse.data.data);
+  //         }
+  //       } catch (e) {
+  //         console.error("Error creating booking:", e);
+  //         message.error("Failed to create booking");
+  //       }
+  //     })
+  //     .catch((errorInfo) => {
+  //       console.log(errorInfo);
+  //     });
+  // };
 
-            <button
-                type="button"
-                className={ styles.addbtn }
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-            >
-                Book A Room
-            </button>
-            <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true" >
-                <div className="modal-dialog modal-xl">
-                    <div className="modal-content">
-                        <Form1
-                            form={form}
-                            name="Add new company"
-                            requiredMark={false}
-                            onValuesChange={(changedValues, allValues) => {
-                                const isFormCompleted = Object.values(allValues).every(value => value !== undefined && value !== '');
-                                setFormCompleted(isFormCompleted);
-                            }}
+  const handleSubmit = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        values.from_time = `${selectedDate} ${moment(
+          values.from_time,
+          "hh:mm A"
+        ).format("HH:mm:ss")}`;
+        values.to_time = `${selectedDate} ${moment(
+          values.to_time,
+          "hh:mm A"
+        ).format("HH:mm:ss")}`;
+        setStep(2);
+        setStep1Data(values);
+      })
+      .catch((errorInfo) => {
+        console.log("Validation failed:", errorInfo);
+      });
+  };
+
+  return (
+    <>
+      <button
+        type="button"
+        className={styles.addbtn}
+        onClick={() => setVisible(true)}
+      >
+        Book A Room
+      </button>
+      {step === 1 && (
+        <Modal
+          title={<div className={styles.formTitle}>New Booking Session</div>}
+          open={visible}
+          onCancel={handleCancel}
+          footer={null}
+          closable={false}
+          width={1296}
+          forceRender={true}
+        >
+          <div className={styles.labelinfor}>
+            <h3>Meeting Information</h3>
+          </div>
+          <Form
+            labelAlign="left"
+            form={form}
+            labelCol={{ flex: "200px" }}
+            name=" Guest Booking"
+            requiredMark={false}
+          >
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  label="Meeting topic*:"
+                  name="topic"
+                  rules={[
+                    {
+                      required: true,
+                      message: (
+                        <span className={styles.errorMessage}>
+                          This field is required!
+                        </span>
+                      ),
+                    },
+                  ]}
+                  colon={false}
+                >
+                  <Input className="bookingInput" />
+                </Form.Item>
+                <Form.Item
+                  label="Type of booking*:"
+                  name="type_of_booking"
+                  rules={[
+                    {
+                      required: true,
+                      message: (
+                        <span className={styles.errorMessage}>
+                          This field is required!
+                        </span>
+                      ),
+                    },
+                  ]}
+                  colon={false}
+                >
+                  <select className="bookingInput">
+                    <option value="0">Meeting</option>
+                    <option value="1">Personal Use</option>
+                  </select>
+                </Form.Item>
+                <Form.Item
+                  label="Room*:"
+                  name="room"
+                  rules={[
+                    {
+                      required: true,
+                      message: (
+                        <span className={styles.errorMessage}>
+                          This field is required!
+                        </span>
+                      ),
+                    },
+                  ]}
+                  colon={false}
+                >
+                  <Select
+                    showSearch
+                    placeholder="Meeting Room"
+                    defaultActiveFirstOption={false}
+                    suffixIcon={null}
+                    filterOption={false}
+                    onChange={handleRoomSelectChange}
+                    value={selectedRoomId}
+                  >
+                    {roomData?.map((room) => (
+                      <Select.Option key={room.id} value={room.id}>
+                        {room.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                  {selectedRoomInfo && (
+                    <Layout
+                      style={{
+                        backgroundColor: "#EAEEF6",
+                        width: 370,
+
+                        borderRadius: 8,
+                        marginTop: 16,
+                        padding: 8,
+                      }}
+                      content="center"
+                    >
+                      <Card
+                        bordered={false}
+                        style={{
+                          backgroundColor: "#EAEEF6",
+                          padding: 0,
+                          boxShadow: "none",
+                        }}
+                        cover={
+                          <Image
+                            alt="example"
+                            src="https://explore.zoom.us/media/what-are-zoom-rooms.jpg"
+                            width={354}
+                            height={197}
+                            preview={true}
+                          />
+                        }
+                      >
+                        <Meta />
+                        <div className="inforRoom">
+                          <span>
+                            <strong>Capacity: </strong>
+                            {selectedRoomInfo.capacity}
+                          </span>
+                          <br />
+                          <span>
+                            <strong>Location: </strong>
+                            {selectedRoomInfo.location}
+                          </span>
+                          <br />
+                          <span>
+                            <strong>Floor: </strong>
+                            {selectedRoomInfo.floor}
+                          </span>
+                          <br />
+                          <span>
+                            <strong>Equipment: </strong>
+                            {selectedRoomInfo.equipment}
+                          </span>
+                        </div>
+                      </Card>
+                    </Layout>
+                  )}
+                </Form.Item>
+                <Form.Item label="Date*:" colon={false}>
+                  <Row gutter={30}>
+                    <Col className="gutter-row">
+                      {/* <Form.Item name="date" 
+                    > */}
+                      <DatePicker
+                        style={{
+                          width: 181,
+                          height: 44,
+                          borderRadius: 8,
+                          textAlign: "center",
+                        }}
+                        placeholder={today.format("DD MMM YYYY")}
+                        onChange={onChange}
+                      ></DatePicker>
+                      {/* </Form.Item> */}
+                    </Col>
+                    <Col className="gutter-row">
+                      <Input
+                        style={{
+                          width: 181,
+                          height: 44,
+                          borderRadius: 8,
+                          textAlign: "center",
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                </Form.Item>
+                <Form.Item
+                  label="Time*:"
+                  style={{ fontWeight: 600, fontSize: 16 }}
+                  colon={false}
+                >
+                  <div
+                    style={{
+                      width: 370,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Form.Item name="from_time" className={styles.inputt}>
+                      <CustomTimePicker
+                        style={{
+                          width: 140,
+                          height: 44,
+                          borderRadius: 8,
+                          textAlign: "center",
+                        }}
+                      />
+                    </Form.Item>
+                    <p style={{ margin: 0 }}>TO</p>
+                    <Form.Item name="to_time" className={styles.inputt}>
+                      <CustomTimePicker
+                        style={{
+                          width: 140,
+                          height: 44,
+                          borderRadius: 8,
+                          textAlign: "center",
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                </Form.Item>
+              </Col>
+              {/* ===================================== */}
+              <Col span={12}>
+                <Form.Item label="Guest:" colon={false}>
+                  <Select
+                    showSearch
+                    // value={value}
+                    placeholder="Invitee's email"
+                    defaultActiveFirstOption={false}
+                    suffixIcon={null}
+                    filterOption={false}
+                    //  onSearch={handleSearch}
+                    //  onChange={handleChange}
+                    // notFoundContent={null}
+                    // options={(data || []).map((d) => ({
+                    //   value: d.value,
+                    //   label: d.text,
+                    // }))}
+                  />
+                  {selectedGuests.length > 0 && (
+                    <List
+                      style={{
+                        backgroundColor: "#EAEEF6",
+                        borderRadius: 8,
+                        width: 370,
+                        marginTop: 16,
+                      }}
+                      className="demo-loadmore-list"
+                      itemLayout="horizontal"
+                      // dataSource={selectedGuests}
+                      renderItem={(item, index) => (
+                        <List.Item
+                          actions={[
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              key={`list-loadmore-remove-${index}`}
+                              onClick={() => removeGuest(index)}
+                            >
+                              <path
+                                d="M15.5459 13.954C15.7572 14.1653 15.876 14.452 15.876 14.7509C15.876 15.0497 15.7572 15.3364 15.5459 15.5477C15.3346 15.7591 15.0479 15.8778 14.749 15.8778C14.4501 15.8778 14.1635 15.7591 13.9521 15.5477L7.99996 9.59367L2.0459 15.5459C1.83455 15.7572 1.54791 15.8759 1.24902 15.8759C0.950136 15.8759 0.663491 15.7572 0.452147 15.5459C0.240802 15.3345 0.12207 15.0479 0.12207 14.749C0.12207 14.4501 0.240802 14.1635 0.452147 13.9521L6.40621 7.99992L0.454022 2.04586C0.242677 1.83451 0.123945 1.54787 0.123945 1.24898C0.123945 0.950097 0.242677 0.663452 0.454022 0.452108C0.665366 0.240763 0.95201 0.122031 1.2509 0.122031C1.54978 0.122031 1.83643 0.240763 2.04777 0.452108L7.99996 6.40617L13.954 0.45117C14.1654 0.239826 14.452 0.121094 14.7509 0.121094C15.0498 0.121094 15.3364 0.239826 15.5478 0.45117C15.7591 0.662514 15.8778 0.949159 15.8778 1.24804C15.8778 1.54693 15.7591 1.83358 15.5478 2.04492L9.59371 7.99992L15.5459 13.954Z"
+                                fill="#323232"
+                              />
+                            </svg>,
+                          ]}
                         >
-                        <div className="modal-header" style={{ borderBottom:'unset', justifyContent:'center' }}>
-                            <h5 className={`modal-title ${styles.modalTitle}`} id="exampleModalLabel">
-                                New Booking Session
-                            </h5>
-                        </div>
-                        <div className="modal-body">
-                            <div className='row'>
-                                <div className="col-md-6 ml-2">
-                                    <div className="mb-3 row" >
-                                        <Form1.Item
-                                            name="topic" 
-                                            label={<span className={styles.formLabel}>Meeting Topic*:</span>}
-                                            rules={[
-                                                {
-                                                required: true,
-                                                message: (
-                                                    <span className={styles.errorMessage}>
-                                                    This field is required!
-                                                    </span>
-                                                ),
-                                                },
-                                            ]}
-                                            >
-                                            <Input type="text" className={`${styles.formControl}`} id="inputTopic" />
-                                            </Form1.Item>
-
-                                    </div>
-                                    <div className="mb-3 row" >
-                                    <Form1.Item
-                                            name="type_of_booking" 
-                                            label={<span className={styles.formLabel}>Type of booking*:</span>}
-                                            rules={[
-                                                {
-                                                required: true,
-                                                message: (
-                                                    <span className={styles.errorMessage}>
-                                                    This field is required!
-                                                    </span>
-                                                ),
-                                                },
-                                            ]}
-                                            >
-                                        <select className={`${styles.formSelect}`} aria-label="Default select example">
-                                                <option selected>Choose type of booking</option>
-                                                <option value="1">Meeting</option>
-                                                <option value="2">Personal use</option>
-                                                <option value="3">Unavailable</option>
-                                        </select>
-                                        </Form1.Item>
-                                    </div>
-                                    <div className="mb-3 row" >
-                                    <Form1.Item label={<span className={styles.formLabel}>Room*:</span>} name="room">
-                                        <Selects
-                                            options={roomData.map((room) => ({
-                                                label: room.name,
-                                                value: room.name,
-                                              }))}
-                                              className={styles.roomselect}
-                                              onChange={handleSelectChange}
-                                            />
-                                            {selectedRoom && (
-                                            <Layout
-                                            style={{
-                                                backgroundColor: "#EAEEF6",
-                                                width: 370,
-
-                                                borderRadius: 8,
-                                                marginTop: 16,
-                                                padding: 8,
-                                            }}
-                                            content="center"
-                                            >
-                                            <Card
-                                                bordered={false}
-                                                style={{
-                                                backgroundColor: "#EAEEF6",
-                                                padding: 0,
-                                                boxShadow: "none",
-                                                }}
-                                                cover={
-                                                <Image
-                                                    alt="example"
-                                                    width={354}
-                                                    height={197}
-                                                    preview={true}
-                                                />
-                                                }
-                                            >
-                                                <Meta />
-                                                <div className="inforRoom">
-                                                <span>
-                                                    <strong>Capacity: </strong>
-                                                </span>
-                                                <br />
-                                                <span>
-                                                    <strong>Location: </strong>
-                                                </span>
-                                                <br />
-                                                <span>
-                                                    <strong>Floor: </strong>
-                                                </span>
-                                                <br />
-                                                <span>
-                                                    <strong>Equipment: </strong>
-                                                </span>
-                                                </div>
-                                            </Card>
-                                            </Layout>
-                                            )}
-                                        </Form1.Item>
-                                    </div>
-                                    <div className="mb-3 row" >
-                                    <Form1.Item
-                                            label={<span className={styles.formLabel}>Date*:</span>}
-                                            >
-                                        <div className={styles.dateTimePicker}>
-                                                <div className={styles.date}>
-                                                        <Space direction="vertical">
-                                                            <DatePicker onChange={onChange} showToday={false} style={{ width:'181px',height:'44px' }}/>
-                                                        </Space>
-                                                </div>
-                                                <div>
-                                                    <Selects onChange={handleRepeatChange} className={ styles.selectedDate } />
-                                                </div>
-                                            </div>
-                                        </Form1.Item>
-                                    </div>
-                                    <div className="mb-3 row" style={{ alignItems:'center' }}>
-                                    <Form1.Item
-                                            label={<span className={styles.formLabel}>Time*:</span>}
-                                            rules={[
-                                                {
-                                                required: true,
-                                                message: (
-                                                    <span className={styles.errorMessage}>
-                                                    This field is required!
-                                                    </span>
-                                                ),
-                                                },
-                                            ]}
-                                            >
-                                        <div className={styles.dateTimePicker}>
-                                                <div className={styles.time}>
-                                                    <Form1.Item name="from_time">
-                                                        <CustomTimePicker onChange={handleStartTimeChange}></CustomTimePicker>
-                                                    </Form1.Item>
-                                                    <p>To:</p>
-                                                    <Form1.Item name="to_time">
-                                                        <CustomTimePicker onChange={handleEndTimeChange}></CustomTimePicker>
-                                                    </Form1.Item>
-                                                </div>
-                                            </div>
-                                        </Form1.Item>
-                                    </div>
-                                </div>
-                                <div className="col-md-6 ml-2">
-                                    <div className="mb-3 row" >
-                                        <label htmlFor="inputGuest" className={`col-4 ${styles.formLabel}`}>
-                                            Guest:
-                                        </label>
-                                        <div className="col-8">
-                                            <input type="text" className={`${styles.formControl}`} id="inputGuest" />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row" >
-                                        <label htmlFor="inputGuest" className={`col-4 ${styles.formLabel}`}>
-                                            Agenda:
-                                        </label>
-                                        <div className="col-8">
-                                        <TextArea
-                                            placeholder="Agenda"
-                                            autoSize={{ minRows: 3, maxRows: 5 }}
-                                            className={`${styles.formControl1}`}
-                                        />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row" >
-                                        <label htmlFor="inputObject" className={`col-4 ${styles.formLabel}`}>
-                                            Objective:
-                                        </label>
-                                        <div className="col-8">
-                                        <TextArea
-                                            placeholder="Objective"
-                                            autoSize={{ minRows: 3, maxRows: 5 }}
-                                            className={`${styles.formControl1}`}
-                                        />
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 row" >
-                                        <label htmlFor="inputMaterial" className={`col-4 ${styles.formLabel}`}>
-                                                Material:
-                                        </label>
-                                        <div className={`col-8 ${styles.materialpush}`}>
-                                            <div className='col-4'>
-                                                <Upload {...props}>
-                                                    <Button>Choose a file</Button>
-                                                </Upload>
-                                            </div>
-                                            <div className='col-4'>
-                                                <Upload {...props}>
-                                                    <Button>Share a link</Button>
-                                                </Upload>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={`${styles.checkbox}`}>
-                                <input type="checkbox"
-                                       name=""
-                                       id=""
-                                       checked={isChecked}
-                                       onChange={handleCheckboxChange}/>
-                                <h6>Share meeting information to the organization</h6>
-                        </div>
-
-                        <div className="modal-footer" style={{ borderTop:'unset', justifyContent:'center' }}>
-                            <button type="button" className={`${styles.buttonAdd} ${formCompleted ? styles.formCompleted : ''}`}  onClick={handleSubmit} >
-                                BOOK NOW
-                            </button>
-                            <button type="button" className={styles.buttonCancel} onClick={handleCancel} data-bs-dismiss="modal">
-                                CLOSE
-                            </button>
-                        </div>
-                    </Form1>
-                    </div>
-                </div>
-            </div>
-
-        </>
-    )
+                          <List.Item.Meta
+                            style={{ display: "flex", alignItems: "center" }}
+                            avatar={
+                              <Avatar
+                                src={
+                                  "https://sm.ign.com/t/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.300.jpg"
+                                }
+                              />
+                            }
+                            // title={<p className={styles.itemlist}>{item}</p>}
+                          />
+                        </List.Item>
+                      )}
+                    />
+                  )}
+                </Form.Item>
+                <Form.Item label="Agenda:" name="agenda" colon={false}>
+                  <TextArea
+                    placeholder="Enter agenda"
+                    autoSize={{ minRows: 5, maxRows: 5 }}
+                    style={{ width: "370px" }}
+                  />
+                </Form.Item>
+                <Form.Item label="Objective:" name="objective" colon={false}>
+                  <TextArea
+                    placeholder="Enter objective"
+                    autoSize={{ minRows: 7, maxRows: 10 }}
+                    style={{ width: "370px" }}
+                  />
+                </Form.Item>
+                <Form.Item label="Materials:" name="materials" colon={false}>
+                  <div className={styles.materialsSection}>
+                    <Button label="Choose a file"></Button>
+                    <Button label="Share a link"></Button>
+                  </div>
+                  {selectedMaterial.length > 0 && (
+                    <List
+                      style={{
+                        backgroundColor: "#EAEEF6",
+                        borderRadius: 8,
+                        width: 370,
+                        marginTop: 16,
+                      }}
+                      className="demo-loadmore-list"
+                      itemLayout="horizontal"
+                      // dataSource={selectedGuests}
+                      renderItem={(item, index) => (
+                        <List.Item
+                          actions={[
+                            <a key="list-loadmore-edit">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                              >
+                                <path
+                                  d="M15.5459 13.954C15.7572 14.1653 15.876 14.452 15.876 14.7509C15.876 15.0497 15.7572 15.3364 15.5459 15.5477C15.3346 15.7591 15.0479 15.8778 14.749 15.8778C14.4501 15.8778 14.1635 15.7591 13.9521 15.5477L7.99996 9.59367L2.0459 15.5459C1.83455 15.7572 1.54791 15.8759 1.24902 15.8759C0.950136 15.8759 0.663491 15.7572 0.452147 15.5459C0.240802 15.3345 0.12207 15.0479 0.12207 14.749C0.12207 14.4501 0.240802 14.1635 0.452147 13.9521L6.40621 7.99992L0.454022 2.04586C0.242677 1.83451 0.123945 1.54787 0.123945 1.24898C0.123945 0.950097 0.242677 0.663452 0.454022 0.452108C0.665366 0.240763 0.95201 0.122031 1.2509 0.122031C1.54978 0.122031 1.83643 0.240763 2.04777 0.452108L7.99996 6.40617L13.954 0.45117C14.1654 0.239826 14.452 0.121094 14.7509 0.121094C15.0498 0.121094 15.3364 0.239826 15.5478 0.45117C15.7591 0.662514 15.8778 0.949159 15.8778 1.24804C15.8778 1.54693 15.7591 1.83358 15.5478 2.04492L9.59371 7.99992L15.5459 13.954Z"
+                                  fill="#323232"
+                                />
+                              </svg>
+                            </a>,
+                          ]}
+                        >
+                          <List.Item.Meta
+                            avatar={
+                              <Avatar
+                                src={
+                                  "https://sm.ign.com/t/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.300.jpg"
+                                }
+                              />
+                            }
+                            title={<p>Baka</p>}
+                            // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                          />
+                        </List.Item>
+                      )}
+                    />
+                  )}
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+          {/* =================== */}
+          <div className={styles.autocheckbox}>
+            <input type="checkbox" id="scales" className={styles.check} />
+            <label htmlFor="scales">
+              <p>Share meeting information to the organization</p>
+            </label>
+          </div>
+          <div className={styles.buttonContainer}>
+            <Button
+              className={styles.buttonClose}
+              label="BOOK NOW"
+              onClick={handleSubmit}
+            />
+            <Button
+              className={styles.buttonClose}
+              onClick={handleCancel}
+              style={{ backgroundColor: "#FFFFFF", color: "#225560" }}
+              label="CLOSE"
+            />
+          </div>
+        </Modal>
+      )}
+      {step === 2 && (
+        <BookingSuccess
+          openModal={handleOpenSuccessModal}
+          closeModal={handleCloseSuccessModal}
+          step1Data={step1Data}
+        ></BookingSuccess>
+      )}
+    </>
+  );
 }

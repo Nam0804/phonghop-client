@@ -8,11 +8,23 @@ import customstyle from "@/css/CompanyList.module.css";
 import Button from "@/constants/Form/Button";
 import { createEntityAdapter } from "@reduxjs/toolkit";
 import "@/css/BookingSuccess.css";
+import { useLocale } from "next-intl";
+import momment from "moment";
 
-const BookingSuccess = () => {
+const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
+  const locale = useLocale();
   const [visible, setVisible] = useState(false);
   const user = useSelector((state: any) => state.user.value);
+  const [openModal1, setOpenModal] = useState(true);
   const usertype = user.type;
+
+  // console.log("step1Data", step1Data);
+
+  const timeString = momment(step1Data.from_time).format("HH:mm A");
+  const timeString2 = momment(step1Data.to_time).format("HH:mm A");
+  const dateString = momment(step1Data.from_time).format("DD MMM YYYY");
+  const dateString2 = momment(step1Data.to_time).format("dddd");
+
   const showPopup = () => {
     setVisible(true);
   };
@@ -23,9 +35,9 @@ const BookingSuccess = () => {
 
   return (
     <>
-      <button key="add" className={customstyle.addbtn} onClick={showPopup}>
+      {/* <button key="add" className={customstyle.addbtn} onClick={showPopup}>
         Booking Success
-      </button>
+      </button> */}
       <Modal
         title={
           <div className={styles.formTitle}>
@@ -39,7 +51,7 @@ const BookingSuccess = () => {
             />
           </div>
         }
-        open={visible}
+        open={openModal}
         onCancel={handleCancel}
         footer={null}
         closable={false}
@@ -100,7 +112,7 @@ const BookingSuccess = () => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Date: &nbsp;</strong> 12/12/2021 asdasdassdsd
+                  <strong>Date: &nbsp;</strong> {dateString}
                 </Col>
               </Row>
             </Col>
@@ -133,7 +145,7 @@ const BookingSuccess = () => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Time: &nbsp;</strong> 12/12/2021 asdasdassdsd
+                  <strong>Time: &nbsp;</strong>From {timeString} to {timeString2}
                 </Col>
               </Row>
             </Col>
@@ -169,7 +181,7 @@ const BookingSuccess = () => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Location: &nbsp;</strong> 12/12/2021 asdasdassdsd
+                  <strong>Location: &nbsp;</strong>{step1Data.room}
                 </Col>
               </Row>
             </Col>
@@ -199,7 +211,7 @@ const BookingSuccess = () => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Meeting Room: &nbsp;</strong> 12/12/2021 asdasdassdsd
+                  <strong>Meeting Room: &nbsp;</strong>{step1Data.room}
                 </Col>
               </Row>
             </Col>
@@ -210,7 +222,7 @@ const BookingSuccess = () => {
             <Col span={24}>
               <Button
                 className={styles.buttonClose}
-                onClick={handleCancel}
+                onClick={closeModal}
                 label="COMPLETE"
               />
             </Col>
