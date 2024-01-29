@@ -1,14 +1,18 @@
 'use client'
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import styles from '@/css/CompanyList.module.css'
+import Button from "@/constants/Form/Button";
+import Modal from "@/constants/Modal/ChangePasswordModal";
 import AddNewCompany from "@/components/Admin/AddNewCompany";
-import {Table, Tag} from 'antd';
-import {DatePicker, Space} from 'antd';
-import type {ColumnsType} from 'antd/es/table';
-import {useEffect, useState} from "react";
+import { Table, Tag } from 'antd';
+import { DatePicker, Space } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
+import { useEffect, useState } from "react";
+// import 'src/app/[locale]/(logged-in)/booking/customantd.css';
 import moment from 'moment';
+import DeleteCompany from "@/components/DeleteCompany/DeleteCompany";
 import api from "@/axiosService";
-import {get} from "lodash";
+import { get } from "lodash";
 import toast from "react-hot-toast";
 import {useSelector} from 'react-redux'
 import {useAppDispatch} from '@/lib/hooks';

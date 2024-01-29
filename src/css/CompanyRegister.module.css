@@ -233,3 +233,8 @@
     line-height: normal;
     margin-bottom: 0;
 }
+.valid {
+    background-color: #225560;
+    /* Các thuộc tính CSS khác */
+  }
+  

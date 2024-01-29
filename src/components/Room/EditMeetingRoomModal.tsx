@@ -8,6 +8,7 @@ import api from '@/axiosService';
 import customstyle from '@/css/CompanyList.module.css'
 import {Form as Form} from 'antd'
 import { Select, Space } from 'antd';
+import { floor } from 'lodash';
 
 const EditNewCompany = ({rec,onEditSuccess}:any) => {
     const [visible, setVisible] = useState(false);
@@ -79,6 +80,7 @@ const EditNewCompany = ({rec,onEditSuccess}:any) => {
             capacity: rec.capacity,
             equipment: rec.equipment,
             availabilitys: rec.availabilitys,
+            floor: rec.floor
         });
         if (rec.apiImageUrl) {
           setApiImagePreview(rec.apiImageUrl);

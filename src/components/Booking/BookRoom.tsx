@@ -43,7 +43,7 @@ export default function BookRoom({onAddSuccess }:any) {
     const [selectedDate, setSelectedDate] = useState('');
     const [roomData, setRoomData] = useState<DataType[]>([]);
     const [selectedRoom, setSelectedRoom] = useState<string>('');
-
+    const [isChecked, setIsChecked] = useState(true);
     const handleSelectChange = (value: SingleValue<{ label: string; value: string; }>) => {
         if (value) {
           setSelectedRoom(value.value);
@@ -51,8 +51,10 @@ export default function BookRoom({onAddSuccess }:any) {
           setSelectedRoom("");
         }
       };
-      
 
+    const handleCheckboxChange = (e:any) => {
+        setIsChecked(e.target.checked);
+    };
     // const generateRepeatOptions = (date: Date | null) => {
     //     const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
       
@@ -78,7 +80,6 @@ export default function BookRoom({onAddSuccess }:any) {
         setRepeatType(selectedOption);
       };
 
-    //const repeatOptions = generateRepeatOptions(selectedDate);
 
     const handleStartTimeChange = (value: moment.Moment | undefined) => {
         setStartTime(value || null);
@@ -157,7 +158,8 @@ export default function BookRoom({onAddSuccess }:any) {
                   meeting_room_id: 1,
                     from_time: `${selectedDate} ${moment(startTime,'HH:mm A').format('HH:mm:ss')}`,
                     to_time: `${selectedDate} ${moment(endTime,'HH:mm A').format('HH:mm:ss')}`,
-                    repeat_type:1
+                    repeat_type:1,
+                    room_status: isChecked ? 1 : 0,
                 };
 
                 const bookingResponse = await api.post('external-bookings', values,
@@ -423,7 +425,11 @@ export default function BookRoom({onAddSuccess }:any) {
                             </div>
                         </div>
                         <div className={`${styles.checkbox}`}>
-                                <input type="checkbox" name="" id=""/>
+                                <input type="checkbox"
+                                       name=""
+                                       id=""
+                                       checked={isChecked}
+                                       onChange={handleCheckboxChange}/>
                                 <h6>Share meeting information to the organization</h6>
                         </div>
 
