@@ -9,7 +9,7 @@ import Button from "@/constants/Form/Button";
 import { createEntityAdapter } from "@reduxjs/toolkit";
 import "@/css/BookingSuccess.css";
 
-const BookingSuccess = () => {
+const BookingSuccess = ({open}:any) => {
   const [visible, setVisible] = useState(false);
   const user = useSelector((state: any) => state.user.value);
   const usertype = user.type;
@@ -23,9 +23,6 @@ const BookingSuccess = () => {
 
   return (
     <>
-      <button key="add" className={customstyle.addbtn} onClick={showPopup}>
-        Booking Success
-      </button>
       <Modal
         title={
           <div className={styles.formTitle}>
@@ -39,7 +36,7 @@ const BookingSuccess = () => {
             />
           </div>
         }
-        open={visible}
+        open={open}
         onCancel={handleCancel}
         footer={null}
         closable={false}
