@@ -18,8 +18,11 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import Link from "next/link";
 import { useLocale } from "next-intl";
+import { useDispatch } from 'react-redux';
+import { setSelectedRoom } from "@/lib/features/room/roomSlice";
 
 const CompanyList = () => {
+  const dispatch = useDispatch();
   const locale = useLocale();
   const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
@@ -65,29 +68,27 @@ const CompanyList = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-
-  const handleDeleteSuccess = () => {
-    setDeleteConfirmationVisible(false);
-    fetchData();
-  };
-  const handleAddSuccess = () => {
-    fetchData();
-  };
-  const handleEditSuccess = () => {
-    fetchData();
-  };
-  const handleSelectChange = (event: any) => {
-    const selectedRoomName = event.target.value;
-    if (selectedRoomName === "all") {
-      setFilteredRooms(allRoomsData);
-    } else {
-      const filteredRooms = allRoomsData.filter(
-        (room) => room.name === selectedRoomName
-      );
-      setFilteredRooms(filteredRooms);
-    }
-  };
-  const handleTimeStartChange = (newTimeStart: any) => {
+    const handleDeleteSuccess = () => {
+      setDeleteConfirmationVisible(false);
+      fetchData();
+    };
+    const handleAddSuccess = () => {
+      fetchData();
+    };
+    const handleEditSuccess = () => {
+      fetchData();
+    };
+    const [selectedRoomName, setSelectedRoomName] = useState('all');
+    const handleSelectChange = (event:any) => {
+      setSelectedRoomName(event.target.value);
+      if (selectedRoomName === "all") {
+        setFilteredRooms(allRoomsData);
+      } else {
+        const filteredRooms = allRoomsData.filter((room) => room.name === selectedRoomName);
+        setFilteredRooms(filteredRooms);
+      }
+   };
+   const handleTimeStartChange = (newTimeStart:any) => {
     setSelectedTimeStartValue(newTimeStart);
     fetchData();
   };
@@ -167,23 +168,17 @@ const CompanyList = () => {
           width: 183,
         },
         {
-          title: "View Room Detail",
-          key: "book",
-          dataIndex: "book",
-          render: (_, { availabilitys }) => {
-            const color = availabilitys ? "#8B8B8B" : "#388697";
-            return (
-              <Tag color={color} key={_}>
-                <Link
-                  href={`/${locale}/calendar`}
-                  style={{ textDecoration: "none" }}
-                >
-                  Book
-                </Link>
-              </Tag>
-            );
-          },
-          width: 154,
+          title: 'View Room Detail',
+            key: 'book',
+            render: (_,record,availabilitys) => {
+               const color = availabilitys ? '#8B8B8B' : '#388697';
+               return (
+                   <Tag key={record.key} color={color}>
+                       <Link href={`/${locale}/room/${record.id}`} style={{textDecoration:"none"}} onClick={() => dispatch(setSelectedRoom(record))}>Book</Link>
+                   </Tag>
+               );
+            },
+            width: 154,
         },
         {
           title: "Action",
@@ -263,23 +258,18 @@ const CompanyList = () => {
           width: 183,
         },
         {
-          title: "View Room Detail",
-          key: "book",
-          dataIndex: "book",
-          render: (_, { availabilitys }) => {
-            const color = availabilitys ? "#8B8B8B" : "#388697";
-            return (
-              <Tag color={color} key={_}>
-                <Link
-                  href={`/${locale}/calendar`}
-                  style={{ textDecoration: "none" }}
-                >
-                  Book
-                </Link>
-              </Tag>
-            );
-          },
-          width: 154,
+          title: 'View Room Detail',
+            key: 'book',
+            render: (_,record,availabilitys) => {
+               const color = availabilitys ? '#8B8B8B' : '#388697';
+               
+               return (
+                   <Tag key={record.key} color={color}>
+                       <Link href={`/${locale}/room/${record.id}`} style={{textDecoration:"none"}} onClick={() => dispatch(setSelectedRoom(record))}>Book</Link>
+                   </Tag>
+               );
+            },
+            width: 154,
         },
       ];
     }

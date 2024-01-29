@@ -20,6 +20,9 @@ import interactionPlugin from "@fullcalendar/interaction";
 import "@/css/DayView.css";
 
 const DayView = ({calendarRef, events, renderEventContent}: any) => {
+  const user = useSelector((state: any) => state.user.value);
+  const room = useSelector((state:any) => state.room.selectedRoom);
+  console.log("room", room);
   return (
     <>
       <div>
@@ -47,27 +50,24 @@ const DayView = ({calendarRef, events, renderEventContent}: any) => {
                       }
                     >
                       <div className="title-Room">
-                        <Meta title={"rec.meeting_room.name"} />
+                        <Meta title={room.name}/>
                       </div>
                       <div className="inforRoom">
                         <span className="infor-Room-element">
-                          <strong>Capacity: </strong>
-                          {"rec.meeting_room.capacity"}
+                          <strong>Capacity: {room.capacity}</strong>
+                          
                         </span>
                         <br />
                         <span className="infor-Room-element">
-                          <strong>Location: </strong>
-                          {"rec.meeting_room.location"}
+                          <strong>Location: {room.location}</strong>
                         </span>
                         <br />
                         <span className="infor-Room-element">
-                          <strong>Floor: </strong>
-                          {"rec.meeting_room.floor"}
+                          <strong>Floor: {room.floor}</strong>
                         </span>
                         <br />
                         <span className="infor-Room-element">
-                          <strong>Equipment: </strong>
-                          {"rec.meeting_room.equipment"}
+                          <strong>Equipment: {room.equipment}</strong>
                         </span>
                       </div>
                     </Card>
