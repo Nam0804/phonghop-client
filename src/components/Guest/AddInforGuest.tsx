@@ -47,7 +47,6 @@ useEffect(() => {
     });
     if (checked1 === 1) {
       const permissionResponse = await api.get("set-role/2");
-      console.log("Permission granted:", permissionResponse);
     }
    
   } catch (error) {

@@ -1,38 +1,23 @@
 "use client";
 import styles from "@/css/CompanyList.module.css";
-import { Table, Tag, Pagination } from "antd";
+import { Table, Tag, Pagination, ConfigProvider, Skeleton } from "antd";
 import Button from "@/constants/Form/Button";
 import type { DatePickerProps } from "antd";
 import { DatePicker, Space } from "antd";
 import customstyle from "@/css/MeetingRoomList.module.css";
 import CustomTimePicker from "@/components/Manager/TimePicker";
-import type { ColumnsType } from 'antd/es/table';
-import api from '@/axiosService';
+import type { ColumnsType } from "antd/es/table";
+import api from "@/axiosService";
 import { useEffect, useState, useCallback } from "react";
-import AddNewRoom from '@/components/Room/createMeetingRoomModal';
+import AddNewRoom from "@/components/Room/createMeetingRoomModal";
 import { get } from "lodash";
 import toast from "react-hot-toast";
 import DeleteMeeting from "@/components/DeleteMeeting/DeleteMeeting";
 import EditRoom from "@/components/Room/EditMeetingRoomModal";
 import { useSelector } from "react-redux";
 import moment from "moment";
-import Link from 'next/link';
-
-
-
-// Use it in your table
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text, record) => <CellComponent record={record} />,
-  },
-  // other columns...
-];
+import Link from "next/link";
 import { useLocale } from "next-intl";
-import { useNavigate } from "react-router-dom";
-
 
 const CompanyList = () => {
   const locale = useLocale();
@@ -40,20 +25,17 @@ const CompanyList = () => {
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
     useState(false);
   const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
+  const [loading, setLoadingSkeleton] = useState(true);
   const [selectedTimeStartValue, setSelectedTimeStartValue] = useState("");
   const [selectedTimeEndValue, setSelectedTimeEndValue] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const user = useSelector((state: any) => state.user.value);
   const company_id = user.company_id;
   const usertype = user.type;
-  // const navigate = useNavigate();
 
-  // Define your cell component
-  const CellComponent = ({ record }: { record: any }) => (
-    <Link href={`/calendar/${record}`}>
-      Book
-    </Link>
-  );
+  useEffect(() => {
+    fetchData().then(() => setLoadingSkeleton(false));
+  }, []);
 
   const fetchData = useCallback(async () => {
     try {
@@ -188,22 +170,17 @@ const CompanyList = () => {
           title: "View Room Detail",
           key: "book",
           dataIndex: "book",
-          // onCell: (record) => ({
-          //   onClick: () => navigate(`/room/${record.id}`),
-          // }),
-          render: (_, { availabilitys }, record) => {
-            ''
-            console.log(record);
-            
+          render: (_, { availabilitys }) => {
             const color = availabilitys ? "#8B8B8B" : "#388697";
             return (
-              <CellComponent record={record} />
-              // (
-              //   <Tag color={color} key={_}>
-              //     {/* <Link href={`/room/${_}`}>Book</Link> */}
-              //     Book
-              //   </Tag>
-              // )
+              <Tag color={color} key={_}>
+                <Link
+                  href={`/${locale}/calendar`}
+                  style={{ textDecoration: "none" }}
+                >
+                  Book
+                </Link>
+              </Tag>
             );
           },
           width: 154,
@@ -211,6 +188,7 @@ const CompanyList = () => {
         {
           title: "Action",
           key: "action",
+          align: "center",
           render: (_, record) => (
             <Space size="middle">
               <EditRoom
@@ -239,7 +217,7 @@ const CompanyList = () => {
           key: "id",
           render: (number) => <a>{number}</a>,
           sorter: (a, b) => a.no - b.no,
-          width: 73,
+          width: 80,
           fixed: "left",
         },
         {
@@ -292,7 +270,12 @@ const CompanyList = () => {
             const color = availabilitys ? "#8B8B8B" : "#388697";
             return (
               <Tag color={color} key={_}>
-                Book
+                <Link
+                  href={`/${locale}/calendar`}
+                  style={{ textDecoration: "none" }}
+                >
+                  Book
+                </Link>
               </Tag>
             );
           },
@@ -329,11 +312,22 @@ const CompanyList = () => {
           <div className={customstyle.date}>
             <p>Date:</p>
             <Space direction="vertical">
-              <DatePicker
-                style={{ width: "221px", height: "36px" }}
-                onChange={onChange}
-                showToday={false}
-              />
+              <ConfigProvider
+                theme={{
+                  components: {
+                    DatePicker: {
+                      colorPrimary: "#225560",
+                      algorithm: true, // Enable algorithm
+                    },
+                  },
+                }}
+              >
+                <DatePicker
+                  style={{ width: "221px", height: "36px" }}
+                  onChange={onChange}
+                  showToday={false}
+                />
+              </ConfigProvider>
             </Space>
           </div>
           <div className={customstyle.time}>
@@ -358,13 +352,58 @@ const CompanyList = () => {
         </div>
       </div>
       <div className={styles.companytable}>
-        <Table
-          columns={columns}
-          dataSource={filteredRooms}
-          scroll={{ x: 1000 }}
-          className={customstyle.customtable}
-          pagination={{ pageSize: 5 }}
-        />
+        {loading ? (
+          <Skeleton active />
+        ) : (
+          <ConfigProvider
+            theme={{
+              components: {
+                Table: {
+                  colorPrimary: "#225560",
+                  borderColor: "#ffffff",
+                  colorFillAlter: "ffffff",
+                  bodySortBg: "ffffff",
+                  headerSortActiveBg: "#ffffff",
+                  algorithm: true, // Enable algorithm
+                },
+              },
+            }}
+          >
+            <Table
+              columns={columns}
+              dataSource={filteredRooms}
+              bordered
+              scroll={{ x: 1000 }}
+              className={customstyle.customtable}
+              pagination={{ pageSize: 5 }}
+              components={{
+                header: {
+                  cell: (props: any) => (
+                    <th
+                      style={{
+                        width: "100%",
+                        background: "#255D6A",
+                        color: "#fff",
+                      }}
+                    >
+                      {props.children}
+                    </th>
+                  ),
+                },
+                body: {
+                  cell: (props: any) => {
+                    const isEvenRow = props.index % 2 === 0;
+                    console.log(isEvenRow);
+
+                    return (
+                      <td className={styles.customTable}>{props.children}</td>
+                    );
+                  },
+                },
+              }}
+            />
+          </ConfigProvider>
+        )}
       </div>
       {usertype === 1 && (
         <div className={styles.addco}>
@@ -373,6 +412,5 @@ const CompanyList = () => {
       )}
     </div>
   );
-}
-export default CompanyList
-
+};
+export default CompanyList;
