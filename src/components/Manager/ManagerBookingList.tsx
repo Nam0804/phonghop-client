@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import BookingDetail from "./Booking/BookingDetail";
 import BookingEditDetail from "./Booking/BookingEditDetail";
 import { useSelector } from "react-redux";
+import BookingSuccess from "../Booking/BookingSuccess";
 
 const ManagerBookingList = () => {
   const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
@@ -394,6 +395,9 @@ const ManagerBookingList = () => {
       </div>
       <div className={styles.addco}>
         <BookRoom onAddSuccess={handleAddSuccess}></BookRoom>
+      </div>
+      <div className={styles.addco}>
+        <BookingSuccess></BookingSuccess>
       </div>
     </div>
   );
