@@ -24,7 +24,6 @@ const MyBookingHistory = () => {
     const user = useSelector((state: any) => state.user.value);
     const [filteredBooking, setFilteredBooking] = useState<DataType[]>([]);
     const dispatch = useAppDispatch()
-    const link = `http://localhost:3000/en/guest?company_id=${user.company_id}`
 
     const fetchData = useCallback(async () => {
         try {
@@ -209,7 +208,6 @@ const MyBookingHistory = () => {
                             <option value="2">Finished</option>
                         </select>
                     </div>
-                    <input type={"text"} name={"guest-register"} value={link}/>
                 </div>
             </div>
             <div className={styles.companytable}>

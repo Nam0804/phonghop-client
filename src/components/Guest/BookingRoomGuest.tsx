@@ -21,6 +21,7 @@ import {Card,Image,Layout,Select,Progress} from "antd";
 import AddInforGuest from './AddInforGuest';
 import Modal from 'antd/es/modal/Modal';
 import Button from "@/constants/Form/Button";
+import { useSearchParams } from 'next/navigation' 
 
 
 export default function BookingRoomGuest({onAddSuccess }:any) {
@@ -81,10 +82,16 @@ export default function BookingRoomGuest({onAddSuccess }:any) {
       setSelectedDate(dateString);
   };
 
+    function getCompanyIdFromUrl() {
+      const searchParams = useSearchParams()
+      const search = searchParams.get('company_id')
+      return search
+    }
+    const company_id = getCompanyIdFromUrl();
       useEffect(() => {
         const fetchRooms = async () => {
           try {
-            const response = await api.get(`UnauthorizedUser/2`);
+            const response = await api.get(`UnauthorizedUser/${company_id}`);
             setRoomData(response.data.data)
           } catch (error) {
             console.error('Error fetching rooms:', error);
