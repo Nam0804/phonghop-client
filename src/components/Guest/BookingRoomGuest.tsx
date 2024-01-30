@@ -85,12 +85,7 @@ export default function BookingRoomGuest({ onAddSuccess }: any) {
     setSelectedDate(dateString);
   };
 
-  function getCompanyIdFromUrl() {
-    const searchParams = useSearchParams()
-    const search = searchParams.get('company_id')
-    return search
-  }
-  const company_id = getCompanyIdFromUrl();
+  const company_id = useSearchParams().get('company_id')
   useEffect(() => {
     const fetchRooms = async () => {
       try {
