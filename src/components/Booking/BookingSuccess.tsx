@@ -10,19 +10,25 @@ import { createEntityAdapter } from "@reduxjs/toolkit";
 import "@/css/BookingSuccess.css";
 import moment from "moment";
 
-const BookingSuccess = ({open,result}:any) => {
+const BookingSuccess = ({openModal, closeModal,result}:any) => {
   const [visible, setVisible] = useState(false);
   const user = useSelector((state: any) => state.user.value);
+  const [openModal1, setOpenModal] = useState(true);
   const usertype = user.type;
+  
   const showPopup = () => {
-    setVisible(true);
+    openModal(true);
   };
   const handleCancel = () => {
-    setVisible(false);
+    openModal(false);
+    // setVisible(false);
   };
 
   return (
     <>
+      {/* <button key="add" className={customstyle.addbtn} onClick={showPopup}>
+        Booking Success
+      </button> */}
       <Modal
         title={
           <div className={styles.formTitle}>
@@ -36,7 +42,7 @@ const BookingSuccess = ({open,result}:any) => {
             />
           </div>
         }
-        open={open}
+        open={openModal}
         onCancel={handleCancel}
         footer={null}
         closable={false}
