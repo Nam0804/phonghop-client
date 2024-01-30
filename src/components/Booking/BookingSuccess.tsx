@@ -8,27 +8,17 @@ import customstyle from "@/css/CompanyList.module.css";
 import Button from "@/constants/Form/Button";
 import { createEntityAdapter } from "@reduxjs/toolkit";
 import "@/css/BookingSuccess.css";
-import { useLocale } from "next-intl";
-import momment from "moment";
+import moment from "moment";
 
-const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
-  const locale = useLocale();
+const BookingSuccess = ({openModal, closeModal,result}:any) => {
   const [visible, setVisible] = useState(false);
   const user = useSelector((state: any) => state.user.value);
   const [openModal1, setOpenModal] = useState(true);
   const usertype = user.type;
-
-  // console.log("step1Data", step1Data);
-
-  const timeString = momment(step1Data.from_time).format("HH:mm A");
-  const timeString2 = momment(step1Data.to_time).format("HH:mm A");
-  const dateString = momment(step1Data.from_time).format("DD MMM YYYY");
-  const dateString2 = momment(step1Data.to_time).format("dddd");
-
+  
   const showPopup = () => {
     openModal(true);
   };
-
   const handleCancel = () => {
     openModal(false);
     // setVisible(false);
@@ -113,7 +103,7 @@ const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Date: &nbsp;</strong> {dateString}
+                  <strong>Date: &nbsp;</strong> {moment(result.data.from_time).format('DD MMMM YYYY')};
                 </Col>
               </Row>
             </Col>
@@ -146,8 +136,7 @@ const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Time: &nbsp;</strong>From {timeString} to{" "}
-                  {timeString2}
+                  <strong>Time: &nbsp;</strong> From {moment(result.data.from_time).format('HH:mm A')} to {moment(result.data.to_time).format('HH:mm A')};
                 </Col>
               </Row>
             </Col>
@@ -183,8 +172,7 @@ const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Location: &nbsp;</strong>
-                  {step1Data.room}
+                  <strong>Location: &nbsp;</strong> {result.data.meeting_room.location}
                 </Col>
               </Row>
             </Col>
@@ -214,8 +202,7 @@ const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Meeting Room: &nbsp;</strong>
-                  {step1Data.room}
+                  <strong>Meeting Room: &nbsp;</strong> {result.data.meeting_room.name}
                 </Col>
               </Row>
             </Col>
