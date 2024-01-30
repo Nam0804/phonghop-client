@@ -48,8 +48,11 @@ const EditNewCompany = ({rec,onEditSuccess}:any) => {
         form1.validateFields()
             .then(async (values) => {
                 try {
-                    console.log(values)
-                    const data = await api.put(`update-company/${rec.id}`,values)
+                    const data = await api.put(`update-company/${rec.id}`,{
+                        ...values,
+                        manager_title: values.title,
+                        phone: values.phone,
+                    })
                     if (data.status == 200) {
                         message.success('User update successfully');
                         setVisible(false);
@@ -62,7 +65,6 @@ const EditNewCompany = ({rec,onEditSuccess}:any) => {
                 } catch (e) {
                     console.error('Error creating user:', e);
                     message.error('Failed to create user');
-                    console.log(values)
                 }
             })
             .catch((errorInfo) => {

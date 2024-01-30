@@ -11,11 +11,35 @@ import { useEffect, useState, useCallback } from "react";
 import { get } from "lodash";
 import toast from "react-hot-toast";
 import {useSelector} from 'react-redux';
+import AddInforGuest from '@/components/Guest/AddInforGuest';
+import BookingRoomGuest from '@/components/Guest/BookingRoomGuest';
 
 const HomePage = () => {
     const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
     const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+    const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
+    const [selectedRoomName, setSelectedRoomName] = useState('all');
+    const [selectedTimeStartValue, setSelectedTimeStartValue] = useState("");
+    const [selectedTimeEndValue, setSelectedTimeEndValue] = useState("");
     
+    const handleSelectChange = (event:any) => {
+        setSelectedRoomName(event.target.value);
+        if (selectedRoomName === "all") {
+          setFilteredRooms(allRoomsData);
+        } else {
+          const filteredRooms = allRoomsData.filter((room) => room.name === selectedRoomName);
+          setFilteredRooms(filteredRooms);
+        }
+     };
+
+    const handleTimeStartChange = (newTimeStart:any) => {
+      setSelectedTimeStartValue(newTimeStart);
+      fetchData();
+    };
+    const handleTimeEndChange = (newTimeEnd: any) => {
+      setSelectedTimeEndValue(newTimeEnd);
+      fetchData();
+    };
 
     const fetchData = useCallback(async () => {
     try {
@@ -41,7 +65,7 @@ const HomePage = () => {
         id:number;
         key: string;
         no: number;
-        roomname: string;
+        name: string;
         location: string;
         capacity:number;
         equipment:string;
@@ -62,7 +86,7 @@ const HomePage = () => {
           title: 'Room Name',
           dataIndex: 'name',
           key: 'name',
-          sorter:(a,b) => a.roomname.localeCompare(b.roomname),
+          sorter:(a,b) => a.name.localeCompare(b.name),
           fixed:'left',
           width:175,
         },
@@ -152,17 +176,20 @@ const HomePage = () => {
                     </div>
                     <div className={customstyle.time}>
                         <p>Time:</p>
-                        <CustomTimePicker></CustomTimePicker>
+                        <CustomTimePicker onChange={handleTimeStartChange}></CustomTimePicker>
                         <p>To:</p>
-                        <CustomTimePicker></CustomTimePicker>
+                        <CustomTimePicker onChange={handleTimeEndChange}></CustomTimePicker>
                     </div>
                 </div>
                 <div className={customstyle.roomPicker}>
                     <p>Choose a room</p>
-                    <select >
-                        <option value="apple">Quả táo</option>
-                        <option value="pear">Quả lê</option>
-                        <option value="peach">Quả đào</option>
+                    <select onChange={(e) => handleSelectChange(e)}>
+                        <option value="all">All Rooms</option>
+                        {allRoomsData.map((room) => (
+                        <option key={room.id} value={room.name}>
+                            {room.name}
+                        </option>
+                        ))}
                     </select>
                 </div>
             </div>
@@ -170,8 +197,33 @@ const HomePage = () => {
 
                 <Table columns={columns} dataSource={allRoomsData} 
                 scroll={{x:1000}} className={customstyle.customtable}
+                components={{
+                    header: {
+                      cell: (props: any) => (
+                        <th
+                          style={{
+                            width: "100%",
+                            background: "#255D6A",
+                            color: "#fff",
+                          }}
+                        >
+                          {props.children}
+                        </th>
+                      ),
+                    },
+                    body: {
+                      cell: (props: any) => {
+                        const isEvenRow = props.index % 2 === 0;
+    
+                        return (
+                          <td className={styles.customTable}>{props.children}</td>
+                        );
+                      },
+                    },
+                  }}
                 />
             </div>
+            <BookingRoomGuest></BookingRoomGuest>
         </div>
     );
 };
