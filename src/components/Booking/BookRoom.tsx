@@ -17,7 +17,7 @@ import moment from "moment";
 import TextArea from "antd/es/input/TextArea";
 import { Input, Row, Col, Form, List, Skeleton, Avatar } from "antd";
 import api from "@/axiosService";
-import { Card, Image, Layout, Select, Progress } from "antd";
+import { Card, Image, Layout, Select, Progress, message } from "antd";
 // import AddInforGuest from "./AddInforGuest";
 
 import Modal from "antd/es/modal/Modal";
@@ -64,12 +64,25 @@ export default function BookRoom({ onAddSuccess }: any) {
   const [visible, setVisible] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<string | undefined>("");
   const [selectedRoomInfo, setSelectedRoomInfo] = useState<any>(null);
+  const [isChecked, setIsChecked] = useState(true);
+
+  
+
+  const handleCheckboxChange = (e: any) => {
+    setIsChecked(e.target.checked);
+  };
 
   const handleOpenSuccessModal = () => {
     setShowSuccessModal(true);
   };
   const handleCloseSuccessModal = () => {
-    setStep(0);
+    setShowSuccessModal(false);
+  };
+
+  const removeGuest = (index: number) => {
+    const updatedGuests = [...selectedGuests];
+    updatedGuests.splice(index, 1);
+    setSelectedGuests(updatedGuests);
   };
 
   const today = moment();
@@ -100,23 +113,6 @@ export default function BookRoom({ onAddSuccess }: any) {
     fetchRooms();
   }, []);
 
-  // const props: UploadProps = {
-  //   name: "file",
-  //   action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-  //   headers: {
-  //     authorization: "authorization-text",
-  //   },
-  //   onChange(info) {
-  //     if (info.file.status !== "uploading") {
-  //       console.log(info.file, info.fileList);
-  //     }
-  //     if (info.file.status === "done") {
-  //       message.success(`${info.file.name} file uploaded successfully`);
-  //     } else if (info.file.status === "error") {
-  //       message.error(`${info.file.name} file upload failed.`);
-  //     }
-  //   },
-  // };
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -136,88 +132,68 @@ export default function BookRoom({ onAddSuccess }: any) {
     fetchRooms();
   }, []);
 
-  // const handleSubmit = () => {
-  //   form
-  //     .validateFields()
-  //     .then(async (values) => {
-  //       try {
-  //         const meetingRoomsResponse = await api.get("meeting-rooms/listing");
-
-  //         if (meetingRoomsResponse.status === 200) {
-  //           const meetingRooms = meetingRoomsResponse.data.data;
-
-  //           const selectedMeetingRoomId =
-  //             meetingRooms.length > 0 ? meetingRooms[0].id : null;
-
-  //           values = {
-  //             ...form.getFieldsValue(),
-  //             booking_name: user.name,
-  //             booking_email: user.email,
-  //             booking_title: user.title,
-  //             meeting_room_id: 1,
-  //             from_time: `${selectedDate} ${moment(startTime, "HH:mm A").format(
-  //               "HH:mm:ss"
-  //             )}`,
-  //             to_time: `${selectedDate} ${moment(endTime, "HH:mm A").format(
-  //               "HH:mm:ss"
-  //             )}`,
-  //             repeat_type: 1,
-  //             room_status: isChecked ? 1 : 0,
-  //           };
-
-  //           const bookingResponse = await api.post(
-  //             "external-bookings",
-  //             values,
-  //             {
-  //               headers: {
-  //                 "Content-Type": "application/json",
-  //                 Accept: "application/json",
-  //               },
-  //             }
-  //           );
-
-  //           if (bookingResponse.status === 200) {
-  //             message.success("Booking created successfully");
-  //             form.resetFields();
-  //             setVisible(false);
-  //             setStep1Data(form.getFieldsValue());
-  //             setStep(2);
-  //             if (onAddSuccess) {
-  //               onAddSuccess();
-  //             }
-  //           } else {
-  //             message.error("Failed to create booking");
-  //           }
-
-  //           setFilteredRooms(bookingResponse.data.data);
-  //         }
-  //       } catch (e) {
-  //         console.error("Error creating booking:", e);
-  //         message.error("Failed to create booking");
-  //       }
-  //     })
-  //     .catch((errorInfo) => {
-  //       console.log(errorInfo);
-  //     });
-  // };
-
   const handleSubmit = () => {
     form
       .validateFields()
-      .then((values) => {
-        values.from_time = `${selectedDate} ${moment(
-          values.from_time,
-          "hh:mm A"
-        ).format("HH:mm:ss")}`;
-        values.to_time = `${selectedDate} ${moment(
-          values.to_time,
-          "hh:mm A"
-        ).format("HH:mm:ss")}`;
-        setStep(2);
-        setStep1Data(values);
+      .then(async (values) => {
+        try {
+          const meetingRoomsResponse = await api.get("meeting-rooms/listing");
+
+          if (meetingRoomsResponse.status === 200) {
+            const meetingRooms = meetingRoomsResponse.data.data;
+
+            const selectedMeetingRoomId =
+              meetingRooms.length > 0 ? meetingRooms[0].id : null;
+
+            values = {
+              ...form.getFieldsValue(),
+              booking_name: user.name,
+              booking_email: user.email,
+              booking_title: user.title,
+              meeting_room_id: 1,
+              from_time: `${selectedDate} ${moment(startTime, "HH:mm A").format(
+                "HH:mm:ss"
+              )}`,
+              to_time: `${selectedDate} ${moment(endTime, "HH:mm A").format(
+                "HH:mm:ss"
+              )}`,
+              repeat_type: 1,
+              room_status: isChecked ? 1 : 0,
+            };
+
+            const bookingResponse = await api.post(
+              "external-bookings",
+              values,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                },
+              }
+            );
+
+            if (bookingResponse.status === 200) {
+              message.success("Booking created successfully");
+              form.resetFields();
+              setVisible(false);
+              setStep1Data(form.getFieldsValue());
+              setStep(2);
+              if (onAddSuccess) {
+                onAddSuccess();
+              }
+            } else {
+              message.error("Failed to create booking");
+            }
+
+            setFilteredRooms(bookingResponse.data.data);
+          }
+        } catch (e) {
+          console.error("Error creating booking:", e);
+          message.error("Failed to create booking");
+        }
       })
       .catch((errorInfo) => {
-        console.log("Validation failed:", errorInfo);
+        console.log(errorInfo);
       });
   };
 
@@ -285,8 +261,10 @@ export default function BookRoom({ onAddSuccess }: any) {
                   colon={false}
                 >
                   <select className="bookingInput">
-                    <option value="0">Meeting</option>
-                    <option value="1">Personal Use</option>
+                    <option selected>Choose type of booking</option>
+                    <option value="1">Meeting</option>
+                    <option value="2">Personal use</option>
+                    <option value="3">Unavailable</option>
                   </select>
                 </Form.Item>
                 <Form.Item
@@ -403,6 +381,7 @@ export default function BookRoom({ onAddSuccess }: any) {
                     </Col>
                   </Row>
                 </Form.Item>
+                {/* ===============time================== */}
                 <Form.Item
                   label="Time*:"
                   style={{ fontWeight: 600, fontSize: 16 }}
@@ -418,6 +397,7 @@ export default function BookRoom({ onAddSuccess }: any) {
                   >
                     <Form.Item name="from_time" className={styles.inputt}>
                       <CustomTimePicker
+                        onChange={handleStartTimeChange}
                         style={{
                           width: 140,
                           height: 44,
@@ -429,6 +409,7 @@ export default function BookRoom({ onAddSuccess }: any) {
                     <p style={{ margin: 0 }}>TO</p>
                     <Form.Item name="to_time" className={styles.inputt}>
                       <CustomTimePicker
+                        onChange={handleEndTimeChange}
                         style={{
                           width: 140,
                           height: 44,
@@ -562,7 +543,6 @@ export default function BookRoom({ onAddSuccess }: any) {
                               />
                             }
                             title={<p>Baka</p>}
-                            // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                           />
                         </List.Item>
                       )}
@@ -593,13 +573,6 @@ export default function BookRoom({ onAddSuccess }: any) {
             />
           </div>
         </Modal>
-      )}
-      {step === 2 && (
-        <BookingSuccess
-          openModal={handleOpenSuccessModal}
-          closeModal={handleCloseSuccessModal}
-          step1Data={step1Data}
-        ></BookingSuccess>
       )}
     </>
   );

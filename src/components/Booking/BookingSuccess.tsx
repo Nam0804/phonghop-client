@@ -26,11 +26,12 @@ const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
   const dateString2 = momment(step1Data.to_time).format("dddd");
 
   const showPopup = () => {
-    setVisible(true);
+    openModal(true);
   };
 
   const handleCancel = () => {
-    setVisible(false);
+    openModal(false);
+    // setVisible(false);
   };
 
   return (
@@ -145,7 +146,8 @@ const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Time: &nbsp;</strong>From {timeString} to {timeString2}
+                  <strong>Time: &nbsp;</strong>From {timeString} to{" "}
+                  {timeString2}
                 </Col>
               </Row>
             </Col>
@@ -181,7 +183,8 @@ const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Location: &nbsp;</strong>{step1Data.room}
+                  <strong>Location: &nbsp;</strong>
+                  {step1Data.room}
                 </Col>
               </Row>
             </Col>
@@ -211,7 +214,8 @@ const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Meeting Room: &nbsp;</strong>{step1Data.room}
+                  <strong>Meeting Room: &nbsp;</strong>
+                  {step1Data.room}
                 </Col>
               </Row>
             </Col>
@@ -222,7 +226,7 @@ const BookingSuccess = ({ openModal, closeModal, step1Data }: any) => {
             <Col span={24}>
               <Button
                 className={styles.buttonClose}
-                onClick={closeModal}
+                onClick={handleCancel}
                 label="COMPLETE"
               />
             </Col>
