@@ -554,10 +554,13 @@ export default function BookRoom({ onAddSuccess }: any) {
           </Form>
           {/* =================== */}
           <div className={styles.autocheckbox}>
-            <input type="checkbox" id="scales" className={styles.check} />
-            <label htmlFor="scales">
-              <p>Share meeting information to the organization</p>
-            </label>
+            <input type="checkbox"
+                   name=""
+                   id=""
+                   className={styles.check}
+                   checked={isChecked}
+                   onChange={handleCheckboxChange}/>
+            <h6>Share meeting information to the organization</h6>
           </div>
           <div className={styles.buttonContainer}>
             <Button

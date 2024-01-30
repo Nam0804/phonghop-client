@@ -128,7 +128,7 @@ const Index = () => {
 
     const fetchMyBookingHistory = useCallback(async () => {
         try {
-            const response = await api.get(`/bookings/history/${user.id}`,{
+            const response = await api.get(`/bookings-history`,{
                 params:{
                     company_id: company_id,
                     room_id: selectedRoomId
