@@ -10,8 +10,6 @@ import Meta from "antd/es/card/Meta";
 import type { DatePickerProps } from 'antd';
 import { ConfigProvider, DatePicker, Space } from 'antd';
 import 'rc-time-picker/assets/index.css';
-import Selects from 'react-select';
-import type { UploadProps } from 'antd';
 import "@/css/BookingAdd.css";
 import moment from "moment";
 import TextArea from "antd/es/input/TextArea";
@@ -69,6 +67,11 @@ export default function BookingRoomGuest({ onAddSuccess }: any) {
   const handleOpenAddInforModal = () => {
     setShowAddInforModal(true);
   }
+  const removeGuest = (index: number) => {
+    const updatedGuests = [...selectedGuests];
+    updatedGuests.splice(index, 1);
+    setSelectedGuests(updatedGuests);
+  };
   const handleCloseAddInforModal = () => {
     setStep(1);
   }
@@ -414,7 +417,6 @@ export default function BookingRoomGuest({ onAddSuccess }: any) {
                               />
                             }
                             title={<p>Baka</p>}
-                          // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                           />
                         </List.Item>
                       )}

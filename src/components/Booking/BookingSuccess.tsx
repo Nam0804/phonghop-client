@@ -8,15 +8,15 @@ import customstyle from "@/css/CompanyList.module.css";
 import Button from "@/constants/Form/Button";
 import { createEntityAdapter } from "@reduxjs/toolkit";
 import "@/css/BookingSuccess.css";
+import moment from "moment";
 
-const BookingSuccess = ({open}:any) => {
+const BookingSuccess = ({open,result}:any) => {
   const [visible, setVisible] = useState(false);
   const user = useSelector((state: any) => state.user.value);
   const usertype = user.type;
   const showPopup = () => {
     setVisible(true);
   };
-
   const handleCancel = () => {
     setVisible(false);
   };
@@ -97,7 +97,7 @@ const BookingSuccess = ({open}:any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Date: &nbsp;</strong> 12/12/2021 asdasdassdsd
+                  <strong>Date: &nbsp;</strong> {moment(result.data.from_time).format('DD MMMM YYYY')};
                 </Col>
               </Row>
             </Col>
@@ -130,7 +130,7 @@ const BookingSuccess = ({open}:any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Time: &nbsp;</strong> 12/12/2021 asdasdassdsd
+                  <strong>Time: &nbsp;</strong> From {moment(result.data.from_time).format('HH:mm A')} to {moment(result.data.to_time).format('HH:mm A')};
                 </Col>
               </Row>
             </Col>
@@ -166,7 +166,7 @@ const BookingSuccess = ({open}:any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Location: &nbsp;</strong> 12/12/2021 asdasdassdsd
+                  <strong>Location: &nbsp;</strong> {result.data.meeting_room.location}
                 </Col>
               </Row>
             </Col>
@@ -196,7 +196,7 @@ const BookingSuccess = ({open}:any) => {
                   </svg>
                 </Col>
                 <Col span={10} className="booking-infor">
-                  <strong>Meeting Room: &nbsp;</strong> 12/12/2021 asdasdassdsd
+                  <strong>Meeting Room: &nbsp;</strong> {result.data.meeting_room.name}
                 </Col>
               </Row>
             </Col>

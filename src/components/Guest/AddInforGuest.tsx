@@ -10,7 +10,8 @@ import "@/css/BookingDetail.css";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import api from "@/axiosService";
-import { repeat } from "lodash";
+import { repeat, set } from "lodash";
+import BookingSuccess from "../Booking/BookingSuccess";
 
 const AddInforGuest = ({ openModal, closeModal, step1Data }: any) => {
   const locale = useLocale();
@@ -18,13 +19,16 @@ const AddInforGuest = ({ openModal, closeModal, step1Data }: any) => {
   const [formBookingDetail] = Form.useForm();
   const [checked1, setChecked1] = useState(0);
   const [checked2, setChecked2] = useState(false);
-  const [openModal1, setOpenModal] = useState(true);
   const [currentProgress, setCurrentProgress] = useState(70);
+  const [saveSuccess, setSaveSuccess] = useState(false); 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [result, setResult] = useState<any[]>([]);
 
   useEffect(() => {
     setCurrentProgress(checked1 ? 100 : 70)
   }, [checked1]);
-  console.log("step1Data", step1Data);
+
+
   const onChange1 = (e: any) => {
     setChecked1(e.target.checked ? 1 : 0);
   };
@@ -32,7 +36,9 @@ const AddInforGuest = ({ openModal, closeModal, step1Data }: any) => {
     setChecked2(e.target.checked);
   };
 
-
+  const showSuccessPopup = () => {
+    setSaveSuccess(true);
+  };
 
   const handleSave = async () => {
     try {
@@ -48,21 +54,24 @@ const AddInforGuest = ({ openModal, closeModal, step1Data }: any) => {
       if (checked1 === 1) {
         const permissionResponse = await api.get("set-role/2");
       }
-
+      setResult(response.data);
+      setSaveSuccess(true);
+      setModalVisible(false);
     } catch (error) {
       console.error("Error saving data:", error);
       // Handle the error or display an error message
     }
   };
-  const closeModal1 = (value: boolean) => {
-    setOpenModal(value);
-  }
+  // const closeModal1 = (value: boolean) => {
+  //   setOpenModal(value);
+  // }
   const showPopup = () => {
     setVisible(true);
     formBookingDetail.resetFields();
   };
 
   const handleCancel = () => {
+    setModalVisible(false);
     formBookingDetail.resetFields();
     closeModal(true);
   };
@@ -74,6 +83,7 @@ const AddInforGuest = ({ openModal, closeModal, step1Data }: any) => {
         footer={null}
         closable={false}
         width={1296}
+        visible={modalVisible}
       >
         <h4 className="title-Guest">
           <i>User Information</i>
@@ -155,6 +165,7 @@ const AddInforGuest = ({ openModal, closeModal, step1Data }: any) => {
           strokeColor="#388697"
         />
       </Modal>
+      {saveSuccess && <BookingSuccess open={showSuccessPopup} result={result}/>} 
     </>
   );
 };
