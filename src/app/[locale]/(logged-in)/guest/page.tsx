@@ -34,13 +34,8 @@ const CompanyList = () => {
   const [selectedDate, setSelectedDate] = useState("");
 
 
-  function getCompanyIdFromUrl() {
-    const searchParams = useSearchParams()
-    const search = searchParams.get('company_id')
-    return search
-  }
-  const company_id = getCompanyIdFromUrl();
-  
+  const company_id  = useSearchParams().get('company_id');
+
   useEffect(() => {
     fetchData().then(() => setLoadingSkeleton(false));
   }, []);
