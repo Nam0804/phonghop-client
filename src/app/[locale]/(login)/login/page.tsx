@@ -34,7 +34,7 @@ const LoginPage: React.FC<{}> = () => {
   const [newPassword, setNewPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const user_id = user.id ? user.id : 0;
+  const user_id = user.id ?? 0;
   const isFormValid = email !== '' && password !== '';
   const validatePassword = (password: string) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
