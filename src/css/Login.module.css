@@ -205,6 +205,7 @@
     font-family: Be Vietnam Pro;
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .inputform1 input {
@@ -220,6 +221,7 @@
     border-bottom: 2px solid #225560;
     opacity: 0.6;
     justify-content: center;
+    margin-bottom: 30px;
 
 }
 
@@ -236,7 +238,7 @@
 
 .showhide2 {
     position: absolute;
-    margin-left: 20%;
+    margin-left: 95%;
     transform: translate(0, -50%);
 }
 
@@ -244,4 +246,17 @@
     position: absolute;
     transform: translate(0, -50%);
     margin-top: 10px;
+}
+.error{
+    color:  #E56353;
+    font-family: "Be Vietnam Pro";
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    transform: translate(0, -15%);
+    margin-bottom: 0;
 }

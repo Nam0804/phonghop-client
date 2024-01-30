@@ -131,6 +131,7 @@ const LoginPage: React.FC<{}> = () => {
     }
   };
   const [passwordVisible, setpasswordVisible] = useState(false);
+  const [changepasswordVisible, setchangepasswordVisible] = useState(false);
   const onChange = (e: CheckboxChangeEvent) => {
     console.log(`checked = ${e.target.checked}`);
   };
@@ -167,14 +168,14 @@ const LoginPage: React.FC<{}> = () => {
                   <div className={styles.inputgroup}>
                     <div className={styles.inputform1}>
                       <img src="/pass.svg" alt="" className={styles.icon1} />
-                      <input  type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Password" className={styles.inputsection} value={newPassword} onChange={(e) => {setNewPassword(e.target.value);setErrorMessage(''); }}/>
-                      <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide2} onClick={() => setpasswordVisible(!passwordVisible)} />
+                      <input  type={changepasswordVisible ? 'text' : 'password'} name="password" placeholder="Password" className={styles.inputsection} value={newPassword} onChange={(e) => {setNewPassword(e.target.value);setErrorMessage(''); }}/>
+                      <img src={changepasswordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide2} onClick={() => setchangepasswordVisible(!changepasswordVisible)} />
                       <p className={styles.error}>{errorMessage}</p>
                     </div>
                     <div className={styles.inputform1}>
                       <img src="/pass.svg" alt="" className={styles.icon1} />
-                      <input  type={passwordVisible ? 'text' : 'password'} name="password" placeholder="Confirm Password" className={styles.inputsection} value={confirmNewPassword} onChange={(e) => {setConfirmNewPassword(e.target.value);setErrorMessage('');}}/>
-                      <img src={passwordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide2} onClick={() => setpasswordVisible(!passwordVisible)} />
+                      <input  type={changepasswordVisible ? 'text' : 'password'} name="password" placeholder="Confirm Password" className={styles.inputsection} value={confirmNewPassword} onChange={(e) => {setConfirmNewPassword(e.target.value);setErrorMessage('');}}/>
+                      <img src={changepasswordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide2} onClick={() => setchangepasswordVisible(!changepasswordVisible)} />
                       <p className={styles.error}>{errorMessage1}</p>
                     </div>
                   </div>

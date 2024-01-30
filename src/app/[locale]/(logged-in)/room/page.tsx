@@ -35,6 +35,16 @@ const CompanyList = () => {
   const user = useSelector((state: any) => state.user.value);
   const company_id = user.company_id;
   const usertype = user.type;
+  const link = "http://localhost:3000/" + locale + "/guest?company_id=" + company_id;
+  const handleGetLink = () => {
+    const textarea = document.createElement("textarea");
+    textarea.value = link;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+    toast.success("Copied to clipboard");
+  }
 
   useEffect(() => {
     fetchData().then(() => setLoadingSkeleton(false));
@@ -42,8 +52,6 @@ const CompanyList = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const url = window.location.href;
-      const registerurl = `${url}/${company_id}`;
       const formattedStartTime = moment(
         selectedTimeStartValue,
         "hh:mm A"
@@ -279,7 +287,7 @@ const CompanyList = () => {
       <div className={styles.labelsection}>
         <div className={styles.square}></div>
         <h1 className={styles.label}>Meeting Room List</h1>
-        <span>
+        <span onClick={handleGetLink}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -383,7 +391,6 @@ const CompanyList = () => {
                 body: {
                   cell: (props: any) => {
                     const isEvenRow = props.index % 2 === 0;
-                    console.log(isEvenRow);
 
                     return (
                       <td className={styles.customTable}>{props.children}</td>

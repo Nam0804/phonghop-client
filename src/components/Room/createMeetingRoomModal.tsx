@@ -17,8 +17,22 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showDragDrop, setShowDragDrop] = useState(true);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const user = useSelector((state: any) => state.user.value);
+
+  const handleInputChange = () => {
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[type="text"]');
+    let isAllFieldsFilled = true;
+
+    inputs.forEach((input) => {
+        if (input.value.trim() === '') {
+        isAllFieldsFilled = false;
+        }
+    });
+
+    setIsFormValid(isAllFieldsFilled);
+    };
 
   const handleDrag = function (e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
@@ -186,7 +200,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               ]}
               style={{ width: "100%" }}
             >
-              <Input type="text" className={styles.Input} />
+              <Input type="text" className={styles.Input} onChange={handleInputChange}/>
             </Form2.Item>
           </div>
           <div className={styles.formControl}>
@@ -205,7 +219,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               ]}
               style={{ width: "100%" }}
             >
-              <Input type="text" className={styles.Input} />
+              <Input type="text" className={styles.Input} onChange={handleInputChange}/>
             </Form2.Item>
           </div>
           <div className={styles.formControl}>
@@ -214,7 +228,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               name="floor"
               style={{ width: "100%" }}
             >
-              <Input type="text" className={styles.Input} />
+              <Input type="text" className={styles.Input} onChange={handleInputChange}/>
             </Form2.Item>
           </div>
           <div className={styles.formControl}>
@@ -233,7 +247,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               ]}
               style={{ width: "100%" }}
             >
-              <Input type="text" className={styles.Input} />
+              <Input type="text" className={styles.Input} onChange={handleInputChange}/>
             </Form2.Item>
           </div>
           <div className={styles.formControl}>
@@ -242,7 +256,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               name="equipment"
               style={{ width: "100%" }}
             >
-              <Input type="text" className={styles.Input} />
+              <Input type="text" className={styles.Input} onChange={handleInputChange}/>
             </Form2.Item>
           </div>
           <div className={styles.formControl}>
@@ -352,15 +366,10 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
             <div className={styles.buttonContainer}>
               <div>
                 <Button
-                  className={styles.buttonAdd}
+                  className={`${styles.buttonAdd} ${isFormValid ? styles.valid : ''}`}
                   htmlType="submit"
                   onClick={handleSubmit}
                   label="ADD NEW ROOM"
-                  style={
-                    !formCompleted
-                      ? { backgroundColor: "#8B8B8B" }
-                      : { backgroundColor: "#225560" }
-                  }
                 />
               </div>
               <div>

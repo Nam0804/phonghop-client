@@ -36,45 +36,25 @@ export default function BookRoom({onAddSuccess }:any) {
     const [form] = Form1.useForm();
     const [formCompleted, setFormCompleted] = useState(false)
     const [visible, setVisible] = useState(false);
-    const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
     const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
     const [repeatType, setRepeatType] = useState<{ value: string; label: string } | null>(null);
     const user = useSelector((state:any) => state.user.value);
     const [selectedDate, setSelectedDate] = useState('');
     const [roomData, setRoomData] = useState<DataType[]>([]);
-    const [selectedRoom, setSelectedRoom] = useState<string>('');
     const [isChecked, setIsChecked] = useState(true);
-    const handleSelectChange = (value: SingleValue<{ label: string; value: string; }>) => {
-        if (value) {
-          setSelectedRoom(value.value);
-        } else {
-          setSelectedRoom("");
-        }
-      };
+    const [selectedRoomId, setSelectedRoomId] = useState<string | undefined>('');
+    const [selectedRoomInfo, setSelectedRoomInfo] = useState<any>(null);
+    const company_id = user.company_id;
 
+    const handleRoomSelectChange = (value: any) => {
+        setSelectedRoomId(value);
+        const selectedRoom = roomData?.find((room) => room.id === value);
+        setSelectedRoomInfo(selectedRoom);
+      };
+      
     const handleCheckboxChange = (e:any) => {
         setIsChecked(e.target.checked);
     };
-    // const generateRepeatOptions = (date: Date | null) => {
-    //     const dayOfWeek = date ? new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date) : '(Select a date)';
-      
-    //     return [
-    //       { value: 'no-repeat', label: 'Doesn’t repeat' },
-    //       { value: 'every-weekday', label: 'Every weekday' },
-    //       {
-    //         value: 'weekly',
-    //         label: `Weekly - ${date ? dayOfWeek : '(Select a date)'}`,
-    //       },
-    //       {
-    //         value: 'monthly',
-    //         label: `Monthly - ${date ? dayOfWeek : '(Select a date)'}`,
-    //       },
-    //       {
-    //         value: 'annually',
-    //         label: `Annually - ${date ? dayOfWeek : '(Select a date)'}`,
-    //       },
-    //     ];
-    //   };
 
     const handleRepeatChange = (selectedOption: { value: string; label: string } | null) => {
         setRepeatType(selectedOption);
@@ -120,22 +100,16 @@ export default function BookRoom({onAddSuccess }:any) {
 
 
       useEffect(() => {
-        const fetchRooms = async () => {
+        const fetchMeetingRooms = async () => {
           try {
-            const company_id = user.company_id;
             const response = await api.get(`allroom/${company_id}`);
-            if (response.status === 200) {
-              setRoomData(response.data.data);
-            } else {
-              console.error('Failed to fetch rooms');
-            }
+            setRoomData(response.data.data);
           } catch (error) {
-            console.error('Error fetching rooms:', error);
+            console.error('Error fetching meeting rooms:', error);
           }
         };
-    
-        fetchRooms();
-      }, []);
+        fetchMeetingRooms();
+      }, [company_id]);
       
     const handleSubmit = () => {
         form
@@ -155,7 +129,7 @@ export default function BookRoom({onAddSuccess }:any) {
                   booking_name: user.name,
                   booking_email: user.email,
                   booking_title: user.title,
-                  meeting_room_id: 1,
+                  meeting_room_id: selectedMeetingRoomId,
                     from_time: `${selectedDate} ${moment(startTime,'HH:mm A').format('HH:mm:ss')}`,
                     to_time: `${selectedDate} ${moment(endTime,'HH:mm A').format('HH:mm:ss')}`,
                     repeat_type:1,
@@ -268,15 +242,22 @@ export default function BookRoom({onAddSuccess }:any) {
                                     </div>
                                     <div className="mb-3 row" >
                                     <Form1.Item label={<span className={styles.formLabel}>Room*:</span>} name="room">
-                                        <Selects
-                                            options={roomData.map((room) => ({
-                                                label: room.name,
-                                                value: room.name,
-                                              }))}
-                                              className={styles.roomselect}
-                                              onChange={handleSelectChange}
-                                            />
-                                            {selectedRoom && (
+                                    <Select
+                                            showSearch
+                                            placeholder="Meeting Room"
+                                            defaultActiveFirstOption={false}
+                                            suffixIcon={null}
+                                            filterOption={false}
+                                            onChange={handleRoomSelectChange}
+                                            value={selectedRoomId}
+                                        >
+                                            {roomData.length > 0 && roomData.map((room) => (
+                                                <Select.Option key={room.id} value={room.id}>
+                                                    {room.name}
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
+                                            {selectedRoomInfo && (
                                             <Layout
                                             style={{
                                                 backgroundColor: "#EAEEF6",
@@ -298,6 +279,7 @@ export default function BookRoom({onAddSuccess }:any) {
                                                 cover={
                                                 <Image
                                                     alt="example"
+                                                    src="https://explore.zoom.us/media/what-are-zoom-rooms.jpg"
                                                     width={354}
                                                     height={197}
                                                     preview={true}
@@ -307,24 +289,24 @@ export default function BookRoom({onAddSuccess }:any) {
                                                 <Meta />
                                                 <div className="inforRoom">
                                                 <span>
-                                                    <strong>Capacity: </strong>
+                                                    <strong>Capacity: </strong>{selectedRoomInfo.capacity}
                                                 </span>
                                                 <br />
                                                 <span>
-                                                    <strong>Location: </strong>
+                                                    <strong>Location: </strong>{selectedRoomInfo.location}
                                                 </span>
                                                 <br />
                                                 <span>
-                                                    <strong>Floor: </strong>
+                                                    <strong>Floor: </strong>{selectedRoomInfo.floor}
                                                 </span>
                                                 <br />
                                                 <span>
-                                                    <strong>Equipment: </strong>
+                                                    <strong>Equipment: </strong>{selectedRoomInfo.equipment}
                                                 </span>
                                                 </div>
                                             </Card>
                                             </Layout>
-                                            )}
+                                        )}
                                         </Form1.Item>
                                     </div>
                                     <div className="mb-3 row" >
@@ -427,7 +409,7 @@ export default function BookRoom({onAddSuccess }:any) {
                         <div className={`${styles.checkbox}`}>
                                 <input type="checkbox"
                                        name=""
-                                       id=""
+                                       id="" 
                                        checked={isChecked}
                                        onChange={handleCheckboxChange}/>
                                 <h6>Share meeting information to the organization</h6>
@@ -445,7 +427,6 @@ export default function BookRoom({onAddSuccess }:any) {
                     </div>
                 </div>
             </div>
-
         </>
     )
 }

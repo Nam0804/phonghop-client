@@ -168,12 +168,6 @@ export default function RegisterNewCompany() {
             };
         }
     }
-
-    const prevStep = () => {
-        if (currentStep > 1) {
-            window.location.href = `/${locale}/login`;
-        }
-    }
     const redirectToLogin = () => {
         const newUrl = `/${locale}/login`;
         window.history.pushState({ path: newUrl }, '', newUrl);
