@@ -127,7 +127,7 @@ const EditNewCompany = ({ rec, onEditSuccess }: any) => {
         className={customstyle.custombutton}
         onClick={showPopup}
       >
-        <Image src="/edit.svg" alt="" />
+        <Image src="/edit.svg" alt="" preview={false} />
       </button>
       <Modal
         title={<div className={styles.formTitle}>Edit Meeting Room</div>}

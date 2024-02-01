@@ -31,7 +31,7 @@ const StaffInfomation = ({ rec }: any) => {
         className={customstyle.custombutton}
         onClick={showPopup}
       >
-        <Image src="/eye.svg" alt=""/>
+        <Image src="/eye.svg" alt="" preview={false} />
       </button>
       <Modal
         title={<div className={styles.formTitle}>Sraff Detail Infomation</div>}

@@ -2,8 +2,7 @@
 import React, { useCallback } from "react";
 import styles from "@/css/CompanyList.module.css";
 import BookRoom from "@/components/Booking/BookRoom";
-import { Table, Tag, Select, ConfigProvider, Skeleton, Image } from "antd";
-import { DatePicker, Space } from "antd";
+import { Table, Tag, Select, ConfigProvider, Skeleton, Image, Spin, Space} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import moment from "moment";
@@ -22,14 +21,19 @@ const ManagerBookingList = () => {
   const [statusButton, setStatusButton] = useState([
     { statusButton: 0, buttonColor: "#8B8B8B" },
   ]);
-  const [loading, setLoadingSkeleton] = useState(true);
+  const [loadingSkeleton, setLoadingSkeleton] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const user = useSelector((state: any) => state.user.value);
   const company_id = user.company_id;
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [filteredBooking, setFilteredBooking] = useState<DataType[]>([]);
 
+  
   useEffect(() => {
-    fetchData().then(() => setLoadingSkeleton(false));
+    fetchData().then(() => {
+      setLoadingSkeleton(false);
+      setIsLoading(false);
+    });
   }, []);
 
   const fetchData = useCallback(async () => {
@@ -293,7 +297,7 @@ const ManagerBookingList = () => {
             className={styles.custombutton}
             style={{ backgroundColor: "#E56353" }}
           >
-            <Image src="/delete.svg" alt="" />
+            <Image src="/delete.svg" alt="" preview={false} />
           </button>
         </Space>
       ),
@@ -302,93 +306,101 @@ const ManagerBookingList = () => {
     },
   ];
   return (
-    <div className={styles.container}>
-      <div className={styles.labelsection}>
-        <div className={styles.square}></div>
-        <h1 className={styles.label}>Booking List</h1>
-      </div>
-      <div className={styles.filter}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div>
-            <span className={styles.textLabel}>FILTER BY STATUS</span>
-            <select
-              defaultValue="all"
-              onChange={(e) => handleStatusChange(e)}
-              className={styles.textLabel}
-            >
-              <option value="all" className={styles.textLabel}>
-                All Status
-              </option>
-              <option value="0" className={styles.textLabel}>
-                Pending
-              </option>
-              <option value="1" className={styles.textLabel}>
-                Upcoming
-              </option>
-              <option value="2" className={styles.textLabel}>
-                Finished
-              </option>
-            </select>
+    <div>
+      {isLoading ? (
+        <Spin fullscreen size="large"/>
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.labelsection}>
+            <div className={styles.square}></div>
+            <h1 className={styles.label}>Booking List</h1>
+          </div>
+          <div className={styles.filter}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div>
+                <span className={styles.textLabel}>FILTER BY STATUS</span>
+                <select
+                  defaultValue="all"
+                  onChange={(e) => handleStatusChange(e)}
+                  className={styles.textLabel}
+                >
+                  <option value="all" className={styles.textLabel}>
+                    All Status
+                  </option>
+                  <option value="0" className={styles.textLabel}>
+                    Pending
+                  </option>
+                  <option value="1" className={styles.textLabel}>
+                    Upcoming
+                  </option>
+                  <option value="2" className={styles.textLabel}>
+                    Finished
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div className={styles.companytable}>
+            {loadingSkeleton ? (
+              <Skeleton active />
+            ) : (
+              <ConfigProvider
+                theme={{
+                  components: {
+                    Table: {
+                      colorPrimary: "#225560",
+                      borderColor: "#ffffff",
+                      colorFillAlter: "ffffff",
+                      bodySortBg: "ffffff",
+                      headerSortActiveBg: "#ffffff",
+                      algorithm: true, // Enable algorithm
+                    },
+                  },
+                }}
+              >
+                <Table
+                  columns={columns}
+                  dataSource={filteredBooking}
+                  bordered
+                  scroll={{ x: 1000 }}
+                  //   className={customstyle.customtable}
+                  pagination={{ pageSize: 5 }}
+                  components={{
+                    header: {
+                      cell: (props: any) => (
+                        <th
+                          style={{
+                            width: "100%",
+                            background: "#255D6A",
+                            color: "#fff",
+                          }}
+                        >
+                          {props.children}
+                        </th>
+                      ),
+                    },
+                    body: {
+                      cell: (props: any) => {
+                        const isEvenRow = props.index % 2 === 0;
+                        console.log(isEvenRow);
+
+                        return (
+                          <td className={styles.customTable}>
+                            {props.children}
+                          </td>
+                        );
+                      },
+                    },
+                  }}
+                />
+              </ConfigProvider>
+            )}
+          </div>
+          <div className={styles.addco}>
+            <BookRoom onAddSuccess={handleAddSuccess}></BookRoom>
           </div>
         </div>
-      </div>
-      <div className={styles.companytable}>
-        {loading ? (
-          <Skeleton active />
-        ) : (
-          <ConfigProvider
-            theme={{
-              components: {
-                Table: {
-                  colorPrimary: "#225560",
-                  borderColor: "#ffffff",
-                  colorFillAlter: "ffffff",
-                  bodySortBg: "ffffff",
-                  headerSortActiveBg: "#ffffff",
-                  algorithm: true, // Enable algorithm
-                },
-              },
-            }}
-          >
-            <Table
-              columns={columns}
-              dataSource={filteredBooking}
-              bordered
-              scroll={{ x: 1000 }}
-              //   className={customstyle.customtable}
-              pagination={{ pageSize: 5 }}
-              components={{
-                header: {
-                  cell: (props: any) => (
-                    <th
-                      style={{
-                        width: "100%",
-                        background: "#255D6A",
-                        color: "#fff",
-                      }}
-                    >
-                      {props.children}
-                    </th>
-                  ),
-                },
-                body: {
-                  cell: (props: any) => {
-                    const isEvenRow = props.index % 2 === 0;
-                    console.log(isEvenRow);
-
-                    return (
-                      <td className={styles.customTable}>{props.children}</td>
-                    );
-                  },
-                },
-              }}
-            />
-          </ConfigProvider>
-        )}
-      </div>
-      <div className={styles.addco}>
-        <BookRoom onAddSuccess={handleAddSuccess}></BookRoom>
-      </div>
+      )}
     </div>
   );
 };

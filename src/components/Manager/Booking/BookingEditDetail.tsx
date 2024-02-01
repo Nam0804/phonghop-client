@@ -174,7 +174,7 @@ const BookingEditDetail = ({ rec, onEditSuccess, fetchBooking }: any) => {
   return (
     <>
       <button key="edit" className={styles.custombutton} onClick={showPopup}>
-        <Image src="/edit.svg" alt="" />
+        <Image src="/edit.svg" alt="" preview={false} />
       </button>
       <Modal
         title={<div className={styles.formTitle}>Edit Booking Detail</div>}
@@ -197,28 +197,28 @@ const BookingEditDetail = ({ rec, onEditSuccess, fetchBooking }: any) => {
               <Form.Item label="Meeting topic" name="topic">
                 <Input className="bookingInput" />
               </Form.Item>
-              <Form.Item label="Type of booking" name="type_of_booking" >
-              <select className="bookingInput">
-                <option value="0">Meeting</option>
-                <option value="1">Personal Use</option>
-              </select>
+              <Form.Item label="Type of booking" name="type_of_booking">
+                <select className="bookingInput">
+                  <option value="0">Meeting</option>
+                  <option value="1">Personal Use</option>
+                </select>
               </Form.Item>
               <Form.Item label="Room" name="room">
-              <Select
-                showSearch
-                placeholder="Meeting Room"
-                defaultActiveFirstOption={false}
-                suffixIcon={null}
-                filterOption={false}
-                onChange={handleRoomSelectChange}
-                value={selectedRoomId}
-              >
-                {roomData?.map((room) => (
-                  <Select.Option key={room.id} value={room.id}>
-                    {room.name}
-                  </Select.Option>
-                ))}
-              </Select>
+                <Select
+                  showSearch
+                  placeholder="Meeting Room"
+                  defaultActiveFirstOption={false}
+                  suffixIcon={null}
+                  filterOption={false}
+                  onChange={handleRoomSelectChange}
+                  value={selectedRoomId}
+                >
+                  {roomData?.map((room) => (
+                    <Select.Option key={room.id} value={room.id}>
+                      {room.name}
+                    </Select.Option>
+                  ))}
+                </Select>
                 <Layout
                   style={{
                     backgroundColor: "#EAEEF6",
@@ -231,42 +231,46 @@ const BookingEditDetail = ({ rec, onEditSuccess, fetchBooking }: any) => {
                   content="center"
                 >
                   {selectedRoomInfo && (
-                  <Card
-                    bordered={false}
-                    style={{
-                      backgroundColor: "#EAEEF6",
-                      padding: 0,
-                      boxShadow: "none",
-                    }}
-                    cover={
-                      <Image
-                        alt="example"
-                        src="https://explore.zoom.us/media/what-are-zoom-rooms.jpg"
-                        width={354}
-                        height={197}
-                        preview={true}
-                      />
-                    }
-                  >
-                    <Meta />
-                    <div className="inforRoom">
-                      <span>
-                        <strong>Capacity: </strong>{selectedRoomInfo.capacity}
-                      </span>
-                      <br />
-                      <span>
-                        <strong>Location: </strong>{selectedRoomInfo.location}
-                      </span>
-                      <br />
-                      <span>
-                        <strong>Floor: </strong>{selectedRoomInfo.floor}
-                      </span>
-                      <br />
-                      <span>
-                        <strong>Equipment: </strong>{selectedRoomInfo.equipment}
-                      </span>
-                    </div>
-                  </Card>
+                    <Card
+                      bordered={false}
+                      style={{
+                        backgroundColor: "#EAEEF6",
+                        padding: 0,
+                        boxShadow: "none",
+                      }}
+                      cover={
+                        <Image
+                          alt="example"
+                          src="https://explore.zoom.us/media/what-are-zoom-rooms.jpg"
+                          width={354}
+                          height={197}
+                          preview={true}
+                        />
+                      }
+                    >
+                      <Meta />
+                      <div className="inforRoom">
+                        <span>
+                          <strong>Capacity: </strong>
+                          {selectedRoomInfo.capacity}
+                        </span>
+                        <br />
+                        <span>
+                          <strong>Location: </strong>
+                          {selectedRoomInfo.location}
+                        </span>
+                        <br />
+                        <span>
+                          <strong>Floor: </strong>
+                          {selectedRoomInfo.floor}
+                        </span>
+                        <br />
+                        <span>
+                          <strong>Equipment: </strong>
+                          {selectedRoomInfo.equipment}
+                        </span>
+                      </div>
+                    </Card>
                   )}
                 </Layout>
               </Form.Item>

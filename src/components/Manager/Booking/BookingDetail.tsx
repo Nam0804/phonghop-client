@@ -60,7 +60,7 @@ const BookingDetail = ({ rec }: any) => {
   return (
     <>
       <button key="view" className={styles.custombutton} onClick={showPopup}>
-        <Image src="/eye.svg" alt="" />
+        <Image src="/eye.svg" alt="" preview={false} />
       </button>
       <ModalBookingDetail
         rec={rec}

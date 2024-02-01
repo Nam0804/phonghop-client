@@ -2,7 +2,7 @@
 import React, { useCallback } from "react";
 import styles from "@/css/CompanyList.module.css";
 import Button from "@/constants/Form/Button";
-import { ConfigProvider, Skeleton, Table, Tag } from "antd";
+import { ConfigProvider, Skeleton, Spin, Table, Tag } from "antd";
 import { DatePicker, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
@@ -23,11 +23,15 @@ const UserPage = () => {
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
     useState(false);
   const [loading, setLoadingSkeleton] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const user = useSelector((state: any) => state.user.value);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetchData().then(() => setLoadingSkeleton(false));
+    fetchData().then(() => {
+      setLoadingSkeleton(false);
+      setIsLoading(false);
+    });
   }, []);
 
   const fetchData = useCallback(async () => {
@@ -138,68 +142,76 @@ const UserPage = () => {
     },
   ];
   return (
-    <div className={styles.container}>
-      <div className={styles.labelsection}>
-        <div className={styles.square}></div>
-        <h1 className={styles.label}>Staff List</h1>
-      </div>
-      <div className={styles.companytable}>
-        {loading ? (
-          <Skeleton active />
-        ) : (
-          <ConfigProvider
-            theme={{
-              components: {
-                Table: {
-                  colorPrimary: "#225560",
-                  borderColor: "#ffffff",
-                  colorFillAlter: "ffffff",
-                  bodySortBg: "ffffff",
-                  headerSortActiveBg: "#ffffff",
-                  algorithm: true, // Enable algorithm
-                },
-              },
-            }}
-          >
-            <Table
-              columns={columns}
-              dataSource={allStaffData}
-              bordered
-              scroll={{ x: 1000 }}
-              pagination={{ pageSize: 5 }}
-              components={{
-                header: {
-                  cell: (props: any) => (
-                    <th
-                      style={{
-                        width: "100%",
-                        background: "#255D6A",
-                        color: "#fff",
-                      }}
-                    >
-                      {props.children}
-                    </th>
-                  ),
-                },
-                body: {
-                  cell: (props: any) => {
-                    const isEvenRow = props.index % 2 === 0;
-                    console.log(isEvenRow);
-
-                    return (
-                      <td className={styles.customTable}>{props.children}</td>
-                    );
+    <>
+      {isLoading ? (
+        <Spin fullscreen size="large"/>
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.labelsection}>
+            <div className={styles.square}></div>
+            <h1 className={styles.label}>Staff List</h1>
+          </div>
+          <div className={styles.companytable}>
+            {loading ? (
+              <Skeleton active />
+            ) : (
+              <ConfigProvider
+                theme={{
+                  components: {
+                    Table: {
+                      colorPrimary: "#225560",
+                      borderColor: "#ffffff",
+                      colorFillAlter: "ffffff",
+                      bodySortBg: "ffffff",
+                      headerSortActiveBg: "#ffffff",
+                      algorithm: true, // Enable algorithm
+                    },
                   },
-                },
-              }}
-            />
-          </ConfigProvider>
-        )}
-      </div>
-      <div className={styles.addco}>
-        <AddUser onAddSuccess={handleAddSuccess} />
-      </div>
-    </div>
+                }}
+              >
+                <Table
+                  columns={columns}
+                  dataSource={allStaffData}
+                  bordered
+                  scroll={{ x: 1000 }}
+                  pagination={{ pageSize: 5 }}
+                  components={{
+                    header: {
+                      cell: (props: any) => (
+                        <th
+                          style={{
+                            width: "100%",
+                            background: "#255D6A",
+                            color: "#fff",
+                          }}
+                        >
+                          {props.children}
+                        </th>
+                      ),
+                    },
+                    body: {
+                      cell: (props: any) => {
+                        const isEvenRow = props.index % 2 === 0;
+                        console.log(isEvenRow);
+
+                        return (
+                          <td className={styles.customTable}>
+                            {props.children}
+                          </td>
+                        );
+                      },
+                    },
+                  }}
+                />
+              </ConfigProvider>
+            )}
+          </div>
+          <div className={styles.addco}>
+            <AddUser onAddSuccess={handleAddSuccess} />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 export default UserPage;

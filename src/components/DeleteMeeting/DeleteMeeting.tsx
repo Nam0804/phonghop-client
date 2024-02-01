@@ -53,7 +53,7 @@ const DeleteMeeting = ({ room_id, onDeleteSuccess }: any) => {
         style={{ backgroundColor: "#E56353" }}
         onClick={showPopup}
       >
-        <Image src="/delete.svg" alt="" />
+        <Image src="/delete.svg" alt="" preview={false} />
       </button>
       <Modal
         title={

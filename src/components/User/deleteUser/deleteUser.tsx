@@ -39,7 +39,7 @@ const DeleteUser = ({ user_id, onDeleteSuccess }: any) => {
         className={styles.custombutton}
         style={{ backgroundColor: "#E56353" }}
       >
-        <Image src="/delete.svg" alt="" />
+        <Image src="/delete.svg" alt="" preview={false} />
       </button>
       <Modal
         title={

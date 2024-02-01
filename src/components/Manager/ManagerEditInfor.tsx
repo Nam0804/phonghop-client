@@ -50,7 +50,7 @@ const ManagerEditInfor = ({ user, onEditSuccess }: any) => {
   return (
     <>
       <button onClick={showPopup} className={styles.custombutton}>
-        <Image src="/edit.svg" alt="" />
+        <Image src="/edit.svg" alt="" preview={false} />
       </button>
       <Modal
         title={
