@@ -7,6 +7,7 @@ import Button from '@/constants/Form/Button';
 import customstyle from '@/css/ResetPassword.module.css';
 import api from '@/axiosService';
 import { useRouter } from 'next/navigation';
+import { Image } from 'antd';
 
 const ResetPasswordPage: React.FC = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -74,17 +75,17 @@ const ResetPasswordPage: React.FC = () => {
             <div className={styles.inputform}>
                 <h4 className={customstyle.title}>Change password</h4>
                     <div className={styles.input}>
-                        <img src="/pass.svg" alt="" className={styles.icon} />
+                        <Image src="/pass.svg" alt="" className={styles.icon} />
                         <input style={{opacity: newPassword? 1 : 0.6}} type={isPasswordVisible ? 'text' : 'password'} placeholder="Password*" className={styles.inputsection} onChange={handleNewPasswordChange}/>
                         <div className={styles.showhide} onClick={togglePasswordVisibility}>
-                            {isPasswordVisible ? <img src="/eyeshow.svg" alt="" className={styles.showhide} /> : <img src="/eyeshide.svg" alt="" className={styles.showhide} />}
+                            {isPasswordVisible ? <Image src="/eyeshow.svg" alt="" className={styles.showhide} /> : <Image src="/eyeshide.svg" alt="" className={styles.showhide} />}
                         </div>
                     </div>
                     <div className={styles.input}>
-                        <img src="/pass.svg" alt="" className={styles.icon} />
+                        <Image src="/pass.svg" alt="" className={styles.icon} />
                         <input style={{opacity: newPasswordConfirmation? 1 : 0.6}} type={isRePasswordVisible ? 'text' : 'password'} placeholder="Confirm Password*" className={styles.inputsection} onChange={handleNewPasswordConfirmationChange}/>
                         <div className={styles.showhide} onClick={toggleRePasswordVisibility}>
-                            {isRePasswordVisible ? <img src="/eyeshow.svg" alt="" className={styles.showhide} /> : <img src="/eyeshide.svg" alt="" className={styles.showhide} />}
+                            {isRePasswordVisible ? <Image src="/eyeshow.svg" alt="" className={styles.showhide} /> : <Image src="/eyeshide.svg" alt="" className={styles.showhide} />}
                         </div>
                         {!isOk && <p className={customstyle.error}>{errorMessage}</p>}
                     </div>

@@ -72,7 +72,7 @@ const CompanyList = () => {
       console.error(error);
       toast.error("Error");
     }
-  }, [selectedDate, selectedTimeStartValue, selectedTimeEndValue]);
+  }, [selectedDate, selectedTimeStartValue, selectedTimeEndValue, company_id]);
   useEffect(() => {
     fetchData();
   }, [fetchData]);

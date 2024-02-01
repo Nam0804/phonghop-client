@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import validator from 'validator';
 import api from '@/axiosService';
 import { useRouter } from 'next/navigation';
+import { Image } from 'antd';
 
 const ForgotPasswordPage: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -55,7 +56,7 @@ const ForgotPasswordPage: React.FC = () => {
                 <h5 className={customstyle.forgot}>Forgot password?</h5>
                 <p className={customstyle.label}>Kindly input your registered email here, we will send you a new password to your mailbox.</p>
                 <div className={styles.input}>
-                    <img src="/mail.svg" alt="" className={styles.icon} />
+                    <Image src="/mail.svg" alt="" className={styles.icon} />
                     <Input
                         type="text"
                         name="username"

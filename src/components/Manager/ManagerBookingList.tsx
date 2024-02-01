@@ -2,7 +2,7 @@
 import React, { useCallback } from "react";
 import styles from "@/css/CompanyList.module.css";
 import BookRoom from "@/components/Booking/BookRoom";
-import { Table, Tag, Select, ConfigProvider, Skeleton } from "antd";
+import { Table, Tag, Select, ConfigProvider, Skeleton, Image } from "antd";
 import { DatePicker, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
@@ -47,7 +47,7 @@ const ManagerBookingList = () => {
       console.error(error);
       toast.error("Error");
     }
-  }, [selectedStatus]);
+  }, [company_id]);
   useEffect(() => {
     fetchData();
   }, []);
@@ -293,7 +293,7 @@ const ManagerBookingList = () => {
             className={styles.custombutton}
             style={{ backgroundColor: "#E56353" }}
           >
-            <img src="/delete.svg"></img>
+            <Image src="/delete.svg" alt="" />
           </button>
         </Space>
       ),

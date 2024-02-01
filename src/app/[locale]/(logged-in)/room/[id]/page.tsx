@@ -74,7 +74,7 @@ const Index = () => {
         }
     };
     fetchRoom();
-    },[selectedRoomId]);
+    },[selectedRoomId, company_id]);
 
 
 
@@ -140,7 +140,7 @@ const Index = () => {
             console.error(error);
             toast.error("Error");
         }
-    }, [selectedRoomId]);
+    }, [selectedRoomId, company_id]);
     useEffect(() => {
         fetchMyBookingHistory();
       }, [fetchMyBookingHistory]);
@@ -159,7 +159,7 @@ const Index = () => {
             console.error(error);
             toast.error("Error");
         }
-    }, [selectedRoomId]);
+    }, [selectedRoomId, company_id]);
 
 
     const nextHandle = () => {

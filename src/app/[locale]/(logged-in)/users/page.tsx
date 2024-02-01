@@ -45,7 +45,7 @@ const UserPage = () => {
         dispatch(setLoading(false));
       }
     }
-  }, []);
+  }, [dispatch, user.company_id]);
   useEffect(() => {
     fetchData();
   }, []);

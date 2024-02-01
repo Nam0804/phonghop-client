@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import React, { useCallback } from "react";
-import styles from '@/css/CompanyList.module.css'
+import styles from "@/css/CompanyList.module.css";
 import customstyle from "@/css/MeetingRoomList.module.css";
 import AddNewCompany from "@/components/Admin/AddNewCompany";
-import { Table, Tooltip} from 'antd';
-import {Space } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import { Image, Table, Tooltip } from "antd";
+import { Space } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import DeleteCompany from "@/components/DeleteCompany/DeleteCompany";
 import api from "@/axiosService";
@@ -13,28 +13,27 @@ import { get } from "lodash";
 import toast from "react-hot-toast";
 import EditNewCompany from "@/components/Admin/EditNewCompany";
 import InformationCompany from "@/components/Admin/InfomationCompany";
-import '@/css/Table.module.css';
+import "@/css/Table.module.css";
 
 const CompanyPage = () => {
   const [allStaffData, setAllStaffData] = useState<DataType[]>([]);
-  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
-  
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
+    useState(false);
 
   const fetchData = useCallback(async () => {
     try {
-      const data = await api.get('index-companies')
-      const res = get(data, 'data.data')
+      const data = await api.get("index-companies");
+      const res = get(data, "data.data");
       const sortedData = res.sort((a: DataType, b: DataType) => b.id - a.id);
-      setAllStaffData(sortedData)
+      setAllStaffData(sortedData);
     } catch (error) {
       console.error(error);
-      toast.error('Error');
-
+      toast.error("Error");
     }
-  }, [])
-  useEffect(() => {
-    fetchData()
   }, []);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleDeleteSuccess = () => {
     setDeleteConfirmationVisible(false);
@@ -54,11 +53,11 @@ const CompanyPage = () => {
     domain: string;
     address: string;
     manager: {
-      manager_title: string,
-      manager_email: string,
-      manager_name: string,
-      manager_phone: number,
-    }
+      manager_title: string;
+      manager_email: string;
+      manager_name: string;
+      manager_phone: number;
+    };
     created_at: string;
   }
   const columns: ColumnsType<DataType> = [
@@ -122,7 +121,7 @@ const CompanyPage = () => {
           <InformationCompany rec={record}></InformationCompany>
           <Tooltip title="Quick Access">
             <button key="skipdownline" className={styles.custombutton}>
-              <img src="/skipdownline.svg"></img>
+              <Image src="/skipdownline.svg" alt="" preview={false} />
             </button>
           </Tooltip>
 
@@ -186,5 +185,5 @@ const CompanyPage = () => {
       </div>
     </div>
   );
-}
-export default CompanyPage
+};
+export default CompanyPage;

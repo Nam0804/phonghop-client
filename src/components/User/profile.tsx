@@ -85,7 +85,7 @@ export default function Profile({ togglePopup }: { togglePopup: any }) {
       };
       setUserData(initialData);
     }
-  }, [apiSliceProfile]);
+  }, [apiSliceProfile, usertype]);
 
 
   return (

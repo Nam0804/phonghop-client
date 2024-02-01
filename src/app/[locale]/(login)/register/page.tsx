@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { setLoading } from '@/lib/features/loadingSlice';
 import api from '@/axiosService';
 import { toast } from 'react-hot-toast';
+import { Image } from 'antd';
 
 const RegisterPage = () => {
 
@@ -57,30 +58,30 @@ const RegisterPage = () => {
                     <h3>Register New Account</h3>
                     <p>Please input your information</p>
                     <div className={styles.input}>
-                        <img src="/userlogin.svg" alt="" className={styles.icon}/>
+                        <Image src="/userlogin.svg" alt="" className={styles.icon}/>
                         <Input type="text" name="fullname" placeholder="Full Name*" className={styles.inputsection} onChange={(e:any) => setInput1(e.target.value)} value={input1}></Input>
                     </div>
                     <div className={styles.input}>
-                        <img src="/title.svg" alt="" className={styles.icon}/>
+                        <Image src="/title.svg" alt="" className={styles.icon}/>
                         <Input type="text" name="title" placeholder="Title*" className={styles.inputsection} onChange={(e:any) => setInput2(e.target.value)} value={input2}></Input>
                     </div>
                     <div className={styles.input}>
-                        <img src="/mail.svg" alt="" className={styles.icon}/>
+                        <Image src="/mail.svg" alt="" className={styles.icon}/>
                         <Input type="text" name="email" placeholder="Email*" className={styles.inputsection} onChange={(e:any) => setInput3(e.target.value)} value={input3}></Input>
                     </div>
                     <div className={styles.input}>
-                        <img src="/phone.svg" alt="" className={styles.icon}/>
+                        <Image src="/phone.svg" alt="" className={styles.icon}/>
                         <Input type="text" name="phone" placeholder="Phone*" className={styles.inputsection} onChange={(e:any) => setInput4(e.target.value)} value={input4}></Input>
                     </div>
                     <div className={styles.input}>
-                        <img src="/pass.svg" alt="" className={styles.icon}/>
+                        <Image src="/pass.svg" alt="" className={styles.icon}/>
                         <Input type={isPasswordVisible ? 'text' : 'password'} name="password" placeholder="Password*" className={styles.inputsection} onChange={(e:any) => setInput5(e.target.value)} value={input5}></Input>
-                        <img src={isPasswordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={()=>setPasswordVisibility(!isPasswordVisible)}/>
+                        <Image src={isPasswordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={()=>setPasswordVisibility(!isPasswordVisible)}/>
                     </div>
                     <div className={styles.input}>
-                        <img src="/pass.svg" alt="" className={styles.icon}/>
+                        <Image src="/pass.svg" alt="" className={styles.icon}/>
                         <Input type={isRePasswordVisible ? 'text' : 'password'} name="confirmpassword" placeholder="Confirm Password*" className={styles.inputsection} onChange={(e:any) => setInput6(e.target.value)} value={input6}></Input>
-                        <img src={isRePasswordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={()=>setRePasswordVisibility(!isRePasswordVisible)}/>
+                        <Image src={isRePasswordVisible ? "/showpass.svg" : "/hidepass.svg"} alt="" className={styles.showhide} onClick={()=>setRePasswordVisibility(!isRePasswordVisible)}/>
                     </div>
                 </div>
                 <div className={styles.btnsection}>

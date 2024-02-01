@@ -14,6 +14,7 @@ import Modal from "@/constants/Modal/ViewModal";
 import { get } from 'lodash';
 import api from '@/axiosService';
 import { useLocale } from 'next-intl';
+import { Image } from 'antd';
 
 const steps = [
     {},
@@ -193,7 +194,7 @@ export default function RegisterNewCompany() {
                             </p>
                         )}
                         <div className={styles.input}>
-                            <img src="/domain.svg" alt="" className={styles.icon} />
+                            <Image src="/domain.svg" alt="" className={styles.icon} />
                             <input type="text"  {...register('company_domain')} placeholder="Company Domain*" className={styles.inputsection} onChange={handleInputChange}/>
                         </div>
                         {errors.company_domain && (
@@ -202,7 +203,7 @@ export default function RegisterNewCompany() {
                             </p>
                         )}
                         <div className={styles.input}>
-                            <img src="/address.svg" alt="" className={styles.icon} />
+                            <Image src="/address.svg" alt="" className={styles.icon} />
                             <input type="text" {...register('company_address')} placeholder="Company Address*" className={styles.inputsection} onChange={handleInputChange}/>
                         </div>
                         {errors.company_address && (
@@ -211,7 +212,7 @@ export default function RegisterNewCompany() {
                             </p>
                         )}
                         <div className={styles.input}>
-                            <img src="/tax-code.svg" alt="" className={styles.icon} />
+                            <Image src="/tax-code.svg" alt="" className={styles.icon} />
                             <input {...register('company_taxcode')} placeholder="Tax Code" className={styles.inputsection} />
                         </div>
                         {errors.company_taxcode && (
@@ -237,7 +238,7 @@ export default function RegisterNewCompany() {
                             <h3>Register Company Account</h3>
                             <p className={styles.subContent}>Please input your company manager information.</p>
                             <div className={styles.input}>
-                                <img src="/userlogin.svg" alt="" className={styles.icon} />
+                                <Image src="/userlogin.svg" alt="" className={styles.icon} />
                                 <input type="text"  {...register('name')} placeholder="Manager Name*" className={styles.inputsection} onChange={handleChange}/>
                             </div>
                             {errors.name && (
@@ -246,7 +247,7 @@ export default function RegisterNewCompany() {
                                 </p>
                             )}
                             <div className={styles.input}>
-                                <img src="/title.svg" alt="" className={styles.icon} />
+                                <Image src="/title.svg" alt="" className={styles.icon} />
                                 <input type="text"  {...register('title')} placeholder="Manager Title*" className={styles.inputsection} onChange={handleChange}/>
                             </div>
                             {errors.title && (
@@ -255,7 +256,7 @@ export default function RegisterNewCompany() {
                                 </p>
                             )}
                             <div className={styles.input}>
-                                <img src="/mail.svg" alt="" className={styles.icon} />
+                                <Image src="/mail.svg" alt="" className={styles.icon} />
                                 <input type="text" {...register('email')} placeholder="Manager Email*" className={styles.inputsection} onChange={handleChange}/>
                             </div>
                             {errors.email && (
@@ -264,7 +265,7 @@ export default function RegisterNewCompany() {
                                 </p>
                             )}
                             <div className={styles.input}>
-                                <img src="/phone.svg" alt="" className={styles.icon} />
+                                <Image src="/phone.svg" alt="" className={styles.icon} />
                                 <input type="text" {...register('phone')} placeholder="Manager Phone" className={styles.inputsection} onChange={handleChange}/>
                             </div>
                             {errors.phone && (
@@ -273,10 +274,10 @@ export default function RegisterNewCompany() {
                                 </p>
                             )}
                             <div className={styles.input}>
-                                <img src="/pass.svg" alt="" className={styles.icon} />
+                                <Image src="/pass.svg" alt="" className={styles.icon} />
                                 <input type={isPasswordVisible ? 'text' : 'password'} {...register('password')} placeholder="Password*" className={styles.inputsection} onChange={handleChange}/>
                                 <div className={styles.showhide} onClick={togglePasswordVisibility}>
-                                    {isPasswordVisible ? <img src="/eyeshow.svg" alt="" className={styles.showhide} /> : <img src="/eyeshide.svg" alt="" className={styles.showhide} />}
+                                    {isPasswordVisible ? <Image src="/eyeshow.svg" alt="" className={styles.showhide} /> : <Image src="/eyeshide.svg" alt="" className={styles.showhide} />}
                                 </div>
                             </div>
                             {errors.password && (
@@ -285,10 +286,10 @@ export default function RegisterNewCompany() {
                                 </p>
                             )}
                             <div className={styles.input}>
-                                <img src="/pass.svg" alt="" className={styles.icon} />
+                                <Image src="/pass.svg" alt="" className={styles.icon} />
                                 <input type={isRePasswordVisible ? 'text' : 'password'} {...register('password_confirmation')} placeholder="Confirm Password*" className={styles.inputsection} onChange={handleChange}/>
                                 <div className={styles.showhide} onClick={toggleRePasswordVisibility}>
-                                    {isRePasswordVisible ? <img src="/eyeshow.svg" alt="" className={styles.showhide} /> : <img src="/eyeshide.svg" alt="" className={styles.showhide} />}
+                                    {isRePasswordVisible ? <Image src="/eyeshow.svg" alt="" className={styles.showhide} /> : <Image src="/eyeshide.svg" alt="" className={styles.showhide} />}
                                 </div>
                             </div>
                             {(errors.password_confirmation) && (

@@ -25,7 +25,7 @@ import { listenerCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exce
 import TextArea from "antd/es/input/TextArea";
 import "@/css/BookingDetail.css";
 import momment from "moment";
-import ModalBookingDetail from "@/components/Booking/ModalBookingDetail"
+import ModalBookingDetail from "@/components/Booking/ModalBookingDetail";
 
 const BookingDetail = ({ rec }: any) => {
   const [visible, setVisible] = useState(false);
@@ -57,13 +57,17 @@ const BookingDetail = ({ rec }: any) => {
     });
   }, [rec, formBookingDetail]);
 
-
   return (
     <>
       <button key="view" className={styles.custombutton} onClick={showPopup}>
-        <img src="/eye.svg"></img>
+        <Image src="/eye.svg" alt="" />
       </button>
-      <ModalBookingDetail rec={rec} formBookingDetail={formBookingDetail} visible={visible} handleCancel={handleCancel}></ModalBookingDetail>
+      <ModalBookingDetail
+        rec={rec}
+        formBookingDetail={formBookingDetail}
+        visible={visible}
+        handleCancel={handleCancel}
+      ></ModalBookingDetail>
     </>
   );
 };

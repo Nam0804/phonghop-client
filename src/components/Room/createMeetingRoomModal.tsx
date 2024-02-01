@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Modal, message, Input } from "antd";
+import { Modal, message, Input, Image } from "antd";
 import Button from "@/constants/Form/Button";
 import styles from "@/css/AddNewRoom.module.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,17 +22,18 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
   const user = useSelector((state: any) => state.user.value);
 
   const handleInputChange = () => {
-    const inputs = document.querySelectorAll<HTMLInputElement>('input[type="text"]');
+    const inputs =
+      document.querySelectorAll<HTMLInputElement>('input[type="text"]');
     let isAllFieldsFilled = true;
 
     inputs.forEach((input) => {
-        if (input.value.trim() === '') {
+      if (input.value.trim() === "") {
         isAllFieldsFilled = false;
-        }
+      }
     });
 
     setIsFormValid(isAllFieldsFilled);
-    };
+  };
 
   const handleDrag = function (e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
@@ -127,7 +128,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
           formData.append("equipment", values.equipment);
           formData.append("availability", values.availability);
           formData.append("company_id", user.company_id);
-          formData.append('image', imageFile);
+          formData.append("image", imageFile);
 
           const data = await api.post("store-meeting-room", formData, {
             headers: {
@@ -200,7 +201,11 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               ]}
               style={{ width: "100%" }}
             >
-              <Input type="text" className={styles.Input} onChange={handleInputChange}/>
+              <Input
+                type="text"
+                className={styles.Input}
+                onChange={handleInputChange}
+              />
             </Form2.Item>
           </div>
           <div className={styles.formControl}>
@@ -219,7 +224,11 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               ]}
               style={{ width: "100%" }}
             >
-              <Input type="text" className={styles.Input} onChange={handleInputChange}/>
+              <Input
+                type="text"
+                className={styles.Input}
+                onChange={handleInputChange}
+              />
             </Form2.Item>
           </div>
           <div className={styles.formControl}>
@@ -228,7 +237,11 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               name="floor"
               style={{ width: "100%" }}
             >
-              <Input type="text" className={styles.Input} onChange={handleInputChange}/>
+              <Input
+                type="text"
+                className={styles.Input}
+                onChange={handleInputChange}
+              />
             </Form2.Item>
           </div>
           <div className={styles.formControl}>
@@ -247,7 +260,11 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               ]}
               style={{ width: "100%" }}
             >
-              <Input type="text" className={styles.Input} onChange={handleInputChange}/>
+              <Input
+                type="text"
+                className={styles.Input}
+                onChange={handleInputChange}
+              />
             </Form2.Item>
           </div>
           <div className={styles.formControl}>
@@ -256,7 +273,11 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               name="equipment"
               style={{ width: "100%" }}
             >
-              <Input type="text" className={styles.Input} onChange={handleInputChange}/>
+              <Input
+                type="text"
+                className={styles.Input}
+                onChange={handleInputChange}
+              />
             </Form2.Item>
           </div>
           <div className={styles.formControl}>
@@ -276,7 +297,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
                   border: "2px solid #225560",
                   fontFamily: "Be Vietnam Pro",
                   fontSize: "14px",
-                //   paddingLeft: "16px",
+                  //   paddingLeft: "16px",
                 }}
                 onChange={handleChange}
                 options={[
@@ -341,7 +362,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               )}
               {imagePreview && (
                 <div>
-                  <img
+                  <Image
                     src={imagePreview}
                     alt="Meeting Room Preview"
                     style={{
@@ -356,7 +377,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
                     className={styles.deleteimg}
                     onClick={handleRemoveImage}
                   >
-                    <img src="/delete.svg"></img>
+                    <Image src="/delete.svg" alt="" />
                   </button>
                 </div>
               )}
@@ -366,7 +387,9 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
             <div className={styles.buttonContainer}>
               <div>
                 <Button
-                  className={`${styles.buttonAdd} ${isFormValid ? styles.valid : ''}`}
+                  className={`${styles.buttonAdd} ${
+                    isFormValid ? styles.valid : ""
+                  }`}
                   htmlType="submit"
                   onClick={handleSubmit}
                   label="ADD NEW ROOM"

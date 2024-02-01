@@ -130,7 +130,7 @@ export default function BookRoom({ onAddSuccess }: any) {
     };
 
     fetchRooms();
-  }, []);
+  }, [user.company_id]);
 
   const handleSubmit = () => {
     form
