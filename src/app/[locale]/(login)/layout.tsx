@@ -21,13 +21,24 @@ const DefaultLoginLayout = ({ children, params: { locale } }: any) => {
   return (
     <SpinFC spinning={!!loading.value ? loading : false}>
       <div className={styles.container}>
-        <div className='row'>
-          <div className='col-lg-6 col-md-6 col-sm-12'>
-            <Image src='/assets/images/Turtorial1.png' width={'100%'} height={'900px'} alt="Tutorial" />
+        <div className="row">
+          <div className="col-lg-6 col-md-6 col-sm-12">
+            <Image
+              src="/assets/images/Turtorial1.png"
+              width={"100%"}
+              height={"900px"}
+              alt="Tutorial"
+              preview={false}
+            />
           </div>
-          <div className='col-lg-6 col-md-6 col-sm-12'>
+          <div className="col-lg-6 col-md-6 col-sm-12">
             <div className={styles.customStyle}>
-              <Image src='/assets/images/Layer_1.png' style={{ marginTop: '52px' }} alt=''/>
+              <Image
+                src="/assets/images/Layer_1.png"
+                style={{ marginTop: "52px" }}
+                alt=""
+                preview={false}
+              />
               <Toaster position="top-right" />
               {children}
             </div>
