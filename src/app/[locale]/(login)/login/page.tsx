@@ -31,11 +31,11 @@ const LoginPage: React.FC<{}> = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isNewAccount, setIsNewAccount] = useState(false);
-  const [newPassword, setNewPassword] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const user_id = user.id;
-  const isFormValid = email !== "" && password !== "";
+  const [newPassword, setNewPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const user_id = user ? user.id ? user.id : 0 : 0;
+  const isFormValid = email !== '' && password !== '';
   const validatePassword = (password: string) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
     return passwordRegex.test(password);
