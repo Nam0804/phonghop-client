@@ -25,10 +25,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     setCurrentPath(pathname);
-    console.log("pathname", pathname);
-    
   }, [pathname]);
-console.log("currentPath", currentPath);
 
   if (pathname === '/vn/guest') {
     usertype = 3;

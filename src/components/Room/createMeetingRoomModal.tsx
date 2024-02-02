@@ -135,7 +135,7 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               "Content-Type": "multipart/form-data",
             },
           });
-
+          console.log("data", data);
           if (data.status === 200) {
             message.success("Room created successfully");
             form.resetFields();
@@ -280,31 +280,17 @@ const AddNewRoom = ({ onAddSuccess }: any) => {
               />
             </Form2.Item>
           </div>
-          <div className={styles.formControl}>
+          <div>
             <Form2.Item
               label={<span className={styles.label}>Availability</span>}
               name="availability"
               style={{ width: "100%" }}
             >
-              <Select
-                // className={styles.Input}
-                placeholder="Choose"
-                style={{
-                  width: 329,
-                  height: 44,
-                  left: "42%",
-                  borderRadius: "8px",
-                  border: "2px solid #225560",
-                  fontFamily: "Be Vietnam Pro",
-                  fontSize: "14px",
-                  //   paddingLeft: "16px",
-                }}
-                onChange={handleChange}
-                options={[
-                  { value: "Open", label: "Open" },
-                  { value: "Close", label: "Close" },
-                ]}
-              />
+              <select className={styles.Select}>
+                <option selected>Choose type of booking</option>
+                <option value="Open">Open</option>
+                <option value="Close">Close</option>
+              </select>
             </Form2.Item>
           </div>
           <Form2.Item

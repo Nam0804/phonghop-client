@@ -20,9 +20,9 @@ import Link from "next/link";
 import { useLocale } from "next-intl";
 import { setSelectedRoom } from "@/lib/features/room/roomSlice";
 import BookingRoomGuest from "@/components/Guest/BookingRoomGuest";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation";
 
-const CompanyList = () => {
+const RoomListForGuest = () => {
   const locale = useLocale();
   const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
@@ -33,8 +33,7 @@ const CompanyList = () => {
   const [selectedTimeEndValue, setSelectedTimeEndValue] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
 
-
-  const company_id  = useSearchParams().get('company_id');
+  const company_id = useSearchParams().get("company_id");
 
   useEffect(() => {
     fetchData().then(() => setLoadingSkeleton(false));
@@ -66,27 +65,30 @@ const CompanyList = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-    const handleDeleteSuccess = () => {
-      setDeleteConfirmationVisible(false);
-      fetchData();
-    };
-    const handleAddSuccess = () => {
-      fetchData();
-    };
-    const handleEditSuccess = () => {
-      fetchData();
-    };
-    const [selectedRoomName, setSelectedRoomName] = useState('all');
-    const handleSelectChange = (event:any) => {
-      setSelectedRoomName(event.target.value);
-      if (selectedRoomName === "all") {
-        setFilteredRooms(allRoomsData);
-      } else {
-        const filteredRooms = allRoomsData.filter((room) => room.name === selectedRoomName);
-        setFilteredRooms(filteredRooms);
-      }
-   };
-   const handleTimeStartChange = (newTimeStart:any) => {
+  const handleDeleteSuccess = () => {
+    setDeleteConfirmationVisible(false);
+    fetchData();
+  };
+  const handleAddSuccess = () => {
+    fetchData();
+  };
+  const handleEditSuccess = () => {
+    fetchData();
+  };
+  const [selectedRoomName, setSelectedRoomName] = useState("all");
+  const handleSelectChange = (event: any) => {
+    setSelectedRoomName(event.target.value);
+    if (selectedRoomName === "all") {
+      setFilteredRooms(allRoomsData);
+    } else {
+      const filteredRooms = allRoomsData.filter(
+        (room) => room.name === selectedRoomName
+      );
+      setFilteredRooms(filteredRooms);
+    }
+  };
+  
+  const handleTimeStartChange = (newTimeStart: any) => {
     setSelectedTimeStartValue(newTimeStart);
     fetchData();
   };
@@ -105,99 +107,83 @@ const CompanyList = () => {
     location: string;
     capacity: number;
     equipment: string;
-    availabilitys: boolean;
+    availability: string;
     book: string;
   }
   let columns: ColumnsType<DataType> = [];
   {
-      columns = [
-        {
-          title: "No",
-          dataIndex: "id",
-          key: "id",
-          render: (number) => <a>{number}</a>,
-          sorter: (a, b) => a.no - b.no,
-          width: 40,
-          fixed: "left",
+    columns = [
+      {
+        title: "No",
+        dataIndex: "id",
+        key: "id",
+        render: (number) => <a>{number}</a>,
+        sorter: (a, b) => a.no - b.no,
+        width: 40,
+        fixed: "left",
+      },
+      {
+        title: "Room Name",
+        dataIndex: "name",
+        key: "name",
+        sorter: (a, b) => a.name.localeCompare(b.name),
+        fixed: "left",
+        width: 175,
+      },
+      {
+        title: "Location",
+        dataIndex: "location",
+        key: "location",
+        sorter: (a, b) => a.location.localeCompare(b.location),
+        width: 165,
+      },
+      {
+        title: "Capacity",
+        dataIndex: "capacity",
+        key: "capacity",
+        sorter: (a, b) => a.capacity - b.capacity,
+        width: 159,
+      },
+      {
+        title: "Equipment",
+        dataIndex: "equipment",
+        key: "equipment",
+        width: 251,
+      },
+      {
+        title: "Room Availability",
+        key: "availabilitys",
+        dataIndex: "availabilitys",
+        render: (_, { availability }) => {
+          let color = availability === "Open" ? "#388697" : "#E56353";
+          return (
+            <div>
+              <Tag color={color} key={_}>
+                {availability === "Open" ? "Available" : "Unavailable"}
+              </Tag>
+            </div>
+          );
         },
-        {
-          title: "Room Name",
-          dataIndex: "name",
-          key: "name",
-          sorter: (a, b) => a.name.localeCompare(b.name),
-          fixed: "left",
-          width: 175,
+        width: 183,
+      },
+      {
+        title: "Action",
+        key: "action",
+        align: "center",
+        render: (_, record, availability) => {
+          console.log("record", record);
+          
+          return (
+            <div>
+              {record.availability === "Open" ? (
+                <BookingRoomGuest rec={record} />
+              ) : null}
+            </div>
+          );
         },
-        {
-          title: "Location",
-          dataIndex: "location",
-          key: "location",
-          sorter: (a, b) => a.location.localeCompare(b.location),
-          width: 165,
-        },
-        {
-          title: "Capacity",
-          dataIndex: "capacity",
-          key: "capacity",
-          sorter: (a, b) => a.capacity - b.capacity,
-          width: 159,
-        },
-        {
-          title: "Equipment",
-          dataIndex: "equipment",
-          key: "equipment",
-          width: 251,
-        },
-        {
-          title: "Room Availability",
-          key: "availabilitys",
-          dataIndex: "availabilitys",
-          render: (_, { availabilitys }) => {
-            let color = availabilitys ? "#E56353" : "#388697";
-            return (
-              <div>
-                <Tag color={color} key={_}>
-                  {availabilitys ? "Unavailable" : "Available"}
-                </Tag>
-              </div>
-            );
-          },
-          width: 183,
-        },
-        {
-          title: 'Action',
-            key: 'action',
-            align: 'center', 
-            render: (_,record,availabilitys) => {
-               const color = availabilitys ? '#8B8B8B' : '#388697';
-               return (
-                   <Tag key={record.key} color={color}>
-                       <  >Book</>
-                   </Tag>
-               );
-            },
-            width: 154,
-        },
-        // {
-        //   title: "Action",
-        //   key: "action",
-        //   align: "center",
-        //   render: (_, record) => (
-        //     <Space size="middle">
-        //       <EditRoom
-        //         rec={record}
-        //         onEditSuccess={handleEditSuccess}
-        //       ></EditRoom>
-        //       <DeleteMeeting
-        //         room_id={record.id}
-        //         onDeleteSuccess={handleDeleteSuccess}
-        //       ></DeleteMeeting>
-        //     </Space>
-        //   ),
-        //   fixed: "right",
-        //   width: 137,
-        // },
-      ];
+        width: 154,
+      },
+    ];
   }
   return (
     <div className={styles.container}>
@@ -300,11 +286,10 @@ const CompanyList = () => {
                 },
               }}
             />
-            <BookingRoomGuest></BookingRoomGuest>
           </ConfigProvider>
         )}
       </div>
     </div>
   );
 };
-export default CompanyList;
+export default RoomListForGuest;

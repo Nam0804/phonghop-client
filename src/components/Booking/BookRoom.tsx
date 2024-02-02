@@ -2,27 +2,22 @@
 import * as React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "/src/css/BookingDetail.module.css";
-import Checkbox, { CheckboxChangeEvent } from "antd/es/checkbox/Checkbox";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import CustomTimePicker from "../Booking/TimePickerBook";
 import Meta from "antd/es/card/Meta";
 import type { DatePickerProps } from "antd";
-import { ConfigProvider, DatePicker, Space } from "antd";
+import {DatePicker} from "antd";
 import "rc-time-picker/assets/index.css";
-import Selects from "react-select";
-import type { UploadProps } from "antd";
 import "@/css/BookingAdd.css";
 import moment from "moment";
 import TextArea from "antd/es/input/TextArea";
-import { Input, Row, Col, Form, List, Skeleton, Avatar } from "antd";
+import { Input, Row, Col, Form, List, Avatar } from "antd";
 import api from "@/axiosService";
-import { Card, Image, Layout, Select, Progress, message } from "antd";
-// import AddInforGuest from "./AddInforGuest";
+import { Card, Image, Layout, Select, message } from "antd";
 
 import Modal from "antd/es/modal/Modal";
 import Button from "@/constants/Form/Button";
-import BookingSuccess from "./BookingSuccess";
 
 export default function BookRoom({ onAddSuccess }: any) {
   useEffect(() => {

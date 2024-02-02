@@ -36,6 +36,7 @@ const BookingEditDetail = ({ rec, onEditSuccess, fetchBooking }: any) => {
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<string | undefined>(rec.meeting_room_id);
 
+// console.log(rec.meeting_room_id, 'rec.meeting_room_id');
 
   const handleRoomSelectChange = (value: string) => {
     setSelectedRoomId(value);
@@ -199,8 +200,9 @@ const BookingEditDetail = ({ rec, onEditSuccess, fetchBooking }: any) => {
               </Form.Item>
               <Form.Item label="Type of booking" name="type_of_booking">
                 <select className="bookingInput">
-                  <option value="0">Meeting</option>
-                  <option value="1">Personal Use</option>
+                  <option value="1">Meeting</option>
+                  <option value="2">Personal Use</option>
+                  <option value="3">Unavailable</option>
                 </select>
               </Form.Item>
               <Form.Item label="Room" name="room">

@@ -129,7 +129,7 @@ const CompanyList = () => {
     location: string;
     capacity: number;
     equipment: string;
-    availabilitys: boolean;
+    availability: string;
     book: string;
   }
   let columns: ColumnsType<DataType> = [];
@@ -177,12 +177,12 @@ const CompanyList = () => {
           title: "Room Availability",
           key: "availabilitys",
           dataIndex: "availabilitys",
-          render: (_, { availabilitys }) => {
-            let color = availabilitys ? "#E56353" : "#388697";
+          render: (_, { availability }) => {
+            let color = availability === "Open" ? "#388697" : "#E56353";
             return (
               <div>
                 <Tag color={color} key={_}>
-                  {availabilitys ? "Unavailable" : "Available"}
+                  {availability === "Open" ? "Available" : "Unavailable"}
                 </Tag>
               </div>
             );
@@ -195,29 +195,27 @@ const CompanyList = () => {
           render: (_, record, availabilitys) => {
             const color = "#388697";
             return (
-              
-                <Link
-                  href={`/${locale}/room/${record.id}`}
-                  style={{ textDecoration: "none" }}
-                  onClick={() => dispatch(setSelectedRoom(record))}
-                >
-                  <Button
-                
-                style={{
-                  boxShadow: "1px 2px 1px rgba(0, 0, 0, 0.25)",
-                  border: "none",
-                  width: "69px",
-                  backgroundColor: "#388697",
-                  color: "#ffffff",
-                  fontWeight: "bold",
-                  height: "36px",
-                }}
-                key={record.key}
-                color={color}
+              <Link
+                href={`/${locale}/room/${record.id}`}
+                style={{ textDecoration: "none" }}
+                onClick={() => dispatch(setSelectedRoom(record))}
               >
+                <Button
+                  style={{
+                    boxShadow: "1px 2px 1px rgba(0, 0, 0, 0.25)",
+                    border: "none",
+                    width: "69px",
+                    backgroundColor: "#388697",
+                    color: "#ffffff",
+                    fontWeight: "bold",
+                    height: "36px",
+                  }}
+                  key={record.key}
+                  color={color}
+                >
                   Book
-                  </Button>
-                </Link>
+                </Button>
+              </Link>
             );
           },
           width: 154,
@@ -289,11 +287,11 @@ const CompanyList = () => {
           title: "Room Availability",
           key: "availabilitys",
           dataIndex: "availabilitys",
-          render: (_, { availabilitys }) => {
-            let color = availabilitys ? "#E56353" : "#388697";
+          render: (_, { availability }) => {
+            let color = availability === "Open" ? "#388697" : "#E56353";
             return (
               <Tag color={color} className="">
-                {availabilitys ? "Unavailable" : "Available"}
+                {availability === "Open" ? "Available" : "Unavailable"}
               </Tag>
             );
           },

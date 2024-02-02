@@ -84,7 +84,7 @@ const UserPage = () => {
       render: (number) => <a>{number}</a>,
       sorter: (a, b) => a.no - b.no,
       fixed: "left",
-      width: 272,
+      width: 80,
     },
     {
       title: () => {
@@ -103,7 +103,7 @@ const UserPage = () => {
       dataIndex: ["title"],
       key: "attributes[type]",
       sorter: (a, b) => a.title.localeCompare(b.title),
-      width: 273,
+      width: 200,
     },
     {
       title: () => {

@@ -382,8 +382,6 @@ const ManagerBookingList = () => {
                     body: {
                       cell: (props: any) => {
                         const isEvenRow = props.index % 2 === 0;
-                        console.log(isEvenRow);
-
                         return (
                           <td className={styles.customTable}>
                             {props.children}

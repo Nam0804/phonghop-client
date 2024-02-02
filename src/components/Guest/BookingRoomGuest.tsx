@@ -22,7 +22,7 @@ import Button from "@/constants/Form/Button";
 import { useSearchParams } from "next/navigation";
 // import { useSearchParams } from "your-react-router-library";
 
-export default function BookingRoomGuest({ onAddSuccess }: any) {
+export default function BookingRoomGuest({ rec, onAddSuccess }: any) {
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.min.js");
   }, []);
@@ -30,14 +30,11 @@ export default function BookingRoomGuest({ onAddSuccess }: any) {
     id: number;
     name: string;
   }
-
   const [redirect, setRedirect] = useState(false);
   const [currentProgress, setCurrentProgress] = useState(50);
-
   const updateProgress = (progress: number) => {
     setCurrentProgress(progress);
   };
-
   const [startTime, setStartTime] = useState<moment.Moment | null>(null);
   const handleStartTimeChange = (value: moment.Moment | undefined) => {
     setStartTime(value || null);
@@ -46,10 +43,8 @@ export default function BookingRoomGuest({ onAddSuccess }: any) {
   const handleEndTimeChange = (value: moment.Moment | undefined) => {
     setEndTime(value || null);
   };
-
   const [selectedMaterial, setSelectedMaterial] = useState<string[]>([]);
   const [selectedGuests, setSelectedGuests] = useState<string[]>([]);
-
   const [form] = Form.useForm();
   const [allRoomsData, setAllRoomData] = useState<DataType[]>([]);
   const [filteredRooms, setFilteredRooms] = useState<DataType[]>([]);
@@ -60,13 +55,15 @@ export default function BookingRoomGuest({ onAddSuccess }: any) {
   const [showAddInforModal, setShowAddInforModal] = useState(false);
   const [step, setStep] = useState(1);
   const [visible, setVisible] = useState(false);
-  const [selectedRoomId, setSelectedRoomId] = useState<string | undefined>("");
+  const [selectedRoomId, setSelectedRoomId] = useState<string | undefined>(
+    rec.id
+  );
   const [selectedRoomInfo, setSelectedRoomInfo] = useState<any>(null);
 
   const handleOpenAddInforModal = () => {
     setShowAddInforModal(true);
   };
-  
+
   const handleCloseAddInforModal = () => {
     setStep(1);
   };
@@ -98,6 +95,20 @@ export default function BookingRoomGuest({ onAddSuccess }: any) {
     fetchRooms();
   }, [company_id]);
 
+  useEffect(() => {
+    form.setFieldsValue({
+      id: rec.id,
+      name: rec.name,
+      location: rec.location,
+      capacity: rec.capacity,
+      equipment: rec.equipment,
+      availability: rec.availability,
+      company_id: rec.company_id,
+      floor: rec.floor,
+    });
+  }, [rec, form]);
+console.log("roomData", rec);
+
   const handleSubmit = () => {
     form
       .validateFields()
@@ -127,7 +138,7 @@ export default function BookingRoomGuest({ onAddSuccess }: any) {
     <>
       <button
         type="button"
-        className={styles.addbtn}
+        className={styles.addbtnGuest}
         onClick={() => setVisible(true)}
       >
         Book A Room
@@ -194,7 +205,7 @@ export default function BookingRoomGuest({ onAddSuccess }: any) {
                 </Form.Item>
                 <Form.Item
                   label="Room*:"
-                  name="room"
+                  name={rec.name}
                   rules={[
                     {
                       required: true,

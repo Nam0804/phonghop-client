@@ -9,7 +9,8 @@
     color: #225560;
     margin-bottom: 50px;
 }
-.toplabel{
+
+.toplabel {
     margin-left: 80px;
     color: #225560;
     font-family: Be Vietnam Pro;
@@ -19,6 +20,7 @@
     line-height: normal;
     margin-bottom: 20px;
 }
+
 .label {
     color: #383838;
     font-family: Be Vietnam Pro;
@@ -40,6 +42,7 @@
     font-weight: 400;
     line-height: 25px;
 }
+
 /* .formControl>div>div>div:first-child{
     align-items: center!important;
     display: inline-flex!important;
@@ -85,14 +88,33 @@
     float: right;
 }
 
+.Select {
+    display: flex;
+    align-items: center;
+    font-family: Be Vietnam Pro;
+    font-size: 16px !important;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    height: 44px;
+    width: 329px;
+    border: 2px solid #225560;
+    border-radius: 8px;
+    padding: 10px 24px 10px 24px;
+    gap: 10px;
+    margin-right: 90px;
+    float: right;
+}
+
+
 .buttonContainer {
     display: flex;
     margin-top: 20px;
     gap: 33px;
 }
 
-.addbtn{
-    width:228px ;
+.addbtn {
+    width: 228px;
     height: 52px;
     color: #FFF;
     font-family: Be VietNam Pro;
@@ -100,7 +122,7 @@
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-    background:  #225560;
+    background: #225560;
     border-radius: 8px;
     border: none;
 }
@@ -142,8 +164,9 @@
     font-weight: 600;
     line-height: 25px;
 }
-.buttonClose{
-    color:  #fff;
+
+.buttonClose {
+    color: #fff;
     font-family: Be Vietnam Pro;
     font-size: 20px;
     font-style: normal;
@@ -155,39 +178,45 @@
     padding: 10px;
     border-radius: 8px;
     background-color: #fff;
-    border: 1px solid  #225560;
+    border: 1px solid #225560;
     background-color: #225560;
 }
-.buttonsingle{
+
+.buttonsingle {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 20px;
 }
-.customInput{
+
+.customInput {
     background-color: #EAEEF6;
-    border: none!important;
+    border: none !important;
     cursor: not-allowed;
     pointer-events: none;
 }
+
 .customInput {
-    color:  #5D5D5D;
+    color: #5D5D5D;
     font-family: Be Vietnam Pro;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
+
 .formCompleted {
-    background-color: #225560; 
-  }
-.inputfileupload{
+    background-color: #225560;
+}
+
+.inputfileupload {
     width: 694px;
     border-radius: 8px;
     border: 1px solid #225560;
     margin-bottom: 24px;
 }
-.fileupload{
+
+.fileupload {
     width: 513px;
     height: 176px;
     left: 104px;
@@ -199,7 +228,8 @@
     align-items: center;
     display: flex;
 }
-.fileupload>div>p{
+
+.fileupload>div>p {
     font-family: Be Vietnam Pro;
     font-size: 20px;
     font-weight: 600;
@@ -207,11 +237,13 @@
     letter-spacing: 0em;
     color: #225560;
 }
-.formupload{
+
+.formupload {
     position: relative;
     left: 12%;
 }
-.deleteimg{
+
+.deleteimg {
     position: absolute;
     margin-top: 10px;
     right: 14%;
@@ -219,6 +251,7 @@
     border-radius: 4px;
     border: none;
 }
+
 .valid {
     background-color: #225560;
-  }
+}

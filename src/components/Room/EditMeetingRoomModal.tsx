@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Image, Modal, message } from "antd";
+import { Image, Modal, Select, message } from "antd";
 import Input from "@/constants/Form/Input";
 import Button from "@/constants/Form/Button";
 import styles from "@/css/AddNewRoom.module.css";
@@ -13,8 +13,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import api from "@/axiosService";
 import customstyle from "@/css/CompanyList.module.css";
 import { Form as Form } from "antd";
-import { Select, Space } from "antd";
-import { floor } from "lodash";
 
 const EditNewCompany = ({ rec, onEditSuccess }: any) => {
   const [visible, setVisible] = useState(false);
@@ -24,6 +22,9 @@ const EditNewCompany = ({ rec, onEditSuccess }: any) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showDragDrop, setShowDragDrop] = useState(true);
   const [apiImagePreview, setApiImagePreview] = useState<string | null>(null);
+  const [availabilitys, setAvailabilitys] = useState([form1.getFieldValue("availabilitys")]);
+
+  console.log("rec", rec);
 
   const handleDrag = (
     e: DragEvent<HTMLDivElement> | FormEvent<HTMLFormElement>
@@ -84,7 +85,7 @@ const EditNewCompany = ({ rec, onEditSuccess }: any) => {
       location: rec.location,
       capacity: rec.capacity,
       equipment: rec.equipment,
-      availabilitys: rec.availabilitys,
+      availability: rec.availability,
       floor: rec.floor,
     });
     if (rec.apiImageUrl) {
@@ -92,7 +93,7 @@ const EditNewCompany = ({ rec, onEditSuccess }: any) => {
       setShowDragDrop(false);
     }
   }, [rec, form1]);
-
+  
   function handleSubmit() {
     form1
       .validateFields()
@@ -216,18 +217,24 @@ const EditNewCompany = ({ rec, onEditSuccess }: any) => {
           <div className={styles.formControl}>
             <Form.Item
               label={<span className={styles.label}>Availability</span>}
-              name="availabilitys"
+              name="availability"
               style={{ width: "100%" }}
             >
-              <Select
+              <select className={styles.Select}>
+                <option selected>Choose type of booking</option>
+                <option value="Open">Open</option>
+                <option value="Close">Close</option>
+              </select>
+              {/* <Select
                 defaultValue="Open"
+                // className={styles.Select}
                 style={{ width: 329, height: 44, left: "42%" }}
                 onChange={handleChange}
                 options={[
                   { value: "Open", label: "Open" },
                   { value: "Close", label: "Close" },
                 ]}
-              />
+              /> */}
             </Form.Item>
           </div>
           <Form.Item
