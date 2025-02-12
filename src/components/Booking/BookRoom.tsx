@@ -60,7 +60,18 @@ export default function BookRoom({ onAddSuccess }: any) {
   const [selectedRoomId, setSelectedRoomId] = useState<string | undefined>("");
   const [selectedRoomInfo, setSelectedRoomInfo] = useState<any>(null);
   const [isChecked, setIsChecked] = useState(true);
+  const [guestEmail, setGuestEmail] = useState('');
+  const [invitedGuest, setInvitedGuest] = useState('');
 
+  const handleInputChange = (e:any) => {
+    setGuestEmail(e.target.value);
+  };
+
+  const handleEnterPress = (e:any) => {
+    if (e.key === 'Enter') {
+      setInvitedGuest(guestEmail);
+    }
+  };
   
 
   const handleCheckboxChange = (e: any) => {
@@ -145,7 +156,7 @@ export default function BookRoom({ onAddSuccess }: any) {
               booking_name: user.name,
               booking_email: user.email,
               booking_title: user.title,
-              meeting_room_id: 1,
+              meeting_room_id: selectedMeetingRoomId,
               from_time: `${selectedDate} ${moment(startTime, "HH:mm A").format(
                 "HH:mm:ss"
               )}`,
@@ -419,20 +430,12 @@ export default function BookRoom({ onAddSuccess }: any) {
               {/* ===================================== */}
               <Col span={12}>
                 <Form.Item label="Guest:" colon={false}>
-                  <Select
-                    showSearch
-                    // value={value}
+                  <Input
+                     type="email"
+                     value={guestEmail}
+                     onChange={handleInputChange}
+                     onKeyPress={handleEnterPress}
                     placeholder="Invitee's email"
-                    defaultActiveFirstOption={false}
-                    suffixIcon={null}
-                    filterOption={false}
-                    //  onSearch={handleSearch}
-                    //  onChange={handleChange}
-                    // notFoundContent={null}
-                    // options={(data || []).map((d) => ({
-                    //   value: d.value,
-                    //   label: d.text,
-                    // }))}
                   />
                   {selectedGuests.length > 0 && (
                     <List
